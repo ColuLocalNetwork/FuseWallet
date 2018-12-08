@@ -136,7 +136,8 @@ class _SendPageState extends State<SendPage> {
                               fontSize: 15,
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Gotham'),
+                              //fontFamily: 'Gotham'
+                              ),
                           keyboardType: TextInputType.number,
                         ),
                         Padding(
@@ -175,7 +176,8 @@ class _SendPageState extends State<SendPage> {
                               fontSize: 32,
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'Gotham'),
+                              //fontFamily: 'Gotham'
+                              ),
                           keyboardType: TextInputType.number,
                         ),
                         Padding(

@@ -8,14 +8,27 @@ import 'package:clnwallet/receivepage.dart';
 import 'package:clnwallet/sendpage.dart';
 import 'package:clnwallet/buypage.dart';
 import 'globals.dart' as globals;
+import 'dart:io';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
+  bool _isIPhoneX() {
+      return Platform.isIOS;
+      //if (Platform.isIOS && scaffoldKey.currentContext != null) {
+      //  var size = MediaQuery.of(scaffoldKey.currentContext).size;
+      //  if (size.height == 812.0 || size.width == 812.0) {
+      //    return true;
+      //  }
+      //}
+      //return false;
+  }
+
   Widget bottomBar() {
     return new Container(
+      padding: EdgeInsets.only(top: 0.0, bottom:  _isIPhoneX() ? 16 : 0, right: 0.0, left: 0.0),
       color: const Color(0xFFFFFFFF),
       child: new Directionality(
         textDirection: TextDirection.rtl,
@@ -74,7 +87,7 @@ class MyApp extends StatelessWidget {
           child: new MaterialApp(
             title: 'Fuse Wallet',
             theme: ThemeData(
-                fontFamily: 'Gotham',
+                //fontFamily: 'Gotham',
                 brightness: Brightness.light,
                 primaryColor: const Color(0xFF393174),
                 accentColor: const Color(0xFF4DD9B4),
