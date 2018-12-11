@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:clnwallet/crypto.dart';
+import 'package:fusewallet/crypto.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:clnwallet/common.dart';
-import 'package:clnwallet/shoppage.dart';
-import 'globals.dart' as globals;
+import 'package:fusewallet/common.dart';
+import 'package:fusewallet/globals.dart' as globals;
 
-class BuyPage extends StatefulWidget {
-  BuyPage({Key key, this.title}) : super(key: key);
+class ShopPage extends StatefulWidget {
+  ShopPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _BuyPageState createState() => _BuyPageState();
+  _ShopPageState createState() => _ShopPageState();
 }
 
-class _BuyPageState extends State<BuyPage> {
+class _ShopPageState extends State<ShopPage> {
   GlobalKey<ScaffoldState> scaffoldState;
   bool isLoading = false;
   final addressController = TextEditingController(text: "");
@@ -40,13 +39,53 @@ class _BuyPageState extends State<BuyPage> {
           Container(
             color: const Color(0xFF393174),
             padding: EdgeInsets.all(20.0),
-            child: Text("Buy",
+            height: 250,
+            child:
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment:MainAxisAlignment.end,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text("Mexican restaurant",
                 style: TextStyle(
                     color: const Color(0xFFFFFFFF),
-                    fontSize: 38,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold)),
+                )
+,
+                    Text("Family mexican restaurant",
+                style: TextStyle(
+                    color: const Color(0xFFFFFFFF),
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal))
+              ],
+            )
+             ,
           ),
-          new shopsList()
+          Padding(
+            padding:EdgeInsets.all(20),
+            child: Text("Family mexican restaurant Family mexican restaurant Family mexican restaurant Family mexican restaurant Family mexican restaurant Family mexican ",
+            style: TextStyle(
+                    color: const Color(0xFF666666),
+                    height: 1.3,
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal)),
+          ),
+          FlatButton(
+            child: Text("data"),
+            onPressed: (){
+              getBalance2();
+            },
+          ),
+          Container(
+            height: 200,
+            margin: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+               color:const Color(0xFFEAEAEA),
+               borderRadius: new BorderRadius.all( new Radius.circular(15.0))
+            ),
+          )
         ]));
   }
 }
@@ -85,8 +124,7 @@ class shopsListState extends State<shopsList> {
                           title: Text('Nina | מסעדת נינא'),
                           subtitle: Text('Herzel st'),
                           onTap:() {
-                                openPage(globals.scaffoldKey.currentContext,
-                                    new ShopPage());
+                                
                               },
                         );
                       },

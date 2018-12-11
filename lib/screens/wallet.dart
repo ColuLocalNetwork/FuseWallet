@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:clnwallet/crypto.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:fusewallet/crypto.dart';
 import 'dart:core';
-import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'globals.dart' as globals;
-import 'package:clnwallet/common.dart';
-import 'package:clnwallet/receivepage.dart';
-import 'package:clnwallet/drawer.dart';
+import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/common.dart';
+import 'package:fusewallet/screens/receive.dart';
+import 'package:fusewallet/widgets/drawer.dart';
+import 'package:fusewallet/widgets/transactions_list.dart';
+import 'package:fusewallet/modals/transactions.dart';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key key, this.title}) : super(key: key);
@@ -21,6 +20,7 @@ class WalletPage extends StatefulWidget {
 class _WalletPageState extends State<WalletPage> {
   
   bool isLoading = true;
+  List<Transaction> transactionsList = [];
 
   void loadBalance() {
 
@@ -36,6 +36,16 @@ class _WalletPageState extends State<WalletPage> {
           globals.balance = response.toString();
         });
       });
+    });
+
+  }
+
+  void loadTransactions() {
+    transactionsList.clear();
+    getTransactions(globals.publicKey).then((list) {
+      setState(() {
+          transactionsList.addAll(list.transactions);
+        });
     });
 
   }
@@ -75,6 +85,7 @@ class _WalletPageState extends State<WalletPage> {
                       tooltip: 'refresh',
                       onPressed: () {
                         loadBalance();
+                        loadTransactions();
                       },
                     )),
           ],
@@ -136,7 +147,7 @@ class _WalletPageState extends State<WalletPage> {
                               padding: EdgeInsets.only(
                                   left: 20.0,
                                   right: 20.0,
-                                  top: 8.0,
+                                  top: 3.0,
                                   bottom: 3.0),
                               decoration: new BoxDecoration(
                                   border: new Border.all(
@@ -193,37 +204,7 @@ class _WalletPageState extends State<WalletPage> {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 30.0, bottom: 20.0),
-              child: Opacity(
-                opacity: 0.2,
-                child: const Icon(Icons.local_gas_station,
-                    size: 120.0, color: const Color(0xFF393174)),
-              ),
-            ),
-            Column(
-              children: <Widget>[
-                new Text("You have no transactions yet",
-                    style: TextStyle(
-                        color: const Color(0xFF393174), fontSize: 14)),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    new Icon(
-                      Icons.arrow_downward,
-                      color: const Color(0xFF393174),
-                      size: 28,
-                    ),
-                    new Text("Receive coins",
-                        style: TextStyle(
-                            color: const Color(0xFF393174),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold))
-                  ],
-                )
-              ],
-            )
+            new TransactionsWidget(transactionsList)
           ],
         )
         );

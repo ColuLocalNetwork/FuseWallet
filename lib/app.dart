@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:clnwallet/crypto.dart';
+import 'package:fusewallet/crypto.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:clnwallet/common.dart';
-import 'package:clnwallet/walletpage.dart';
-import 'package:clnwallet/receivepage.dart';
-import 'package:clnwallet/sendpage.dart';
-import 'package:clnwallet/drawer.dart';
+import 'package:fusewallet/common.dart';
+import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/receive.dart';
+import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/widgets/drawer.dart';
 import 'globals.dart' as globals;
 
 class MyHomePage extends StatefulWidget {

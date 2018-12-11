@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:clnwallet/crypto.dart';
+import 'package:fusewallet/crypto.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'globals.dart' as globals;
+import 'package:fusewallet/globals.dart' as globals;
 
 class ReceivePage extends StatefulWidget {
   ReceivePage({Key key, this.title}) : super(key: key);

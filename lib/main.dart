@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
-import 'package:clnwallet/common.dart';
+import 'package:fusewallet/common.dart';
 import 'package:flutter/services.dart';
-import 'package:clnwallet/app.dart';
-import 'package:clnwallet/walletpage.dart';
-import 'package:clnwallet/receivepage.dart';
-import 'package:clnwallet/sendpage.dart';
-import 'package:clnwallet/buypage.dart';
+import 'package:fusewallet/app.dart';
+import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/receive.dart';
+import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/screens/buy.dart';
 import 'globals.dart' as globals;
 import 'dart:io';
 
