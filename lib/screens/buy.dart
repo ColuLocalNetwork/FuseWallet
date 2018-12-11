@@ -78,7 +78,7 @@ class shopsListState extends State<shopsList> {
                           new Divider(),
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
-                      itemCount: 50,
+                      itemCount: 20,
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading: new CircleAvatar(backgroundColor: const Color(0xFFEAEAEA)),

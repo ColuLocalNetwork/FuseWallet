@@ -79,7 +79,7 @@ class _TransactionListItem extends StatelessWidget {
               fontWeight: FontWeight.bold)),
       trailing: Container(
           child: Text(
-            _transaction.amount.toString() + " " + _transaction.tokenSymbol,
+            _transaction.amount.toString() + " " + "₪",
             style: TextStyle(
                 color: Color(color),
                 fontSize: 16.0,

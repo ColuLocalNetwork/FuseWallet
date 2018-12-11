@@ -18,36 +18,34 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
-  
   bool isLoading = true;
   List<Transaction> transactionsList = [];
 
   void loadBalance() {
-
     setState(() {
       isLoading = true;
     });
 
     getPublickKey().then((_publicKey) {
       globals.publicKey = _publicKey;
-        getBalance(_publicKey).then((response) {
+      getBalance(_publicKey).then((response) {
         setState(() {
           isLoading = false;
           globals.balance = response.toString();
         });
       });
     });
-
   }
 
   void loadTransactions() {
-    transactionsList.clear();
-    getTransactions(globals.publicKey).then((list) {
-      setState(() {
+    getPublickKey().then((_publicKey) {
+      transactionsList.clear();
+      getTransactions(_publicKey).then((list) {
+        setState(() {
           transactionsList.addAll(list.transactions);
         });
+      });
     });
-
   }
 
   @override
@@ -56,8 +54,8 @@ class _WalletPageState extends State<WalletPage> {
 
     initWallet().then((_privateKey) {
       loadBalance();
+      loadTransactions();
     });
-    
   }
 
   @override
@@ -158,28 +156,37 @@ class _WalletPageState extends State<WalletPage> {
                                     bottomRight: new Radius.circular(30.0),
                                     bottomLeft: new Radius.circular(30.0),
                                   )),
-                              child: isLoading ? Container(child: CircularProgressIndicator(strokeWidth: 3), width: 28.0, height: 28.0,margin:EdgeInsets.only(left: 28, right: 28)) : new RichText(
-                                text: new TextSpan(
-                                  // Note: Styles for TextSpans must be explicitly defined.
-                                  // Child text spans will inherit styles from parent
-                                  style: Theme.of(context).textTheme.title,
-                                  children: <TextSpan>[
-                                    new TextSpan(
-                                        text: globals.balance,
-                                        style: new TextStyle(
-                                            fontSize: 32,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold)),
-                                    new TextSpan(
-                                        text: "₪",
-                                        style: new TextStyle(
-                                            fontSize: 32,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                            height: 0.0)),
-                                  ],
-                                ),
-                              ),
+                              child: isLoading
+                                  ? Container(
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 3),
+                                      width: 28.0,
+                                      height: 28.0,
+                                      margin:
+                                          EdgeInsets.only(left: 28, right: 28))
+                                  : new RichText(
+                                      text: new TextSpan(
+                                        // Note: Styles for TextSpans must be explicitly defined.
+                                        // Child text spans will inherit styles from parent
+                                        style:
+                                            Theme.of(context).textTheme.title,
+                                        children: <TextSpan>[
+                                          new TextSpan(
+                                              text: globals.balance,
+                                              style: new TextStyle(
+                                                  fontSize: 32,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold)),
+                                          new TextSpan(
+                                              text: "₪",
+                                              style: new TextStyle(
+                                                  fontSize: 32,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 0.0)),
+                                        ],
+                                      ),
+                                    ),
                             )
                           ],
                         ),
@@ -206,7 +213,6 @@ class _WalletPageState extends State<WalletPage> {
             ),
             new TransactionsWidget(transactionsList)
           ],
-        )
-        );
+        ));
   }
 }
