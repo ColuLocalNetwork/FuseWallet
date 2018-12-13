@@ -47,8 +47,8 @@ Future sendNIS(address, amount) async {
   var getKittyFn = contract.findFunctionsByName("transfer").first;
   address = cleanAddress(address);
   var n = BigInt.parse(numbers.strip0x(address), radix: 16);
-	var kittenResponse = await new Transaction(keys: credentials, maximumGas: 10000000, gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 2))
-    .prepareForPaymentCall(contract, getKittyFn, [n, BigInt.from(amount) * BigInt.from(1000000000000000000)], EtherAmount.fromUnitAndValue(EtherUnit.gwei, 2))
+	var kittenResponse = await new Transaction(keys: credentials, maximumGas: 10000000, gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 3))
+    .prepareForPaymentCall(contract, getKittyFn, [n, BigInt.from(amount) * BigInt.from(1000000000000000000)], EtherAmount.fromUnitAndValue(EtherUnit.gwei, 3))
 			.send(ethClient);
   print(kittenResponse);
 
