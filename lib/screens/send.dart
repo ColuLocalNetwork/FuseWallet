@@ -55,7 +55,7 @@ class _SendPageState extends State<SendPage> {
         isLoading = true;
       });
       try {
-        sendNIS(addressController.text, int.parse(amountController.text))
+        sendNIS(cleanAddress(addressController.text), int.parse(amountController.text))
             .then((ret) {
           Navigator.of(context).pop();
 
