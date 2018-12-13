@@ -13,7 +13,7 @@ const String _ABI_EXTRACT = '[ { "constant": true, "inputs": [], "name": "name",
 //const String _URL = "http://etheth653-dns-reg1.westeurope.cloudapp.azure.com:8540";
 const String _URL = "https://rpc.fuse.io";
 //const String _Asset = "0xf386d8d1dc00749e50fe5b7fae185aff42f7f30f";
-const String _Asset = "0x347d72b434959208d8f82f9cdc607bd98fc6a111";
+const String _Asset = "0x415c11223bca1324f470cf72eac3046ea1e755a3";
 final storage = new FlutterSecureStorage();
 
 Future getBalance(address) async {
@@ -32,7 +32,7 @@ Future getBalance(address) async {
 			.call(ethClient);
       
       //numbers.hexToInt(response.toString()) / BigInt.from(1000000000000000000);
-  return response[0] / BigInt.from(1000000000000000000);
+  return (response[0] / BigInt.from(1000000000000000000)).toStringAsFixed(0);
 }
 
 Future sendNIS(address, amount) async {
@@ -47,8 +47,8 @@ Future sendNIS(address, amount) async {
   var getKittyFn = contract.findFunctionsByName("transfer").first;
   address = cleanAddress(address);
   var n = BigInt.parse(numbers.strip0x(address), radix: 16);
-	var kittenResponse = await new Transaction(keys: credentials, maximumGas: 10000000, gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 3))
-    .prepareForPaymentCall(contract, getKittyFn, [n, BigInt.from(amount) * BigInt.from(1000000000000000000)], EtherAmount.fromUnitAndValue(EtherUnit.gwei, 3))
+	var kittenResponse = await new Transaction(keys: credentials, maximumGas: 100000, gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 3))
+    .prepareForPaymentCall(contract, getKittyFn, [n, BigInt.from(amount) * BigInt.from(1000000000000000000)], EtherAmount.zero())
 			.send(ethClient);
   print(kittenResponse);
 
@@ -95,7 +95,7 @@ Future getPublickKey() async {
 
 Future<dynamic> getBalance2() async {
       String url =
-          "http://etheth653-dns-reg1.westeurope.cloudapp.azure.com:8540";
+          "https://rpc.fuse.io";
 
       var body ='{ "jsonrpc":"2.0", "method": "eth_call", "params":[ { "to": "0x381ac27b55e0c30ed214ab560b1f73b921080c2c", "data": "0x5d1b45b5" } ], "id": 1  }';
 
