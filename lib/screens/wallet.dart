@@ -199,9 +199,9 @@ class _WalletPageState extends State<WalletPage> {
                                 size: 36.0,
                               ),
                               onPressed: () {
-                                openPage(globals.scaffoldKey.currentContext, new ReceivePage());
+                                //openPage(globals.scaffoldKey.currentContext, new ReceivePage());
                                 //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
-                                //getBalance2();
+                                getEntity();
                               }),
                           width: 46.0,
                           height: 46.0,
