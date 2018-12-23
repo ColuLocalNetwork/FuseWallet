@@ -25,7 +25,7 @@ dependencies:
   qr_flutter: ^1.1.5
   flutter_secure_storage: ^3.1.2
   intl: ^0.15.7
-  web_socket_channel: ^1.0.9
+  absinthe_socket: ^0.0.2
   
 dev_dependencies:
   flutter_test:
@@ -54,6 +54,7 @@ flutter:
     - images/send.png
     - images/wallet.png
     - images/splash.jpg
+    - data/en-mnemonic-word-list.txt
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

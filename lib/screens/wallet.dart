@@ -7,8 +7,8 @@ import 'package:fusewallet/screens/receive.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/modals/transactions.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/io.dart';
+import 'dart:io';
+import 'dart:async';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key key, this.title}) : super(key: key);
@@ -57,15 +57,11 @@ class _WalletPageState extends State<WalletPage> {
     initWallet().then((_privateKey) {
       loadBalance();
       loadTransactions();
+      initSocket((payload) {
+        loadBalance();
+        loadTransactions();
+      });
     });
-
-    final channel = IOWebSocketChannel.connect('wss://explorer.fuse.io/socket/websocket?locale=en&vsn=2.0.0');
-
-  channel.stream.listen((message) {
-    loadBalance();
-    loadTransactions();
-  });
-
   }
 
   @override
@@ -92,9 +88,11 @@ class _WalletPageState extends State<WalletPage> {
                       icon: const Icon(Icons.refresh),
                       color: const Color(0xFFFFFFFF),
                       tooltip: 'refresh',
-                      onPressed: () {
+                      onPressed: () async {
                         loadBalance();
                         loadTransactions();
+
+                        //print(await generateMnemonic());
                       },
                     )),
           ],
@@ -173,8 +171,11 @@ class _WalletPageState extends State<WalletPage> {
                                           strokeWidth: 3),
                                       width: 22.0,
                                       height: 22.0,
-                                      margin:
-                                          EdgeInsets.only(left: 28, right: 28, top: 8, bottom: 8))
+                                      margin: EdgeInsets.only(
+                                          left: 28,
+                                          right: 28,
+                                          top: 8,
+                                          bottom: 8))
                                   : new RichText(
                                       text: new TextSpan(
                                         // Note: Styles for TextSpans must be explicitly defined.
@@ -205,9 +206,11 @@ class _WalletPageState extends State<WalletPage> {
                           child: new FloatingActionButton(
                               backgroundColor: Theme.of(context).accentColor,
                               elevation: 0,
-                              child: Image.asset('images/scan.png', width: 25.0),
+                              child:
+                                  Image.asset('images/scan.png', width: 25.0),
                               onPressed: () {
-                                openPage(globals.scaffoldKey.currentContext, new ReceivePage());
+                                openPage(globals.scaffoldKey.currentContext,
+                                    new ReceivePage());
                                 //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
                                 //getEntity();
                               }),
