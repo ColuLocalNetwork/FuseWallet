@@ -16,9 +16,11 @@ class MnemonicUtils {
   static List<String> WORD_LIST = null;
 
   /// Generate the mnemonic string list from an secure initial entropy data
-  static Future<String> generateMnemonic(Uint8List initialEntropy) async {
+  static String generateMnemonic(Uint8List initialEntropy) {
     if (WORD_LIST == null) {
-      WORD_LIST = await populateWordList();
+      populateWordList().then((ret) {
+        WORD_LIST = ret;
+      });
     }
 
     validateInitialEntropy(initialEntropy);

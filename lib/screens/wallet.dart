@@ -92,7 +92,7 @@ class _WalletPageState extends State<WalletPage> {
                         loadBalance();
                         loadTransactions();
 
-                        //print(await generateMnemonic());
+                        //print(generateMnemonic());
                       },
                     )),
           ],
