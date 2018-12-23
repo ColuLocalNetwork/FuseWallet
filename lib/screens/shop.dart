@@ -37,7 +37,7 @@ class _ShopPageState extends State<ShopPage> {
         ),
         body: ListView(children: <Widget>[
           Container(
-            color: const Color(0xFF393174),
+            color: Theme.of(context).primaryColor,
             padding: EdgeInsets.all(20.0),
             height: 250,
             child:
@@ -71,12 +71,6 @@ class _ShopPageState extends State<ShopPage> {
                     height: 1.3,
                     fontSize: 14,
                     fontWeight: FontWeight.normal)),
-          ),
-          FlatButton(
-            child: Text("data"),
-            onPressed: (){
-              getBalance2();
-            },
           ),
           Container(
             height: 200,

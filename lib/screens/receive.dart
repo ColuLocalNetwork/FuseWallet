@@ -40,7 +40,7 @@ class _ReceivePageState extends State<ReceivePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              color: const Color(0xFF393174),
+              color: Theme.of(context).primaryColor,
               padding: EdgeInsets.all(20.0),
               child: Text("Receive",
                   style: TextStyle(
@@ -73,18 +73,21 @@ class _ReceivePageState extends State<ReceivePage> {
                       softWrap: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: const Color(0xFF393174),
+                          color: Theme.of(context).primaryColor,
                           fontSize: 14,
                           fontWeight: FontWeight.bold)),
                 ),
                 Container(
                   width: 250,
                   padding: EdgeInsets.only(top: 20),
-                  child: new Text("Tap to copy",
+                  child: Opacity(
+                     opacity: 0.5,
+                     child: Text("Tap to copy",
                       softWrap: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: const Color(0xFF393174), fontSize: 14)),
+                          color: Theme.of(context).primaryColor, fontSize: 14)),
+                  ) ,
                 ),
                 
               ],

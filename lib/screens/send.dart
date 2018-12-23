@@ -97,7 +97,7 @@ class _SendPageState extends State<SendPage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Container(
-              color: const Color(0xFF393174),
+              color: Theme.of(context).primaryColor,
               padding: EdgeInsets.all(20.0),
               child: Text("Send",
                   style: TextStyle(
@@ -206,8 +206,8 @@ class _SendPageState extends State<SendPage> {
                                 shape: new RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(30.0)),
-                                color: const Color(0xFF4dd9b4),
-                                padding: EdgeInsets.all(15),
+                                color: Theme.of(context).accentColor,
+                                padding: EdgeInsets.all(12),
                                 child: isLoading
                                     ? Container(
                                         child: CircularProgressIndicator(
@@ -219,7 +219,7 @@ class _SendPageState extends State<SendPage> {
                                     : Text(
                                         "Send",
                                         style: TextStyle(
-                                            color: const Color(0xFF003187),
+                                            color: Theme.of(context).primaryColor,
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold),
                                       ),

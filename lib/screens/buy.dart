@@ -38,7 +38,7 @@ class _BuyPageState extends State<BuyPage> {
         ),
         body: ListView(children: <Widget>[
           Container(
-            color: const Color(0xFF393174),
+            color: Theme.of(context).primaryColor,
             padding: EdgeInsets.all(20.0),
             child: Text("Buy",
                 style: TextStyle(

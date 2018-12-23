@@ -40,14 +40,15 @@ class TransactionsWidgetState extends State<TransactionsWidget> {
   Widget build(BuildContext _context) {
     return transactions.length > 0
         ? Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Container(padding:EdgeInsets.only(left: 15, top: 15),
-              child: Text("Transactions",style: TextStyle(
-                color: Color(0xFF666666),
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold))
-              ),
+              Container(
+                  padding: EdgeInsets.only(left: 15, top: 15, bottom: 8),
+                  child: Text("Transactions",
+                      style: TextStyle(
+                          color: Color(0xFF979797),
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.normal))),
               ListView(
                   shrinkWrap: true,
                   primary: false,
@@ -69,32 +70,39 @@ class _TransactionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var type = _transaction.to == globals.publicKey ? "Received" : "Sent";
-    var color = type == "Received" ? 0xFF2bb28e : 0xFFbf2b2b;
-    return ListTile(
-      title: Text(DateFormat("MMMM d, yyyy").format(_transaction.date)),
-      subtitle: Text(type,
-          style: TextStyle(
-              color: Color(color),
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold)),
-      trailing: Container(
-          child: Text(
-            _transaction.amount.toString() + " " + "₪",
-            style: TextStyle(
-                color: Color(color),
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold),
+    var color = type == "Received" ? 0xFF71C84D : 0xFFFC6E4C;
+    var img = type == "Received" ? "send.png" : "recieve.png";
+    return Container(
+        decoration: new BoxDecoration(
+            border: Border(top: BorderSide(color: const Color(0xFFDCDCDC)))),
+            padding: EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
+        child: ListTile(
+          title: Text(DateFormat("MMMM d, yyyy").format(_transaction.date)),
+          /*subtitle: Text(type,
+              style: TextStyle(
+                  color: Color(color),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold)),*/
+          leading: Opacity(
+            opacity: 0.5,
+            child: CircleAvatar(
+              radius: 18,
+              backgroundColor: Color(color),
+              child: Image.asset('images/' + img,
+                  width: 24.0, color: const Color(0xFFFFFFFF)),
+            ),
           ),
-          padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-          decoration: new BoxDecoration(
-              border: new Border.all(color: Color(color), width: 3.0),
-              borderRadius: new BorderRadius.only(
-                topLeft: new Radius.circular(30.0),
-                topRight: new Radius.circular(30.0),
-                bottomRight: new Radius.circular(30.0),
-                bottomLeft: new Radius.circular(30.0),
-              ))),
-    );
+          trailing: Container(
+            child: Text(
+              _transaction.amount.toString() + " " + "₪",
+              style: TextStyle(
+                  color: Color(color),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+          ),
+        ));
   }
 }
 
@@ -107,24 +115,20 @@ class TransactionsEmpty extends StatelessWidget {
           padding: EdgeInsets.only(top: 30.0, bottom: 20.0),
           child: Opacity(
             opacity: 0.2,
-            child: const Icon(Icons.local_gas_station,
-                size: 120.0, color: const Color(0xFF393174)),
+            child: Image.asset('images/wallet.png',
+                  width: 120.0),
           ),
         ),
         new Text("You have no transactions yet",
-            style: TextStyle(color: const Color(0xFF393174), fontSize: 14)),
+            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 14)),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Icon(
-              Icons.arrow_downward,
-              color: const Color(0xFF393174),
-              size: 28,
-            ),
+            Image.asset('images/recieve.png', width: 28.0, color: Theme.of(context).primaryColor),
             new Text("Receive coins",
                 style: TextStyle(
-                    color: const Color(0xFF393174),
+                    color: Theme.of(context).primaryColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold))
           ],

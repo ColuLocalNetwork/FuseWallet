@@ -36,13 +36,13 @@ class MyApp extends StatelessWidget {
           //crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            bottomBarItem(Icons.arrow_upward, "Send", () {
+            bottomBarItem("send.png", "Send", () {
               scan();
             }),
-            bottomBarItem(Icons.add_shopping_cart, "Buy", () {
+            bottomBarItem("buy.png", "Buy", () {
               openPage(globals.scaffoldKey.currentContext, new BuyPage());
             }),
-            bottomBarItem(Icons.arrow_downward, "Receive", () {
+            bottomBarItem("recieve.png", "Receive", () {
               openPage(globals.scaffoldKey.currentContext, new ReceivePage());
             })
           ],
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Widget bottomBarItem(IconData icon, String text, ontap) {
+  Widget bottomBarItem(String img, String text, ontap) {
     return new Material(
       color: Colors.transparent,
       child:new InkWell(
@@ -63,14 +63,10 @@ class MyApp extends StatelessWidget {
           const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 0.0, left: 0.0),
         child: new Column(
           children: <Widget>[
-            new Icon(
-              icon,
-              color: const Color(0xFF393174),
-              size: 28,
-            ),
+            Image.asset('images/' + img, width: 28.0, color: const Color(0xFF979797)),
             new Text(text,
                 style: new TextStyle(
-                    fontSize: 14.0, color: const Color(0xFF393174)))
+                    fontSize: 14.0, color: const Color(0xFF979797)))
           ],
         ),
       ),
@@ -89,8 +85,8 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
                 //fontFamily: 'Gotham',
                 brightness: Brightness.light,
-                primaryColor: const Color(0xFF393174),
-                accentColor: const Color(0xFF4DD9B4),
+                primaryColor: const Color(0xFF25435A),
+                accentColor: const Color(0xFFA8EB8C),
                 canvasColor: const Color(0xFFF8F8F8)),
             home: WalletPage(title: 'Fuse Wallet'),
           ),

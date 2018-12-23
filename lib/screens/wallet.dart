@@ -7,6 +7,8 @@ import 'package:fusewallet/screens/receive.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/modals/transactions.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/io.dart';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key key, this.title}) : super(key: key);
@@ -39,9 +41,9 @@ class _WalletPageState extends State<WalletPage> {
 
   void loadTransactions() {
     getPublickKey().then((_publicKey) {
-      transactionsList.clear();
       getTransactions(_publicKey).then((list) {
         setState(() {
+          transactionsList.clear();
           transactionsList.addAll(list.transactions);
         });
       });
@@ -56,6 +58,14 @@ class _WalletPageState extends State<WalletPage> {
       loadBalance();
       loadTransactions();
     });
+
+    final channel = IOWebSocketChannel.connect('wss://explorer.fuse.io/socket/websocket?locale=en&vsn=2.0.0');
+
+  channel.stream.listen((message) {
+    loadBalance();
+    loadTransactions();
+  });
+
   }
 
   @override
@@ -67,9 +77,10 @@ class _WalletPageState extends State<WalletPage> {
         appBar: AppBar(
           title: InkWell(
             child: Image.asset(
-              'images/cln.png',
-              width: 42.0,
+              'images/fuselogo2.png',
+              width: 34.0,
               gaplessPlayback: true,
+              color: Theme.of(context).accentColor,
             ),
             onTap:
                 () {}, //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5"); },
@@ -93,10 +104,10 @@ class _WalletPageState extends State<WalletPage> {
         body: ListView(
           children: <Widget>[
             Container(
-              height: 300.0,
+              height: 260.0,
               alignment: Alignment.bottomLeft,
               padding: EdgeInsets.all(20.0),
-              color: const Color(0xFF393174),
+              color: Theme.of(context).primaryColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
@@ -111,15 +122,15 @@ class _WalletPageState extends State<WalletPage> {
                         style: Theme.of(context).textTheme.title,
                         children: <TextSpan>[
                           new TextSpan(
-                              text: 'Good evening,',
+                              text: 'Good evening',
                               style:
                                   TextStyle(fontSize: 42, color: Colors.white)),
-                          new TextSpan(
+                          /*new TextSpan(
                               text: ' Mark',
                               style: TextStyle(
                                   fontSize: 42,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
+                                  fontWeight: FontWeight.bold)),*/
                         ],
                       ),
                     ),
@@ -145,8 +156,8 @@ class _WalletPageState extends State<WalletPage> {
                               padding: EdgeInsets.only(
                                   left: 20.0,
                                   right: 20.0,
-                                  top: 3.0,
-                                  bottom: 3.0),
+                                  top: 1.0,
+                                  bottom: 1.0),
                               decoration: new BoxDecoration(
                                   border: new Border.all(
                                       color: Colors.white, width: 3.0),
@@ -160,10 +171,10 @@ class _WalletPageState extends State<WalletPage> {
                                   ? Container(
                                       child: CircularProgressIndicator(
                                           strokeWidth: 3),
-                                      width: 28.0,
-                                      height: 28.0,
+                                      width: 22.0,
+                                      height: 22.0,
                                       margin:
-                                          EdgeInsets.only(left: 28, right: 28))
+                                          EdgeInsets.only(left: 28, right: 28, top: 8, bottom: 8))
                                   : new RichText(
                                       text: new TextSpan(
                                         // Note: Styles for TextSpans must be explicitly defined.
@@ -192,16 +203,13 @@ class _WalletPageState extends State<WalletPage> {
                         ),
                         new Container(
                           child: new FloatingActionButton(
-                              backgroundColor: const Color(0xFF4dd9b4),
+                              backgroundColor: Theme.of(context).accentColor,
                               elevation: 0,
-                              child: const Icon(
-                                Icons.add,
-                                size: 36.0,
-                              ),
+                              child: Image.asset('images/scan.png', width: 25.0),
                               onPressed: () {
-                                //openPage(globals.scaffoldKey.currentContext, new ReceivePage());
+                                openPage(globals.scaffoldKey.currentContext, new ReceivePage());
                                 //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
-                                getEntity();
+                                //getEntity();
                               }),
                           width: 46.0,
                           height: 46.0,
