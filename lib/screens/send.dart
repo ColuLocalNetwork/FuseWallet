@@ -27,6 +27,15 @@ Future scan() async {
   }
 }
 
+final addressController =
+      TextEditingController(text: "");
+
+Future openCameraScan(openPage) async {
+      addressController.text = await BarcodeScanner.scan();
+      if (openPage) {
+        openPage(globals.scaffoldKey.currentContext, new SendPage());
+      }
+    }
 class SendPage extends StatefulWidget {
   SendPage({Key key, this.title}) : super(key: key);
 
@@ -39,8 +48,7 @@ class SendPage extends StatefulWidget {
 class _SendPageState extends State<SendPage> {
   GlobalKey<ScaffoldState> scaffoldState;
   bool isLoading = false;
-  final addressController =
-      TextEditingController(text: "");
+  
   final amountController = TextEditingController(text: "");
 
   @override
@@ -79,12 +87,9 @@ class _SendPageState extends State<SendPage> {
       }
     }
 
-    Future openCameraScan() async {
-      addressController.text = await BarcodeScanner.scan();
-    }
-
     return new Scaffold(
         key: scaffoldState,
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           centerTitle: true,
           elevation: 0.0,
@@ -144,7 +149,7 @@ class _SendPageState extends State<SendPage> {
                           child: InkWell(
                             child: Image.asset('images/scan.png', width: 28.0),
                             onTap: () {
-                              openCameraScan();
+                              openCameraScan(false);
                             },
                           ),
                           padding: EdgeInsets.only(bottom: 10),

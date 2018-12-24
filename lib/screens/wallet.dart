@@ -3,7 +3,7 @@ import 'package:fusewallet/crypto.dart';
 import 'dart:core';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/common.dart';
-import 'package:fusewallet/screens/receive.dart';
+import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/modals/transactions.dart';
@@ -208,9 +208,8 @@ class _WalletPageState extends State<WalletPage> {
                               elevation: 0,
                               child:
                                   Image.asset('images/scan.png', width: 25.0),
-                              onPressed: () {
-                                openPage(globals.scaffoldKey.currentContext,
-                                    new ReceivePage());
+                              onPressed: () async {
+                                openCameraScan(false);
                                 //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
                                 //getEntity();
                               }),

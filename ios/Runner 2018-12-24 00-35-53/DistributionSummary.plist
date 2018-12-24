@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Runner.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>armv7</string>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string></string>
+				<key>dateExpires</key>
+				<string></string>
+				<key>type</key>
+				<string>Unknown</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>armv7</string>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string></string>
+						<key>dateExpires</key>
+						<string></string>
+						<key>type</key>
+						<string>Unknown</string>
+					</dict>
+					<key>name</key>
+					<string>App.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>E9LX62P47A</string>
+						<key>name</key>
+						<string>Eli Smargon</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>armv7</string>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string></string>
+						<key>dateExpires</key>
+						<string></string>
+						<key>type</key>
+						<string>Unknown</string>
+					</dict>
+					<key>name</key>
+					<string>Flutter.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>E9LX62P47A</string>
+						<key>name</key>
+						<string>Eli Smargon</string>
+					</dict>
+				</dict>
+			</array>
+			<key>name</key>
+			<string>Runner.app</string>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>E9LX62P47A</string>
+				<key>name</key>
+				<string>Eli Smargon</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

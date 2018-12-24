@@ -65,7 +65,7 @@ Future sendNIS(address, amount) async {
           getKittyFn,
           [n, BigInt.from(amount) * BigInt.from(1000000000000000000)],
           EtherAmount.zero())
-      .send(ethClient);
+      .send(ethClient, chainId: 121);
   print(kittenResponse);
 
   return true;
