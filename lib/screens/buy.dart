@@ -7,6 +7,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/common.dart';
 import 'package:fusewallet/screens/shop.dart';
 import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/modals/businesses.dart';
 
 class BuyPage extends StatefulWidget {
   BuyPage({Key key, this.title}) : super(key: key);
@@ -17,15 +18,28 @@ class BuyPage extends StatefulWidget {
   _BuyPageState createState() => _BuyPageState();
 }
 
+List<Business> businessesList = [];
+
 class _BuyPageState extends State<BuyPage> {
   GlobalKey<ScaffoldState> scaffoldState;
   bool isLoading = false;
   final addressController = TextEditingController(text: "");
   final amountController = TextEditingController(text: "");
 
+  void loadBusinesses() {
+    getBusinesses().then((list) {
+      setState(() {
+        businessesList.clear();
+        businessesList.addAll(list);
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
+    loadBusinesses();
   }
 
   @override
@@ -46,17 +60,17 @@ class _BuyPageState extends State<BuyPage> {
                     fontSize: 38,
                     fontWeight: FontWeight.bold)),
           ),
-          new shopsList()
+          new BusinessesListView()
         ]));
   }
 }
 
-class shopsList extends StatefulWidget {
+class BusinessesListView extends StatefulWidget {
   @override
-  createState() => new shopsListState();
+  createState() => new BusinessesListViewState();
 }
 
-class shopsListState extends State<shopsList> {
+class BusinessesListViewState extends State<BusinessesListView> {
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -78,16 +92,22 @@ class shopsListState extends State<shopsList> {
                           new Divider(),
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
-                      itemCount: 20,
+                      itemCount: businessesList.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          leading: new CircleAvatar(backgroundColor: const Color(0xFFEAEAEA)),
-                          title: Text('Nina | מסעדת נינא'),
-                          subtitle: Text('Herzel st'),
-                          onTap:() {
-                                openPage(globals.scaffoldKey.currentContext,
-                                    new ShopPage());
-                              },
+                          leading: ClipOval(
+                              child: Image.network(
+                            businessesList[index].image,
+                            fit: BoxFit.cover,
+                            width: 50.0,
+                            height: 50.0,
+                          )),
+                          title: Text(businessesList[index].name),
+                          subtitle: Text(businessesList[index].address),
+                          onTap: () {
+                            openPage(globals.scaffoldKey.currentContext,
+                                new ShopPage(business: businessesList[index],));
+                          },
                         );
                       },
                     )),

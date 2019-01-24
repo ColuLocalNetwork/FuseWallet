@@ -6,11 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/modals/businesses.dart';
 
 class ShopPage extends StatefulWidget {
-  ShopPage({Key key, this.title}) : super(key: key);
+  ShopPage({Key key, this.title, this.business}) : super(key: key);
 
   final String title;
+  final Business business;
+
 
   @override
   _ShopPageState createState() => _ShopPageState();
@@ -47,14 +50,14 @@ class _ShopPageState extends State<ShopPage> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
-                  child: Text("Mexican restaurant",
+                  child: Text(widget.business.name,
                 style: TextStyle(
                     color: const Color(0xFFFFFFFF),
                     fontSize: 24,
                     fontWeight: FontWeight.bold)),
                 )
 ,
-                    Text("Family mexican restaurant",
+                    Text(widget.business.address,
                 style: TextStyle(
                     color: const Color(0xFFFFFFFF),
                     fontSize: 14,
@@ -65,7 +68,7 @@ class _ShopPageState extends State<ShopPage> {
           ),
           Padding(
             padding:EdgeInsets.all(20),
-            child: Text("Family mexican restaurant Family mexican restaurant Family mexican restaurant Family mexican restaurant Family mexican restaurant Family mexican ",
+            child: Text(widget.business.description,
             style: TextStyle(
                     color: const Color(0xFF666666),
                     height: 1.3,
@@ -79,17 +82,23 @@ class _ShopPageState extends State<ShopPage> {
                color:const Color(0xFFEAEAEA),
                borderRadius: new BorderRadius.all( new Radius.circular(15.0))
             ),
+            child: Image.network(
+                            widget.business.image,
+                            fit: BoxFit.cover,
+                            width: 50.0,
+                            height: 50.0,
+                          ),
           )
         ]));
   }
 }
 
-class shopsList extends StatefulWidget {
+class BusinessesListView extends StatefulWidget {
   @override
-  createState() => new shopsListState();
+  createState() => new BusinessesListViewState();
 }
 
-class shopsListState extends State<shopsList> {
+class BusinessesListViewState extends State<BusinessesListView> {
   @override
   Widget build(BuildContext context) {
     return new Container(
