@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/crypto.dart';
 
 class DrawerWidget extends StatefulWidget {
   DrawerWidget({Key key, this.title}) : super(key: key);
@@ -31,14 +32,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
               ),
               ListTile(
-                title: Text('Item 1'),
+                title: Text('Delete Account'),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
+                  setPrivateKey("");
                 },
               ),
               ListTile(
-                title: Text('Item 2'),
+                title: Text('Generate Mnemonic'),
                 onTap: () {
                   // Update the state of the app
                   // ...
