@@ -37,9 +37,10 @@ Future openCameraScan(openPage) async {
       }
     }
 class SendPage extends StatefulWidget {
-  SendPage({Key key, this.title}) : super(key: key);
+  SendPage({Key key, this.title, this.address}) : super(key: key);
 
   final String title;
+  final String address;
 
   @override
   _SendPageState createState() => _SendPageState();
@@ -53,6 +54,8 @@ class _SendPageState extends State<SendPage> {
 
   @override
   void initState() {
+
+    addressController.text = widget.address;
     super.initState();
   }
 

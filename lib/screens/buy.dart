@@ -8,6 +8,7 @@ import 'package:fusewallet/common.dart';
 import 'package:fusewallet/screens/shop.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/modals/businesses.dart';
+import 'package:fusewallet/screens/send.dart';
 
 class BuyPage extends StatefulWidget {
   BuyPage({Key key, this.title}) : super(key: key);
@@ -105,9 +106,28 @@ class BusinessesListViewState extends State<BusinessesListView> {
                           title: Text(businessesList[index].name),
                           subtitle: Text(businessesList[index].address),
                           onTap: () {
-                            openPage(globals.scaffoldKey.currentContext,
-                                new ShopPage(business: businessesList[index],));
+                            openPage(
+                                globals.scaffoldKey.currentContext,
+                                new ShopPage(
+                                  business: businessesList[index],
+                                ));
                           },
+                          trailing: FlatButton(
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0)),
+                            color: Theme.of(context).accentColor,
+                            padding: EdgeInsets.all(0),
+                            child: Text(
+                              "Pay",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              openPage(globals.scaffoldKey.currentContext, new SendPage(address: businessesList[index].account));
+                            },
+                          ),
                         );
                       },
                     )),

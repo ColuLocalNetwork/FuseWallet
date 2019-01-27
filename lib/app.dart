@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
     new WalletPage(),
     new ReceivePage(),
     Text('Buy'),
-    new SendPage(),
+    new SendPage(address: "",),
   ];
 
   @override
