@@ -21,7 +21,7 @@ const String _ABI_EXTRACT =
 //const String _URL = "http://etheth653-dns-reg1.westeurope.cloudapp.azure.com:8540";
 const String _URL = "https://rpc.fuse.io";
 //const String _Asset = "0xf386d8d1dc00749e50fe5b7fae185aff42f7f30f";
-const String _Asset = "0x415c11223bca1324f470cf72eac3046ea1e755a3";
+String _Asset = "0x415c11223bca1324f470cf72eac3046ea1e755a3";
 final storage = new FlutterSecureStorage();
 
 Future getBalance(address) async {
@@ -31,7 +31,7 @@ Future getBalance(address) async {
   var credentials = Credentials.fromPrivateKeyHex(privateKey);
   var contractABI = ContractABI.parseFromJSON(_ABI_EXTRACT, "cln");
   var contract = new DeployedContract(
-      contractABI, new EthereumAddress(_Asset), ethClient, credentials);
+      contractABI, new EthereumAddress(await getAssetID()), ethClient, credentials);
 
   var getFn = contract.findFunctionsByName("balanceOf").first;
   address = address.toString().replaceAll("ethereum:", "");
@@ -50,7 +50,7 @@ Future sendNIS(address, amount) async {
   var credentials = Credentials.fromPrivateKeyHex(privateKey);
   var contractABI = ContractABI.parseFromJSON(_ABI_EXTRACT, "cln");
   var contract = new DeployedContract(
-      contractABI, new EthereumAddress(_Asset), ethClient, credentials);
+      contractABI, new EthereumAddress(await getAssetID()), ethClient, credentials);
 
 //, EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1)
   var getKittyFn = contract.findFunctionsByName("transfer").first;
@@ -121,6 +121,18 @@ Future getPublickKey() async {
   return credentials.address.hex;
 }
 
+Future getAssetID() async {
+  var id = await storage.read(key: "assetID");
+  if (id == null || id == "") {
+    id = "0x415c11223bca1324f470cf72eac3046ea1e755a3";
+  }
+  return id;
+}
+
+Future setAssetID(value) async {
+  await storage.write(key: "assetID", value: value);
+}
+
 Future<dynamic> getEntityCount() async {
   String url = "http://etheth653-dns-reg1.westeurope.cloudapp.azure.com:8540";
 
@@ -168,6 +180,7 @@ Future<dynamic> getEntity() async {
   var body =
       '{ "jsonrpc":"2.0", "method": "eth_call", "params":[ { "to": "0x6eca7b83135c70bdbd4d862792b8c73225362990", "data": "0x070c412b000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000013100000000000000000000000000000000000000000000000000000000000000" } ], "id": 1  }';
 
+  var assetID = await getAssetID();
   return await http.post(Uri.encodeFull(_URL), body: body, headers: {
     "Content-Type": "application/json"
   }).then((http.Response response) {
@@ -177,7 +190,7 @@ Future<dynamic> getEntity() async {
       throw new Exception("Error while fetching data");
     }
     Map<String, dynamic> obj = json.decode(response.body);
-
+    
     var abi = '[ { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "entityList", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "admins", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "renounceOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "isOwner", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "newOwner", "type": "address" } ], "name": "transferOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "previousOwner", "type": "address" }, { "indexed": true, "name": "newOwner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "constant": true, "inputs": [], "name": "getEntityCount", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_entityId", "type": "string" }, { "name": "_account", "type": "address" }, { "name": "_name", "type": "string" }, { "name": "_description", "type": "string" }, { "name": "_address", "type": "string" }, { "name": "_image", "type": "string" } ], "name": "newEntity", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_entityId", "type": "string" }, { "name": "_account", "type": "address" }, { "name": "_name", "type": "string" }, { "name": "_description", "type": "string" }, { "name": "_address", "type": "string" }, { "name": "_image", "type": "string" } ], "name": "updateEntity", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "_entityId", "type": "string" } ], "name": "getEntity", "outputs": [ { "components": [ { "name": "_account", "type": "address" }, { "name": "_name", "type": "string" }, { "name": "_description", "type": "string" }, { "name": "_address", "type": "string" }, { "name": "_image", "type": "string" }, { "name": "_listPointer", "type": "uint256" } ], "name": "", "type": "tuple" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_entityId", "type": "string" } ], "name": "deleteEntity", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_address", "type": "address" } ], "name": "addAdmin", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_address", "type": "address" } ], "name": "removeAdmin", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "_address", "type": "address" } ], "name": "isAdmin", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "view", "type": "function" } ]';
     var privateKey = getPrivateKey().then((privateKey) {
       var httpClient = new Client();
@@ -185,7 +198,7 @@ Future<dynamic> getEntity() async {
       var credentials = Credentials.fromPrivateKeyHex(privateKey);
       var contractABI = ContractABI.parseFromJSON(abi, "cln");
       var contract = new DeployedContract(
-          contractABI, new EthereumAddress(_Asset), ethClient, credentials);
+          contractABI, new EthereumAddress(assetID), ethClient, credentials);
       var getFn = contract.findFunctionsByName("getEntity").first;
       print(getFn.decodeReturnValues(obj["result"].toString()));
     });

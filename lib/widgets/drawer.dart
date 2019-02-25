@@ -19,33 +19,73 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
 
+  final assetIdController = TextEditingController(text: "");
+
   @override
   Widget build(BuildContext _context) {
     return Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                child: Text('Drawer Header', style: TextStyle(color: const Color(0xFFFFFFFF)),),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              ListTile(
-                title: Text('Delete Account'),
-                onTap: () {
-                  setPrivateKey("");
-                },
-              ),
-              ListTile(
-                title: Text('Generate Mnemonic'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                },
-              ),
-            ],
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text(
+              'Drawer Header',
+              style: TextStyle(color: const Color(0xFFFFFFFF)),
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
-        );
+          ListTile(
+            title: Text('Delete Account'),
+            onTap: () {
+              setPrivateKey("");
+            },
+          ),
+          ListTile(
+            title: Text('Generate Mnemonic'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+            },
+          ),
+          ListTile(
+            title: Text('Change Asset ID'),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text("Asset ID"),
+                        content: Column(children: <Widget>[
+                          TextField(
+                            controller: assetIdController,
+                          ),
+                          Row(children: <Widget>[
+FlatButton(
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0)),
+                            color: Theme.of(context).accentColor,
+                            padding: EdgeInsets.all(12),
+                            child: Text(
+                              "Save",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              setAssetID(assetIdController.text);
+                              Navigator.of(context).pop(true);
+                            },
+                          )
+                          ],)
+                          
+                        ]),
+                      ));
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
