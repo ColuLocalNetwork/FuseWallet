@@ -7,6 +7,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/crypto.dart';
+import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 
 class DrawerWidget extends StatefulWidget {
   DrawerWidget({Key key, this.title}) : super(key: key);
@@ -19,7 +20,60 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
 
+  Future<void> startNFC() async {
+    setState(() {
+      _nfcData = NfcData();
+      _nfcData.status = NFCStatus.reading;
+    });
+
+    print('NFC: Scan started');
+
+    print('NFC: Scan readed NFC tag');
+
+    showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text("hello")
+                      ));
+
+    FlutterNfcReader.read.listen((response) {
+
+      showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text(response.content)
+                      ));
+      setState(() {
+        _nfcData = response;
+
+      });
+    });
+  }
+
+  Future<void> stopNFC() async {
+    NfcData response;
+
+    try {
+      print('NFC: Stop scan by user');
+      response = await FlutterNfcReader.stop;
+    } on PlatformException {
+      print('NFC: Stop scan exception');
+      response = NfcData(
+        id: '',
+        content: '',
+        error: 'NFC scan stop exception',
+        statusMapper: '',
+      );
+      response.status = NFCStatus.error;
+    }
+
+    setState(() {
+      _nfcData = response;
+    });
+  }
+
   final assetIdController = TextEditingController(text: "");
+  NfcData _nfcData;
 
   @override
   Widget build(BuildContext _context) {
@@ -82,6 +136,18 @@ FlatButton(
                           
                         ]),
                       ));
+            },
+          ),
+          ListTile(
+            title: Text('Start NFC'),
+            onTap: () {
+              startNFC();
+            },
+          ),
+          ListTile(
+            title: Text('Stop NFC'),
+            onTap: () {
+              stopNFC();
             },
           ),
         ],
