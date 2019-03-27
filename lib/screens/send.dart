@@ -37,10 +37,11 @@ Future openCameraScan(openPage) async {
       }
     }
 class SendPage extends StatefulWidget {
-  SendPage({Key key, this.title, this.address}) : super(key: key);
+  SendPage({Key key, this.title, this.address, this.privateKey}) : super(key: key);
 
   final String title;
   final String address;
+  final String  privateKey;
 
   @override
   _SendPageState createState() => _SendPageState();
@@ -66,7 +67,7 @@ class _SendPageState extends State<SendPage> {
         isLoading = true;
       });
       try {
-        sendNIS(cleanAddress(addressController.text), int.parse(amountController.text))
+        sendNIS(cleanAddress(addressController.text), int.parse(amountController.text), widget.privateKey)
             .then((ret) {
           Navigator.of(context).pop();
 

@@ -154,7 +154,7 @@ class _MyDialogContentState extends State<transferPrompt> {
             });
 
             //sendAddress = "0x104602283d94236bcea2af119d2f37d21540068c";
-            sendNIS(sendAddress, int.parse(myController.text)).then((ret) {
+            sendNIS(sendAddress, int.parse(myController.text), null).then((ret) {
               Navigator.of(context).pop();
 
               Scaffold.of(widget.outerContext).showSnackBar(new SnackBar(

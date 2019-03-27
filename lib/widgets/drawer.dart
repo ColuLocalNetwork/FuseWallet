@@ -8,6 +8,8 @@ import 'package:fusewallet/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/crypto.dart';
 import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
+import 'package:fusewallet/screens/send.dart';
+import 'dart:convert';
 
 class DrawerWidget extends StatefulWidget {
   DrawerWidget({Key key, this.title}) : super(key: key);
@@ -30,11 +32,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
     print('NFC: Scan readed NFC tag');
 
+    /*
     showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                         title: Text("hello")
                       ));
+    */
 
     FlutterNfcReader.read.listen((response) {
 
@@ -45,7 +49,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ));
       setState(() {
         _nfcData = response;
+        Map<String, dynamic> jsonObj = jsonDecode(_nfcData.content);
 
+        openPage(globals.scaffoldKey.currentContext, new SendPage(address: jsonObj["Address"], privateKey: jsonObj["Private"]));
       });
     });
   }

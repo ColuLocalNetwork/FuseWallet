@@ -43,10 +43,14 @@ Future getBalance(address) async {
   return (response[0] / BigInt.from(1000000000000000000)).toStringAsFixed(0);
 }
 
-Future sendNIS(address, amount) async {
+Future sendNIS(address, amount, privateKey) async {
   var httpClient = new Client();
   var ethClient = new Web3Client(_URL, httpClient);
-  var privateKey = await getPrivateKey();
+
+  if (privateKey == null) {
+    privateKey = await getPrivateKey();
+  }
+
   var credentials = Credentials.fromPrivateKeyHex(privateKey);
   var contractABI = ContractABI.parseFromJSON(_ABI_EXTRACT, "cln");
   var contract = new DeployedContract(
