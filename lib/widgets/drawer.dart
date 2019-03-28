@@ -42,16 +42,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
     FlutterNfcReader.read.listen((response) {
 
-      showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: Text(response.content)
-                      ));
+//      showDialog(
+//                  context: context,
+//                  builder: (context) => AlertDialog(
+//                        title: Text(response.content.substring(7))
+//                      ));
       setState(() {
         _nfcData = response;
-        Map<String, dynamic> jsonObj = jsonDecode(_nfcData.content);
+        print('NFC _nfcData: $_nfcData');
+        print('NFC _nfcData.content: ${_nfcData.content}');
+        String content = _nfcData.content.substring(7);
+        print('NFC content: $content');
+        Map<String, dynamic> jsonObj = jsonDecode(content);
 
-        openPage(globals.scaffoldKey.currentContext, new SendPage(address: jsonObj["Address"], privateKey: jsonObj["Private"]));
+        openPage(globals.scaffoldKey.currentContext, new SendPage(address: globals.publicKey, privateKey: jsonObj["Private"]));
       });
     });
   }
