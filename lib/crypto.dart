@@ -15,6 +15,9 @@ import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:absinthe_socket/absinthe_socket.dart';
 import 'package:web3dart/src/utils/dartrandom.dart';
 import 'package:web3dart/conversions.dart';
+import 'package:bip39/bip39.dart' as bip39;
+import 'package:bip32/bip32.dart' as bip32;
+import 'package:hex/hex.dart';
 
 const String _ABI_EXTRACT =
     '[ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "approve", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_tokenContract", "type": "address" } ], "name": "withdrawAltcoinTokens", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "transferFrom", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_value", "type": "uint256" } ], "name": "burn", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_participant", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "adminClaimAirdrop", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_addresses", "type": "address[]" }, { "name": "_amount", "type": "uint256" } ], "name": "adminClaimAirdropMultiple", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "finishDistribution", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_tokensPerEth", "type": "uint256" } ], "name": "updateTokensPerEth", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "success", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [], "name": "getTokens", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [], "name": "minContribution", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "distributionFinished", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "tokenAddress", "type": "address" }, { "name": "who", "type": "address" } ], "name": "getTokenBalance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "tokensPerEth", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" } ], "name": "allowance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalDistributed", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "newOwner", "type": "address" } ], "name": "transferOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_from", "type": "address" }, { "indexed": true, "name": "_to", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" } ], "name": "Transfer", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_owner", "type": "address" }, { "indexed": true, "name": "_spender", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" } ], "name": "Approval", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" } ], "name": "Distr", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [], "name": "DistrFinished", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_owner", "type": "address" }, { "indexed": false, "name": "_amount", "type": "uint256" }, { "indexed": false, "name": "_balance", "type": "uint256" } ], "name": "Airdrop", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "_tokensPerEth", "type": "uint256" } ], "name": "TokensPerEthUpdated", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "burner", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Burn", "type": "event", "stateMutability": "view" } ]';
@@ -83,8 +86,11 @@ String cleanAddress(address) {
 Future initWallet() async {
   var pk = await getPrivateKey();
   if (pk == "" || pk == null) {
-    pk = await generatePrivateKey();
-    setPrivateKey(pk);
+    String mnemonic = generateMnemonic();
+    await setMnemonic(mnemonic);
+    pk = getPrivateKeyFromMnemonic(mnemonic);
+//    pk = await generatePrivateKey();
+//    setPrivateKey(pk);
 
     //Call funder
     var publicKey = await getPublickKey();
@@ -107,16 +113,40 @@ Future generatePrivateKey() async {
   return numbers.toHex(random.privateKey);
 }
 
+String generateMnemonic() {
+  return bip39.generateMnemonic();
+}
+
+
 void setPrivateKey(pk) async {
   //final prefs = await SharedPreferences.getInstance();
   //prefs.setString("pk", pk);
   await storage.write(key: "pk", value: pk);
 }
 
+Future<void> setMnemonic(mnemonic) async {
+  await storage.write(key: "mnemonic", value: mnemonic);
+}
+
+String getPrivateKeyFromMnemonic(mnemonic) {
+  String seed = bip39.mnemonicToSeedHex(mnemonic);
+  bip32.BIP32 root = bip32.BIP32.fromSeed(HEX.decode(seed));
+  bip32.BIP32 child = root.derivePath("m/44'/60'/0'/0/0");
+  String privateKey = HEX.encode(child.privateKey);
+  return privateKey;
+}
+
 Future getPrivateKey() async {
   //final prefs = await SharedPreferences.getInstance();
   //return prefs.getString('pk') ?? "";
-  return await storage.read(key: "pk");
+
+  String mnemonic = await storage.read(key: "mnemonic");
+  if (mnemonic == "" || mnemonic == null) {
+    return "";
+  }
+  String privateKey = getPrivateKeyFromMnemonic(mnemonic);
+
+  return privateKey;
 }
 
 Future getPublickKey() async {
@@ -228,14 +258,4 @@ Future<dynamic> getEntity() async {
         operation:
             "subscription { tokenTransfers(tokenContractAddressHash: \"0x415c11223bca1324f470cf72eac3046ea1e755a3\") { amount, fromAddressHash, toAddressHash }}"));
     notifier.observe(_categoryObserver);
-  }
-
-  String generateMnemonic() {
-    Random random = new Random.secure();
-    var list = MnemonicUtils.generateMnemonic(new DartRandom(random).nextBytes(32));
-
-    var seed = MnemonicUtils.generateMasterSeed(list, "");
-    var masterSeedHex = bytesToHex(seed);
-
-    return masterSeedHex;
   }
