@@ -137,6 +137,27 @@ Future setAssetID(value) async {
   await storage.write(key: "assetID", value: value);
 }
 
+Future getListAddress() async {
+  var id = await storage.read(key: "listAddress");
+  return id;
+}
+
+Future setListAddress(value) async {
+  await storage.write(key: "listAddress", value: value);
+}
+
+Future loadListAddress(assetId) async {
+  return await http.get(Uri.encodeFull("https://communities-qa.cln.network/api/v1/business/list?tokenAddress=" + assetId)).then((http.Response response) {
+    final int statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode > 400 || json == null) {
+      throw new Exception("Error while fetching data");
+    }
+    Map<String, dynamic> obj = json.decode(response.body);
+
+    return obj["data"]["listAddress"].toString();
+  });
+}
+
 Future<dynamic> getEntityCount() async {
   String url = "http://etheth653-dns-reg1.westeurope.cloudapp.azure.com:8540";
 

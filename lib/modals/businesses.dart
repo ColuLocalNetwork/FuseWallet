@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:fusewallet/crypto.dart';
 
 class Business {
   final String account;
@@ -14,11 +15,11 @@ class Business {
 
   factory Business.fromJson(Map<String, dynamic> json) {
     return Business(
-      account: json['account'],
-      address: json['address'],
-      description: json['description'],
-      id: json['id'],
-      image: json['image'],
+      account: json['name'], //json['account'],
+      address: json['name'], //json['address'],
+      description: json['name'], //json['description'],
+      id: json['name'], //json['id'],
+      image: json['name'], //json['image'],
       name: json['name']
     );
   }
@@ -43,11 +44,11 @@ class BusinessList {
 }
 
 Future<List<Business>> getBusinesses() async {
-  return http.get("https://wbackend-prod.fuse.io/api/entities/0x86a4f4fff3769a8c16d55ceb81594d481c513a3d").then((response) {
+  return http.get("https://communities-qa.cln.network/api/v1/businesses/" + await getListAddress()).then((response) {
   
     List<Business> l = new List();
     final dynamic responseJson = json.decode(response.body);
-    responseJson.forEach((f) => l.add(new Business.fromJson(f["data"])));
+    responseJson["data"].forEach((f) => l.add(new Business.fromJson(f)));
     return l;
 });
 }

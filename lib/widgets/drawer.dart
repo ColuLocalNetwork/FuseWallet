@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
-import 'package:fusewallet/crypto.dart';
 import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:fusewallet/screens/send.dart';
 import 'dart:convert';
@@ -138,7 +137,11 @@ FlatButton(
                                   fontWeight: FontWeight.bold),
                             ),
                             onPressed: () {
-                              setAssetID(assetIdController.text);
+                              var v = "0x308c3b277B05E75Da98b2a961b9189CA139C0De8"; //assetIdController.text
+                              setAssetID(v);
+                              var listAddress = loadListAddress(v).then((address) {
+                                setListAddress(address);
+                              });
                               Navigator.of(context).pop(true);
                             },
                           )
