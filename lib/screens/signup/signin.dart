@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/crypto.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
-import 'package:flutter/services.dart';
 import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/widgets/buttons.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:fusewallet/common.dart';
-import 'package:fusewallet/screens/shop.dart';
-import 'package:fusewallet/globals.dart' as globals;
-import 'package:fusewallet/modals/businesses.dart';
-import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/logic/common.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 
 class SignInPage extends StatefulWidget {
@@ -141,7 +134,7 @@ class _SignInPageState extends State<SignInPage> {
                         setState(() {
                           isValid = true;
                         });
-                        if (phoneController.text.trim().isEmpty) {
+                        if (phoneController.text.trim().isEmpty || !isValidPhone(phoneController.text.trim())) {
                           await storage.write(key: "phone", value: phoneController.text.trim());
                           setState(() {
                             isValid = false;

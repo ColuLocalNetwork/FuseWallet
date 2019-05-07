@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/crypto.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
-import 'package:flutter/services.dart';
 import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/widgets/buttons.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:fusewallet/common.dart';
-import 'package:fusewallet/screens/shop.dart';
-import 'package:fusewallet/globals.dart' as globals;
-import 'package:fusewallet/modals/businesses.dart';
-import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/logic/common.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.title}) : super(key: key);
@@ -111,6 +104,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'Email is required';
+                      }
+                      if (!isValidEmail(value.trim())) {
+                        return 'Please enter valid email';
                       }
                     },
                   ),

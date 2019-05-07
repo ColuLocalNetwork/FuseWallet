@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/crypto.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:fusewallet/common.dart';
+import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
+import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/screens/switch_community.dart';
 import 'dart:convert';
+
+import 'package:fusewallet/splash.dart';
 
 class DrawerWidget extends StatefulWidget {
   DrawerWidget({Key key, this.title}) : super(key: key);
@@ -20,7 +22,6 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-
   Future<void> startNFC() async {
     setState(() {
       _nfcData = NfcData();
@@ -40,7 +41,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     */
 
     FlutterNfcReader.read.listen((response) {
-
 //      showDialog(
 //                  context: context,
 //                  builder: (context) => AlertDialog(
@@ -54,7 +54,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         print('NFC content: $content');
         Map<String, dynamic> jsonObj = jsonDecode(content);
 
-        openPage(globals.scaffoldKey.currentContext, new SendPage(address: globals.publicKey, privateKey: jsonObj["Private"]));
+        openPage(
+            globals.scaffoldKey.currentContext,
+            new SendPage(
+                address: globals.publicKey, privateKey: jsonObj["Private"]));
       });
     });
   }
@@ -112,6 +115,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               // ...
             },
           ),
+          /*
           ListTile(
             title: Text('Change Asset ID'),
             onTap: () {
@@ -123,32 +127,43 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           TextField(
                             controller: assetIdController,
                           ),
-                          Row(children: <Widget>[
-FlatButton(
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(30.0)),
-                            color: Theme.of(context).accentColor,
-                            padding: EdgeInsets.all(12),
-                            child: Text(
-                              "Save",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              var v = "0x308c3b277B05E75Da98b2a961b9189CA139C0De8"; //assetIdController.text
-                              setAssetID(v);
-                              var listAddress = loadListAddress(v).then((address) {
-                                setListAddress(address);
-                              });
-                              Navigator.of(context).pop(true);
-                            },
+                          Row(
+                            children: <Widget>[
+                              FlatButton(
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(30.0)),
+                                color: Theme.of(context).accentColor,
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  "Save",
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  var v =
+                                      "0x308c3b277B05E75Da98b2a961b9189CA139C0De8"; //assetIdController.text
+                                  setAssetID(v);
+                                  var listAddress =
+                                      loadListAddress(v).then((address) {
+                                    setListAddress(address);
+                                  });
+                                  Navigator.of(context).pop(true);
+                                },
+                              )
+                            ],
                           )
-                          ],)
-                          
                         ]),
                       ));
+            },
+          ),
+          */
+          ListTile(
+            title: Text('Switch community'),
+            onTap: () {
+              openPage(context, SwitchCommunityPage());
             },
           ),
           ListTile(
@@ -161,6 +176,14 @@ FlatButton(
             title: Text('Stop NFC'),
             onTap: () {
               stopNFC();
+            },
+          ),
+          ListTile(
+            title: Text('Log out'),
+            onTap: () async {
+              await WalletLogic.setMnemonic("");
+              await storage.write(key: "phone", value: "");
+              openPageReplace(context, SplashScreen());
             },
           ),
         ],

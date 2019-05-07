@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
-import 'package:fusewallet/common.dart';
+import 'package:fusewallet/logic/common.dart';
 import 'package:flutter/services.dart';
 //import 'package:fusewallet/app.dart';
 import 'package:fusewallet/screens/wallet.dart';

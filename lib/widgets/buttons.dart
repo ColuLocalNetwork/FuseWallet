@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'dart:core';
 
 class PrimaryButton extends StatelessWidget {
-  PrimaryButton({this.onPressed, this.label});
+  PrimaryButton({this.onPressed, this.label, this.width, this.height});
   final GestureTapCallback onPressed;
   final String label;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
-      height: 50.0,
+      width: width ?? 200.0,
+      height: height ?? 50.0,
       decoration: BoxDecoration(
           gradient: LinearGradient(
             // Where the linear gradient begins and ends

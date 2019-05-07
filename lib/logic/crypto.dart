@@ -1,20 +1,15 @@
 import 'dart:async';
-import 'package:fusewallet/mnemonic.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'dart:convert';
 import 'package:web3dart/src/contracts/abi.dart';
 import 'package:web3dart/src/utils/amounts.dart';
 import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:absinthe_socket/absinthe_socket.dart';
-import 'package:web3dart/src/utils/dartrandom.dart';
-import 'package:web3dart/conversions.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:hex/hex.dart';
@@ -83,22 +78,6 @@ String cleanAddress(address) {
   return address;
 }
 
-Future initWallet() async {
-  var pk = await getPrivateKey();
-  if (pk == "" || pk == null) {
-    String mnemonic = generateMnemonic();
-    await setMnemonic(mnemonic);
-    pk = getPrivateKeyFromMnemonic(mnemonic);
-//    pk = await generatePrivateKey();
-//    setPrivateKey(pk);
-
-    //Call funder
-    var publicKey = await getPublickKey();
-    await callFunder(publicKey);
-  }
-  return pk;
-}
-
 Future callFunder(publicKey) async {
   return await http.post(Uri.encodeFull("https://funder-qa.fuse.io/api/balance/request/" + publicKey), body: "", headers: {
     "Content-Type": "application/json"
@@ -124,10 +103,6 @@ void setPrivateKey(pk) async {
   await storage.write(key: "pk", value: pk);
 }
 
-Future<void> setMnemonic(mnemonic) async {
-  await storage.write(key: "mnemonic", value: mnemonic);
-}
-
 String getPrivateKeyFromMnemonic(mnemonic) {
   String seed = bip39.mnemonicToSeedHex(mnemonic);
   bip32.BIP32 root = bip32.BIP32.fromSeed(HEX.decode(seed));
@@ -137,9 +112,6 @@ String getPrivateKeyFromMnemonic(mnemonic) {
 }
 
 Future getPrivateKey() async {
-  //final prefs = await SharedPreferences.getInstance();
-  //return prefs.getString('pk') ?? "";
-
   String mnemonic = await storage.read(key: "mnemonic");
   if (mnemonic == "" || mnemonic == null) {
     return "";
@@ -156,7 +128,7 @@ Future getPublickKey() async {
 }
 
 Future getAssetID() async {
-  var id = await storage.read(key: "assetID");
+  var id = ""; ///await storage.read(key: "assetID");
   if (id == null || id == "") {
     id = "0x415c11223bca1324f470cf72eac3046ea1e755a3";
   }

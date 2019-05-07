@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/crypto.dart';
+import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
 import 'package:fusewallet/globals.dart' as globals;
-import 'package:fusewallet/common.dart';
+import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/modals/transactions.dart';
-import 'dart:io';
-import 'dart:async';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key key, this.title}) : super(key: key);
@@ -54,7 +52,7 @@ class _WalletPageState extends State<WalletPage> {
   void initState() {
     super.initState();
 
-    initWallet().then((_privateKey) {
+    WalletLogic.init().then((_privateKey) {
       loadBalance();
       loadTransactions();
       initSocket((payload) {

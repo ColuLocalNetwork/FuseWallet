@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/crypto.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:fusewallet/logic/common.dart';
+import 'package:fusewallet/logic/wallet_logic.dart';
 import 'dart:core';
-import 'package:flutter/services.dart';
-import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/screens/wallet.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:fusewallet/common.dart';
-import 'package:fusewallet/screens/shop.dart';
-import 'package:fusewallet/globals.dart' as globals;
-import 'package:fusewallet/modals/businesses.dart';
-import 'package:fusewallet/screens/send.dart';
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:fusewallet/widgets/buttons.dart';
 
 class Backup2Page extends StatefulWidget {
   Backup2Page({Key key, this.title}) : super(key: key);
@@ -25,12 +17,29 @@ class Backup2Page extends StatefulWidget {
 class _Backup2PageState extends State<Backup2Page> {
   GlobalKey<ScaffoldState> scaffoldState;
   bool isLoading = false;
-  final addressController = TextEditingController(text: "");
-  final amountController = TextEditingController(text: "");
+  List<String> words = new List<String>();
+  List<int> selectedWordsNum = new List<int>();
+  final _formKey = GlobalKey<FormState>();
+
+  List<int> getRandom3Numbers() {
+    var list = new List<int>.generate(12, (int index) => index + 1);
+    list.shuffle();
+    var _l = list.sublist(0, 3);
+    _l.sort();
+    return _l;
+  }
 
   @override
   void initState() {
     super.initState();
+
+    selectedWordsNum = getRandom3Numbers();
+
+    WalletLogic.getMnemonic().then((list) {
+      setState(() {
+        words = list.split(" ");
+      });
+    });
   }
 
   @override
@@ -57,7 +66,8 @@ class _Backup2PageState extends State<Backup2Page> {
                         fontWeight: FontWeight.bold)),
                 Padding(
                   padding: EdgeInsets.only(top: 12),
-                  child: Text("Please write down words 2, 4, 6",
+                  child: Text(
+                      "Please write down words " + selectedWordsNum.join(", "),
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 18,
@@ -68,95 +78,68 @@ class _Backup2PageState extends State<Backup2Page> {
           ),
           Padding(
             padding: EdgeInsets.only(top: 10, left: 30, right: 30),
-            child: 
-            Column(
-              children: <Widget>[
-                Padding(
-            padding: EdgeInsets.only(top: 10, left: 30, right: 30),
             child: Column(
               children: <Widget>[
-                TextFormField(
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Word 2',
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'First name is required';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Word 4',
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'First name is required';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Word 6',
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'First name is required';
-                      }
-                    },
-                  )
-              ],
-            ),
-          )
+                Padding(
+                  padding: EdgeInsets.only(top: 10, left: 30, right: 30),
+                  child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              labelText:
+                                  'Word ' + selectedWordsNum[0].toString(),
+                            ),
+                            validator: (String value) {
+                              if (words[selectedWordsNum[0]-1] != value) {
+                                return 'The word does not match';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              labelText:
+                                  'Word ' + selectedWordsNum[1].toString(),
+                            ),
+                            validator: (String value) {
+                              if (words[selectedWordsNum[1]-1] != value) {
+                                return 'The word does not match';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              labelText:
+                                  'Word ' + selectedWordsNum[2].toString(),
+                            ),
+                            validator: (String value) {
+                              if (words[selectedWordsNum[2]-1] != value) {
+                                return 'The word does not match';
+                              }
+                            },
+                          )
+                        ],
+                      )),
+                )
               ],
             ),
           ),
+          const SizedBox(height: 16.0),
           Center(
-                    child: Container(
-                      width: 200,
-                      height: 50.0,
-                      margin: EdgeInsets.only(top: 30, bottom: 25),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            // Where the linear gradient begins and ends
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            // Add one stop for each color. Stops should increase from 0 to 1
-                            //stops: [0.1, 0.5, 0.7, 0.9],
-                            colors: [
-                              // Colors are easy thanks to Flutter's Colors class.
-                              const Color(0xFF34d080),
-                              const Color(0xFFfae83e),
-                            ],
-                          ),
-                          borderRadius:
-                              new BorderRadius.all(new Radius.circular(30.0))),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => WalletPage()),
-                              );
-                            },
-                            child: Center(
-                              child: Text(
-                                "NEXT",
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            )),
-                      ),
-                    ),
-                  ),
+              child: PrimaryButton(
+            label: "NEXT",
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                openPageReplace(context, WalletPage());
+              }
+            },
+          )),
         ]));
   }
 

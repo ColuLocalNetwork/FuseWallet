@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:fusewallet/crypto.dart';
+import 'package:fusewallet/logic/crypto.dart';
 
 class Business {
   final String account;

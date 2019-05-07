@@ -1,12 +1,9 @@
-import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:fusewallet/globals.dart' as globals;
-
-import 'package:fusewallet/common.dart';
+import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/screens/signup/recovery.dart';
 import 'package:fusewallet/screens/signup/signin.dart';
+import 'package:fusewallet/logic/wallet_logic.dart';
+import 'package:fusewallet/screens/wallet.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -25,7 +22,13 @@ class _SplashScreenState extends State<SplashScreen> {
     Center(child: Image.asset('images/fuselogo3.png', width: 160)),
     Center(child: Image.asset('images/fuselogo3.png', width: 160))
   ];
-  logon() async {}
+  logon() async {
+    WalletLogic.init();
+
+    if (await WalletLogic.isLogged()) {
+      openPageReplace(context, WalletPage());
+    }
+  }
 
   @override
   void initState() {
