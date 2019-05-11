@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "714005083204",
+    "firebase_url": "https://fuse-wallet.firebaseio.com",
+    "project_id": "fuse-wallet",
+    "storage_bucket": "fuse-wallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714005083204:android:ff67d29924926e6f",
+        "android_client_info": {
+          "package_name": "com.creatix.fusewallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714005083204-pji6a82j3ee8p56ilds6hiimjkkk0ku0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO1f403W-MnMDM-LcCNKDJhG1oD0h4fbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714005083204-pji6a82j3ee8p56ilds6hiimjkkk0ku0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

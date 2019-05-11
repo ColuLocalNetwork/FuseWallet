@@ -32,10 +32,11 @@ class _SignInPageState extends State<SignInVerificationPage> {
   }
 
   void _signInWithPhoneNumber(String smsCode) async {
-     await FirebaseAuth.instance
-        .signInWithPhoneNumber(
-          verificationId: globals.verificationCode,
-          smsCode: smsCode)
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: globals.verificationCode,
+      smsCode: smsCode,
+    );
+     await FirebaseAuth.instance.signInWithCredential(credential)
         .then((FirebaseUser user) async {
           final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
           assert(user.uid == currentUser.uid);

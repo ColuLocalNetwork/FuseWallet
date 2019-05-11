@@ -34,12 +34,13 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<void> _sendCodeToPhoneNumber(phone) async {
-    final PhoneVerificationCompleted verificationCompleted = (FirebaseUser user) async {
+    final PhoneVerificationCompleted verificationCompleted = (AuthCredential user) async {
       print('Inside _sendCodeToPhoneNumber: signInWithPhoneNumber auto succeeded: $user');
       setState(() {
         isLoading = false;
       });
-      if (user.displayName != null) {
+      FirebaseUser _user = await FirebaseAuth.instance.currentUser();
+      if (_user.displayName != null) {
         openPage(context, new Backup1Page());
       } else {
         openPage(context, new SignUpPage());

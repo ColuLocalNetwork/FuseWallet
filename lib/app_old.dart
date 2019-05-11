@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/crypto.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+//import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
