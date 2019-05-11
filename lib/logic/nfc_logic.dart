@@ -1,11 +1,11 @@
 import 'dart:convert';
-//import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
+import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'dart:core';
 import 'package:flutter/services.dart';
-/*
+
 Future<void> startNFC() async {
   NfcData _nfcData;
 
@@ -46,4 +46,3 @@ Future<void> stopNFC() async {
     response.status = NFCStatus.error;
   }
 }
-*/

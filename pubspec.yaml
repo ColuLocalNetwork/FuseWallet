@@ -36,7 +36,7 @@ dependencies:
       ref: master
   country_code_picker: ^1.1.5
   firebase_auth: ^0.11.0
-#  local_auth: ^0.4.0+1
+  local_auth: ^0.4.0+1
   
 dev_dependencies:
   flutter_test:
