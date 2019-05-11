@@ -39,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
       setState(() {
         isLoading = false;
       });
-      if (user.displayName != null || !await WalletLogic.hasPrivateKey()) {
+      if (user.displayName != null) {
         openPage(context, new Backup1Page());
       } else {
         openPage(context, new SignUpPage());

@@ -30,7 +30,7 @@ class _Backup1PageState extends State<Backup1Page> {
   Future initWallet() async {
     isLoading = true;
 
-    _timer = new Timer(const Duration(milliseconds: 900), () {
+    //_timer = new Timer(const Duration(milliseconds: 900), () {
       setState(() async {
         await WalletLogic.init();
 
@@ -41,7 +41,7 @@ class _Backup1PageState extends State<Backup1Page> {
           });
         });
       });
-    });
+    //});
   }
 
   @override
