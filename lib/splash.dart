@@ -28,8 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
   logon() async {
     //WalletLogic.init();
 
-//await storage.deleteAll();
-
     if (await WalletLogic.isLogged()) {
       openPageReplace(context, WalletPage());
     } else {
