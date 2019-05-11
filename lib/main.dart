@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
           child: new MaterialApp(
               title: 'Fuse Wallet',
               theme: ThemeData(
-                fontFamily: 'Gotham',
+                //fontFamily: 'Gotham',
                 brightness: Brightness.light,
                 primaryColor: const Color(0xFF05283e),
                 accentColor: const Color(0xFFA8EB8C),
