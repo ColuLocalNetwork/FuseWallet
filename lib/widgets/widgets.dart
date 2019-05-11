@@ -1,0 +1,184 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:core';
+import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/logic/common.dart';
+import 'package:fusewallet/logic/wallet_logic.dart';
+import 'package:fusewallet/screens/buy.dart';
+import 'package:fusewallet/screens/receive.dart';
+import 'package:fusewallet/screens/send.dart';
+
+class PrimaryButton extends StatelessWidget {
+  PrimaryButton({this.onPressed, this.label, this.width, this.height, this.preload});
+  final GestureTapCallback onPressed;
+  final String label;
+  final double width;
+  final double height;
+  final bool preload;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width ?? 200.0,
+      height: height ?? 50.0,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            // Where the linear gradient begins and ends
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            // Add one stop for each color. Stops should increase from 0 to 1
+            //stops: [0.1, 0.5, 0.7, 0.9],
+            colors: [
+              // Colors are easy thanks to Flutter's Colors class.
+              const Color(0xFF34d080),
+              const Color(0xFFfae83e),
+            ],
+          ),
+          borderRadius: new BorderRadius.all(new Radius.circular(30.0))),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+            onTap: onPressed,
+            child: Center(
+              child: (preload == null || preload == false) ? Text(
+                label,
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700),
+              ) : Container(
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 3,valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                                        width: 21.0,
+                                        height: 21.0,
+                                        margin: EdgeInsets.only(
+                                            left: 28, right: 28),),
+            )),
+      ),
+    );
+  }
+}
+
+class TransparentButton extends StatelessWidget {
+  TransparentButton({this.onPressed, this.label, this.width, this.height});
+  final GestureTapCallback onPressed;
+  final String label;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Material(
+      child: new InkWell(
+        highlightColor: Colors.transparent,
+        onTap: onPressed,
+        child: new Container(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          child: Text(label,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500)),
+        ),
+      ),
+      color: Colors.transparent,
+    );
+  }
+}
+
+class Preloader extends StatelessWidget {
+  Preloader({this.width, this.height});
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: CircularProgressIndicator(
+            strokeWidth: 3,
+            valueColor: new AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor)),
+        width: width ?? 60.0,
+        height: height ?? 60.0,
+        margin: EdgeInsets.only(left: 28, right: 28),
+      ),
+    );
+  }
+}
+
+Widget bottomBar() {
+  return new Container(
+    padding: EdgeInsets.only(
+        top: 0.0, bottom: isIPhoneX() ? 16 : 0, right: 0.0, left: 0.0),
+    color: const Color(0xFFFFFFFF),
+    child: new Directionality(
+      textDirection: TextDirection.rtl,
+      child: new Row(
+        //crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          bottomBarItem("send.png", "Send", () {
+            openPage(globals.scaffoldKey.currentContext, new SendPage());
+          }),
+          bottomBarItem("buy.png", "Buy", () {
+            openPage(globals.scaffoldKey.currentContext, new BuyPage());
+          }),
+          bottomBarItem("recieve.png", "Receive", () {
+            openPage(globals.scaffoldKey.currentContext, new ReceivePage());
+          })
+        ],
+      ),
+    ),
+  );
+}
+
+Widget bottomBarItem(String img, String text, ontap) {
+  return new Material(
+    color: Colors.transparent,
+    child: new InkWell(
+      borderRadius: BorderRadius.all(new Radius.circular(30.0)),
+      child: new Container(
+        width: 100,
+        padding:
+            const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 0.0, left: 0.0),
+        child: new Column(
+          children: <Widget>[
+            Image.asset('images/' + img,
+                width: 28.0, color: const Color(0xFF979797)),
+            new Text(text,
+                style: new TextStyle(
+                    fontSize: 14.0, color: const Color(0xFF979797)))
+          ],
+        ),
+      ),
+      onTap: ontap,
+    ),
+  );
+}
+
+class CopyToClipboard extends StatelessWidget {
+  CopyToClipboard({this.scaffoldState});
+  final GlobalKey<ScaffoldState> scaffoldState;
+
+  @override
+  Widget build(BuildContext context) {
+    return new InkWell(
+      child: Text("Copy to clipboard",
+          style: TextStyle(
+              color: const Color(0xFF546c7c),
+              fontSize: 16,
+              fontWeight: FontWeight.w500)),
+      onTap: () async {
+        Clipboard.setData(
+            new ClipboardData(text: await WalletLogic.getMnemonic()));
+        scaffoldState.currentState.showSnackBar(new SnackBar(
+          content: new Text(
+            "Copied to Clipboard",
+            textAlign: TextAlign.center,
+          ),
+        ));
+      },
+    );
+  }
+}

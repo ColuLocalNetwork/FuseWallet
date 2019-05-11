@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fusewallet/logic/crypto.dart';
 
 class WalletLogic {
@@ -24,17 +25,20 @@ class WalletLogic {
 */
 
   static Future init() async {
-    var pk = await getPrivateKey();
-    if (pk == "" || pk == null) {
+    String privatekey = await getPrivateKey();
+    String mnemonic = await getMnemonic();
+    if (!await hasPrivateKey()) {
       String mnemonic = generateMnemonic();
       await setMnemonic(mnemonic);
-      pk = getPrivateKeyFromMnemonic(mnemonic);
+
+      privatekey = getPrivateKeyFromMnemonic(mnemonic);
+      setPrivateKey(privatekey);
 
       //Call funder
       var publicKey = await getPublickKey();
-      await callFunder(publicKey);
+      callFunder(publicKey);
     }
-    return pk;
+    return privatekey;
   }
 
   static Future<void> setMnemonic(mnemonic) async {
@@ -45,13 +49,31 @@ class WalletLogic {
     return await storage.read(key: "mnemonic");
   }
 
+  static hasPrivateKey() async {
+    String privatekey = await getPrivateKey();
+    String mnemonic = await getMnemonic();
+    if (privatekey == null || privatekey.isEmpty || mnemonic == null || mnemonic.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   static isLogged() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if (user == null || !await hasPrivateKey()) {
+      return false;
+    } else {
+      return true;
+    }
+
+    /*
     var phone = await storage.read(key: "phone") ?? "";
     if (phone.isEmpty) {
       return false;
     } else {
       return true;
     }
+    */
   }
 
 }

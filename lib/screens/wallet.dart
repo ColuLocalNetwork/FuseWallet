@@ -7,6 +7,7 @@ import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/modals/transactions.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key key, this.title}) : super(key: key);
@@ -20,6 +21,7 @@ class WalletPage extends StatefulWidget {
 class _WalletPageState extends State<WalletPage> {
   bool isLoading = true;
   List<Transaction> transactionsList = [];
+  String firstName = "";
 
   void loadBalance() {
     setState(() {
@@ -48,18 +50,27 @@ class _WalletPageState extends State<WalletPage> {
     });
   }
 
+  void loadLoggedUser() {
+    storage.read(key: "firstName").then((_firstName) {
+        setState(() {
+          firstName = _firstName;
+        });
+      });
+  }
+
   @override
   void initState() {
     super.initState();
 
-    WalletLogic.init().then((_privateKey) {
+    //WalletLogic.init().then((_privateKey) {
+      loadLoggedUser();
       loadBalance();
       loadTransactions();
       initSocket((payload) {
         loadBalance();
         loadTransactions();
       });
-    });
+    //});
   }
 
   @override
@@ -97,7 +108,11 @@ class _WalletPageState extends State<WalletPage> {
           elevation: 0.0,
         ),
         drawer: new DrawerWidget(),
-        body: ListView(
+        body: 
+        Column(
+          children: <Widget>[
+Expanded(
+  child: ListView(
           children: <Widget>[
             Container(
               height: 260.0,
@@ -121,12 +136,12 @@ class _WalletPageState extends State<WalletPage> {
                               text: 'Good evening',
                               style:
                                   TextStyle(fontSize: 42, color: Colors.white)),
-                          /*new TextSpan(
-                              text: ' Mark',
+                          new TextSpan(
+                              text: ' ' + firstName,
                               style: TextStyle(
                                   fontSize: 42,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold)),*/
+                                  fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
@@ -152,8 +167,8 @@ class _WalletPageState extends State<WalletPage> {
                               padding: EdgeInsets.only(
                                   left: 20.0,
                                   right: 20.0,
-                                  top: 1.0,
-                                  bottom: 1.0),
+                                  top: 6.0,
+                                  bottom: 2.0),
                               decoration: new BoxDecoration(
                                   border: new Border.all(
                                       color: Colors.white, width: 3.0),
@@ -222,6 +237,11 @@ class _WalletPageState extends State<WalletPage> {
             ),
             new TransactionsWidget(transactionsList)
           ],
-        ));
+        ),
+        
+),bottomBar()
+          ],
+        )
+        );
   }
 }

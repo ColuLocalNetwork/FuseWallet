@@ -4,6 +4,7 @@ import 'package:fusewallet/screens/signup/recovery.dart';
 import 'package:fusewallet/screens/signup/signin.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final int splashDuration = 2;
   final _controller = new PageController();
+  bool isLoading = true;
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.ease;
   final _kArrowColor = Colors.black.withOpacity(0.8);
@@ -23,10 +25,14 @@ class _SplashScreenState extends State<SplashScreen> {
     Center(child: Image.asset('images/fuselogo3.png', width: 160))
   ];
   logon() async {
-    WalletLogic.init();
+    //WalletLogic.init();
 
     if (await WalletLogic.isLogged()) {
       openPageReplace(context, WalletPage());
+    } else {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -72,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   //alignment: FractionalOffset(0.5, 0.5),
-                  child: Column(
+                  child: !isLoading ? Column(
                     children: <Widget>[
                       Expanded(
                         child: new Stack(
@@ -132,26 +138,18 @@ class _SplashScreenState extends State<SplashScreen> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 40),
-                              child: new InkWell(
-                                child: Text("Restore existing wallet",
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500)),
-                                onTap: () {
-                                  openPage(context, new RecoveryPage());
-                                },
-                              ),
-                            )
+                                padding: EdgeInsets.only(top: 30),
+                                child: TransparentButton(
+                                    label: "Restore existing wallet",
+                                    onPressed: () {
+                                      openPage(context, new RecoveryPage());
+                                    }))
                           ],
                         ),
                       )
+                      
                     ],
-                  )
-
-                  //Image.asset('images/fuselogo3.png')
-                  //CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                  ): Preloader()
                   ),
             ),
           ],

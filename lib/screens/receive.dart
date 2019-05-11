@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 import 'dart:core';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/globals.dart' as globals;
@@ -25,7 +26,7 @@ class _ReceivePageState extends State<ReceivePage> {
 
   @override
   Widget build(BuildContext _context) {
-    GlobalKey<ScaffoldState> scaffoldState;
+    final scaffoldState = new GlobalKey<ScaffoldState>();
 
     return new Scaffold(
         key: scaffoldState,
@@ -79,11 +80,9 @@ class _ReceivePageState extends State<ReceivePage> {
                   padding: EdgeInsets.only(top: 20),
                   child: Opacity(
                      opacity: 0.5,
-                     child: Text("Tap to copy",
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor, fontSize: 14)),
+                     child: Center(
+                       child: CopyToClipboard(scaffoldState: scaffoldState,),
+                     ) ,
                   ) ,
                 ),
                 

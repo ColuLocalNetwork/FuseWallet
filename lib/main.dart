@@ -16,21 +16,10 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
-  bool _isIPhoneX() {
-    return Platform.isIOS;
-    //if (Platform.isIOS && scaffoldKey.currentContext != null) {
-    //  var size = MediaQuery.of(scaffoldKey.currentContext).size;
-    //  if (size.height == 812.0 || size.width == 812.0) {
-    //    return true;
-    //  }
-    //}
-    //return false;
-  }
-
   Widget bottomBar() {
     return new Container(
       padding: EdgeInsets.only(
-          top: 0.0, bottom: _isIPhoneX() ? 16 : 0, right: 0.0, left: 0.0),
+          top: 0.0, bottom: isIPhoneX() ? 16 : 0, right: 0.0, left: 0.0),
       color: const Color(0xFFFFFFFF),
       child: new Directionality(
         textDirection: TextDirection.rtl,
@@ -95,6 +84,9 @@ class MyApp extends StatelessWidget {
                 textSelectionColor: Colors.black12,
                 cursorColor: const Color(0xFF05283e),
                 toggleableActiveColor: const Color(0xFF05283e),
+                textTheme: TextTheme(
+      body1: TextStyle(fontSize: 74.0),
+    ),
                 inputDecorationTheme: InputDecorationTheme(
                   border: const OutlineInputBorder(
                     borderSide: BorderSide(color: const Color(0xFF05283e)),
@@ -103,30 +95,32 @@ class MyApp extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Colors.black.withOpacity(0.1)),
-                        borderRadius: BorderRadius.all(Radius.circular(27.0))
+                        borderRadius: BorderRadius.all(Radius.circular(26.0))
                   ),
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: const Color(0xFF05283e)),
-                    borderRadius: BorderRadius.all(Radius.circular(27.0))
+                    borderRadius: BorderRadius.all(Radius.circular(26.0))
                   ),
                   errorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.all(Radius.circular(27.0))
+                    borderRadius: BorderRadius.all(Radius.circular(26.0))
                   ),
                   focusedErrorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.all(Radius.circular(27.0))
+                    borderRadius: BorderRadius.all(Radius.circular(26.0))
                   ),
-                  labelStyle: const TextStyle(
-                    color: const Color(0xFF05283e),
+                  /*
+                  hintStyle: const TextStyle(
+                    fontSize: 30
                   ),
+                  */
                   contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 30)
                 ),
               ),
               home: SplashScreen() //WalletPage(title: 'Fuse Wallet'),
               ),
         ),
-        //bottomBar()
+        //globals.showBottomBar ? bottomBar() : Divider()
       ],
     );
   }

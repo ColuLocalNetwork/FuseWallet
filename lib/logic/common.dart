@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 void openPage(context, page) {
@@ -41,3 +43,14 @@ bool isValidEmail(String em) {
   RegExp regExp = new RegExp(p);
   return regExp.hasMatch(em);
 }
+
+  bool isIPhoneX() {
+    return Platform.isIOS;
+    //if (Platform.isIOS && scaffoldKey.currentContext != null) {
+    //  var size = MediaQuery.of(scaffoldKey.currentContext).size;
+    //  if (size.height == 812.0 || size.width == 812.0) {
+    //    return true;
+    //  }
+    //}
+    //return false;
+  }

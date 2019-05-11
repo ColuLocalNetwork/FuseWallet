@@ -3,7 +3,7 @@ import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'dart:core';
 import 'package:fusewallet/screens/wallet.dart';
-import 'package:fusewallet/widgets/buttons.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 
 class Backup2Page extends StatefulWidget {
   Backup2Page({Key key, this.title}) : super(key: key);

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/wallet.dart';
-import 'package:fusewallet/widgets/buttons.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 
 class RecoveryPage extends StatefulWidget {
   RecoveryPage({Key key, this.title}) : super(key: key);

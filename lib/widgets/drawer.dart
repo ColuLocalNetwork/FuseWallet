@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
-import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
+//import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/screens/switch_community.dart';
 import 'dart:convert';
+//import 'package:local_auth/local_auth.dart';
 
 import 'package:fusewallet/splash.dart';
 
@@ -22,70 +24,9 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  Future<void> startNFC() async {
-    setState(() {
-      _nfcData = NfcData();
-      _nfcData.status = NFCStatus.reading;
-    });
-
-    print('NFC: Scan started');
-
-    print('NFC: Scan readed NFC tag');
-
-    /*
-    showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: Text("hello")
-                      ));
-    */
-
-    FlutterNfcReader.read.listen((response) {
-//      showDialog(
-//                  context: context,
-//                  builder: (context) => AlertDialog(
-//                        title: Text(response.content.substring(7))
-//                      ));
-      setState(() {
-        _nfcData = response;
-        print('NFC _nfcData: $_nfcData');
-        print('NFC _nfcData.content: ${_nfcData.content}');
-        String content = _nfcData.content.substring(7);
-        print('NFC content: $content');
-        Map<String, dynamic> jsonObj = jsonDecode(content);
-
-        openPage(
-            globals.scaffoldKey.currentContext,
-            new SendPage(
-                address: globals.publicKey, privateKey: jsonObj["Private"]));
-      });
-    });
-  }
-
-  Future<void> stopNFC() async {
-    NfcData response;
-
-    try {
-      print('NFC: Stop scan by user');
-      response = await FlutterNfcReader.stop;
-    } on PlatformException {
-      print('NFC: Stop scan exception');
-      response = NfcData(
-        id: '',
-        content: '',
-        error: 'NFC scan stop exception',
-        statusMapper: '',
-      );
-      response.status = NFCStatus.error;
-    }
-
-    setState(() {
-      _nfcData = response;
-    });
-  }
+ 
 
   final assetIdController = TextEditingController(text: "");
-  NfcData _nfcData;
 
   @override
   Widget build(BuildContext _context) {
@@ -102,6 +43,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: Theme.of(context).primaryColor,
             ),
           ),
+          /*
           ListTile(
             title: Text('Delete Account'),
             onTap: () {
@@ -115,7 +57,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               // ...
             },
           ),
-          /*
           ListTile(
             title: Text('Change Asset ID'),
             onTap: () {
@@ -166,6 +107,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               openPage(context, SwitchCommunityPage());
             },
           ),
+          /*
           ListTile(
             title: Text('Start NFC'),
             onTap: () {
@@ -178,11 +120,26 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               stopNFC();
             },
           ),
+          */
+
+          /*
+          ListTile(
+            title: Text('Enter fingerprint'),
+            onTap: () async {
+              var localAuth = LocalAuthentication();
+              bool didAuthenticate =
+                  await localAuth.authenticateWithBiometrics(
+                      localizedReason: 'Please authenticate to show account balance');
+            },
+          ),
+          */
+          
           ListTile(
             title: Text('Log out'),
             onTap: () async {
               await WalletLogic.setMnemonic("");
               await storage.write(key: "phone", value: "");
+              await FirebaseAuth.instance.signOut();
               openPageReplace(context, SplashScreen());
             },
           ),

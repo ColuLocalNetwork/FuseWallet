@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/crypto.dart';
+import 'package:fusewallet/logic/crypto.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:fusewallet/common.dart';
+import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/screens/receive.dart';
 import 'package:fusewallet/screens/send.dart';
@@ -69,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: const Color(0xFFFFFFFF),
                       tooltip: 'refresh',
                       onPressed: () {
+                        /*
                         initWallet();
 
                         getPublickKey().then((_publicKey) {
@@ -81,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                           });
                         });
+                        */
                       },
                     )),
           ],
@@ -152,7 +154,7 @@ class _MyDialogContentState extends State<transferPrompt> {
             setState(() {
               isLoading = true;
             });
-
+/*
             //sendAddress = "0x104602283d94236bcea2af119d2f37d21540068c";
             sendNIS(sendAddress, int.parse(myController.text), null).then((ret) {
               Navigator.of(context).pop();
@@ -166,6 +168,7 @@ class _MyDialogContentState extends State<transferPrompt> {
                 isLoading = false;
               });
             });
+            */
           },
         ),
       ],

@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
 import 'package:fusewallet/screens/signup/backup1.dart';
-import 'package:fusewallet/widgets/buttons.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 import 'package:fusewallet/logic/common.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -74,6 +75,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   TextFormField(
                     controller: firstNameController,
                     autofocus: true,
+                    style: const TextStyle(
+                              fontSize: 18
+                            ),
                     decoration: const InputDecoration(
                       labelText: 'First name',
                     ),
@@ -86,6 +90,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: 16.0),
                   TextFormField(
                     controller: lastNameController,
+                    style: const TextStyle(
+                              fontSize: 18
+                            ),
                     decoration: const InputDecoration(
                       labelText: 'Last name',
                     ),
@@ -98,6 +105,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: 16.0),
                   TextFormField(
                     controller: emailController,
+                    style: const TextStyle(
+                              fontSize: 18
+                            ),
                     decoration: const InputDecoration(
                       labelText: 'Email',
                     ),
@@ -117,6 +127,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       label: "NEXT",
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
+                          final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+                          UserUpdateInfo userInfo = new UserUpdateInfo();
+                          userInfo.displayName = firstNameController.text.trim();
+                          userInfo.photoUrl = lastNameController.text.trim();
+                          currentUser.updateProfile(userInfo);
+                          //currentUser.updateEmail(emailController.text.trim());
+
                           await storage.write(key: "firstName", value: firstNameController.text.trim());
                           await storage.write(key: "lastName", value: lastNameController.text.trim());
                           await storage.write(key: "email", value: emailController.text.trim());

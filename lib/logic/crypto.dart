@@ -26,6 +26,10 @@ Future getBalance(address) async {
   var httpClient = new Client();
   var ethClient = new Web3Client(_URL, httpClient);
   var privateKey = await getPrivateKey();
+
+  if (privateKey == null) {
+    return 0;
+  }
   var credentials = Credentials.fromPrivateKeyHex(privateKey);
   var contractABI = ContractABI.parseFromJSON(_ABI_EXTRACT, "cln");
   var contract = new DeployedContract(
@@ -100,7 +104,7 @@ String generateMnemonic() {
 void setPrivateKey(pk) async {
   //final prefs = await SharedPreferences.getInstance();
   //prefs.setString("pk", pk);
-  await storage.write(key: "pk", value: pk);
+  await storage.write(key: "privateKey", value: pk);
 }
 
 String getPrivateKeyFromMnemonic(mnemonic) {
@@ -112,23 +116,29 @@ String getPrivateKeyFromMnemonic(mnemonic) {
 }
 
 Future getPrivateKey() async {
+  /*
   String mnemonic = await storage.read(key: "mnemonic");
   if (mnemonic == "" || mnemonic == null) {
     return "";
   }
   String privateKey = getPrivateKeyFromMnemonic(mnemonic);
-
   return privateKey;
+  */
+  
+  return await storage.read(key: "privateKey");
 }
 
 Future getPublickKey() async {
   var privateKey = await getPrivateKey();
+  if (privateKey == null) {
+    return "";
+  }
   var credentials = Credentials.fromPrivateKeyHex(privateKey);
   return credentials.address.hex;
 }
 
 Future getAssetID() async {
-  var id = ""; ///await storage.read(key: "assetID");
+  var id = await storage.read(key: "assetID");
   if (id == null || id == "") {
     id = "0x415c11223bca1324f470cf72eac3046ea1e755a3";
   }
