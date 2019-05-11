@@ -53,7 +53,7 @@ class _WalletPageState extends State<WalletPage> {
   void loadLoggedUser() {
     storage.read(key: "firstName").then((_firstName) {
         setState(() {
-          firstName = _firstName;
+          firstName = _firstName ?? "";
         });
       });
   }

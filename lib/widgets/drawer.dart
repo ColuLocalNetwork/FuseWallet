@@ -137,8 +137,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             title: Text('Log out'),
             onTap: () async {
-              await WalletLogic.setMnemonic("");
-              await storage.write(key: "phone", value: "");
+              await storage.deleteAll();
               await FirebaseAuth.instance.signOut();
               openPageReplace(context, SplashScreen());
             },

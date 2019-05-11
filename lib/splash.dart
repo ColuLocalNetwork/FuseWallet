@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/common.dart';
+import 'package:fusewallet/logic/crypto.dart';
 import 'package:fusewallet/screens/signup/recovery.dart';
 import 'package:fusewallet/screens/signup/signin.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';

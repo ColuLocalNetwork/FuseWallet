@@ -52,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         fontWeight: FontWeight.bold)),
                 Padding(
                   padding: EdgeInsets.only(top: 12),
-                  child: Text("Text about siging in",
+                  child: Text("Enter your information, this will only be shared with your consent",
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 18,
