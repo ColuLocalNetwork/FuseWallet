@@ -76,7 +76,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
                         fontWeight: FontWeight.bold)),
                 Padding(
                   padding: EdgeInsets.only(top: 12),
-                  child: Text("Text about siging in verification",
+                  child: Text("Please enter the code your recieved:",
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 18,
