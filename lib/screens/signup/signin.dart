@@ -97,7 +97,7 @@ class _SignInPageState extends State<SignInPage> {
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 24,
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: FontWeight.w900)),
                 Padding(
                   padding: EdgeInsets.only(top: 12),
                   child: Text("Verify that you are a real person",
