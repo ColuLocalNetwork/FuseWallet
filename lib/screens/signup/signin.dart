@@ -39,12 +39,21 @@ class _SignInPageState extends State<SignInPage> {
       setState(() {
         isLoading = false;
       });
-      FirebaseUser _user = await FirebaseAuth.instance.currentUser();
-      if (_user.displayName != null) {
-        openPage(context, new Backup1Page());
-      } else {
-        openPage(context, new SignUpPage());
-      }
+
+      await FirebaseAuth.instance.signInWithCredential(user)
+        .then((FirebaseUser user) async {
+          final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+          assert(user.uid == currentUser.uid);
+
+          if (currentUser.displayName != null || !await WalletLogic.hasPrivateKey()) {
+            openPage(context, new Backup1Page());
+          } else {
+            openPage(context, new SignUpPage());
+          }
+          
+
+          print('signed in with phone number successful: user -> $user');
+        });
 
     };
 
