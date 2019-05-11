@@ -30,13 +30,13 @@ dependencies:
   absinthe_socket: ^0.0.2
   bip39: ^1.0.3
   bip32: ^1.0.5
-  flutter_nfc_reader:
-    git:
-      url: git://github.com/matteocrippa/flutter-nfc-reader.git
-      ref: master
+  # flutter_nfc_reader:
+  #   git:
+  #     url: git://github.com/matteocrippa/flutter-nfc-reader.git
+  #     ref: master
   country_code_picker: ^1.1.5
   firebase_auth: ^0.11.0
-#  local_auth: ^0.4.0+1
+  local_auth: ^0.4.0+1
   
 dev_dependencies:
   flutter_test:

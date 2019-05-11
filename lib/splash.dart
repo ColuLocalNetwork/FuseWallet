@@ -6,6 +6,7 @@ import 'package:fusewallet/screens/signup/signin.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
+import 'package:local_auth/local_auth.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -28,6 +29,11 @@ class _SplashScreenState extends State<SplashScreen> {
   logon() async {
     //WalletLogic.init();
 
+var localAuth = LocalAuthentication();
+bool didAuthenticate =
+    await localAuth.authenticateWithBiometrics(
+        localizedReason: 'Please authenticate to show account balance');
+        
     if (await WalletLogic.isLogged()) {
       openPageReplace(context, WalletPage());
     } else {
