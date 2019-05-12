@@ -29,18 +29,22 @@ class _SplashScreenState extends State<SplashScreen> {
   logon() async {
     //WalletLogic.init();
 
-    var localAuth = LocalAuthentication();
-bool didAuthenticate =
-    await localAuth.authenticateWithBiometrics(
-        localizedReason: 'Please authenticate to show account balance');
-
-    if (await WalletLogic.isLogged()) {
+    //var localAuth = LocalAuthentication();
+    //bool didAuthenticate =
+    //await localAuth.authenticateWithBiometrics(
+    //    localizedReason: 'Please authenticate to show account balance');
+    
+    WalletLogic.isLogged().then((isLogged) {
+          if (isLogged) {
       openPageReplace(context, WalletPage());
     } else {
       setState(() {
         isLoading = false;
       });
     }
+        });
+
+    
   }
 
   @override

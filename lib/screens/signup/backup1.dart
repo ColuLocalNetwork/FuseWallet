@@ -32,12 +32,12 @@ class _Backup1PageState extends State<Backup1Page> {
 
     _timer = new Timer(const Duration(milliseconds: 500), () {
       setState(() async {
-        await WalletLogic.init();
-
-        WalletLogic.getMnemonic().then((list) {
-          setState(() {
-            words = list.split(" ");
-            isLoading = false;
+        WalletLogic.init().then((list) {
+          WalletLogic.getMnemonic().then((list) {
+            setState(() {
+              words = list.split(" ");
+              isLoading = false;
+            });
           });
         });
       });
@@ -131,8 +131,9 @@ class _Backup1PageState extends State<Backup1Page> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    CopyToClipboard(scaffoldState: scaffoldState,)
-                                    ,
+                                    CopyToClipboard(
+                                      scaffoldState: scaffoldState,
+                                    ),
                                     const SizedBox(width: 4.0),
                                     Icon(
                                       Icons.content_copy,
@@ -157,17 +158,16 @@ class _Backup1PageState extends State<Backup1Page> {
                     )),
                     const SizedBox(height: 16.0),
                     TransparentButton(
-                                    label: "Skip",
-                                    onPressed: () {
-                                        openPageReplace(context, WalletPage());
-                                      }
-                                  )
+                        label: "Skip",
+                        onPressed: () {
+                          openPageReplace(context, WalletPage());
+                        })
                   ],
                 )
               : Padding(
-                child: Preloader(),
-                padding: EdgeInsets.only(top: 70),
-              ) 
+                  child: Preloader(),
+                  padding: EdgeInsets.only(top: 70),
+                )
         ]));
   }
 

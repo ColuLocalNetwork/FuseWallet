@@ -24,7 +24,7 @@ class _ReceivePageState extends State<ReceivePage> {
   void initState() {
     super.initState();
 
-    startNFC();
+    //startNFC();
   }
 
   @override

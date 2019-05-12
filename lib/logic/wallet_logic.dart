@@ -59,8 +59,9 @@ class WalletLogic {
   }
 
   static isLogged() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    if (user == null || !await hasPrivateKey()) {
+    //FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    //if (user == null || !await hasPrivateKey()) {
+    if (!await hasPrivateKey()) {
       return false;
     } else {
       return true;
