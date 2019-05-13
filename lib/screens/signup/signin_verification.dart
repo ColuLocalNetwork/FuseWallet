@@ -47,7 +47,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
           final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
           assert(user.uid == currentUser.uid);
 
-          if (currentUser.displayName != null || !await WalletLogic.hasPrivateKey()) {
+          if (currentUser.displayName != null) {
             openPage(context, new Backup1Page());
           } else {
             openPage(context, new SignUpPage());

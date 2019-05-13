@@ -5,6 +5,7 @@ import 'package:fusewallet/screens/shop.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 
 class BuyPage extends StatefulWidget {
   BuyPage({Key key, this.title}) : super(key: key);
@@ -24,10 +25,14 @@ class _BuyPageState extends State<BuyPage> {
   final amountController = TextEditingController(text: "");
 
   void loadBusinesses() {
+    setState(() {
+     isLoading = true; 
+    });
     getBusinesses().then((list) {
       setState(() {
         businessesList.clear();
         businessesList.addAll(list);
+        isLoading = false; 
       });
     });
   }
@@ -57,7 +62,10 @@ class _BuyPageState extends State<BuyPage> {
                     fontSize: 38,
                     fontWeight: FontWeight.bold)),
           ),
-          new BusinessesListView()
+          !isLoading ? new BusinessesListView() : Padding(
+                  child: Preloader(),
+                  padding: EdgeInsets.only(top: 70),
+                )
         ]));
   }
 }
