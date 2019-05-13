@@ -92,14 +92,21 @@ class BusinessesListViewState extends State<BusinessesListView> {
                       itemCount: businessesList.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          leading: ClipOval(
+                          leading:
+                          Container(width: 50,height: 50, decoration: BoxDecoration(
+                            color: Colors.black12
+                          ),child: ClipOval(
                               child: Image.network(
                             businessesList[index].image,
                             fit: BoxFit.cover,
                             width: 50.0,
                             height: 50.0,
-                          )),
-                          title: Text(businessesList[index].name),
+                          )),)
+                           ,
+                          title: Text(businessesList[index].name,style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900),),
                           subtitle: Text(businessesList[index].address),
                           onTap: () {
                             openPage(

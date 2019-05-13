@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fusewallet/logic/crypto.dart';
 
 class WalletLogic {
@@ -31,7 +32,10 @@ class WalletLogic {
       String mnemonic = generateMnemonic();
       await setMnemonic(mnemonic);
 
-      privatekey = getPrivateKeyFromMnemonic(mnemonic);
+      //privatekey = getPrivateKeyFromMnemonic(mnemonic);
+      privatekey = await compute(getPrivateKeyFromMnemonic, mnemonic);
+      
+      
       setPrivateKey(privatekey);
 
       //Call funder

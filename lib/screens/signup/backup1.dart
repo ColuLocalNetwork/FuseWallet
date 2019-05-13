@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fusewallet/logic/crypto.dart';
@@ -27,21 +28,32 @@ class _Backup1PageState extends State<Backup1Page> {
   List<String> words = new List<String>();
   Timer _timer;
 
+  static String initWalletCompute(str) {
+    WalletLogic.init().then((list) {
+      return "done";
+    });
+    return null;
+  }
+
   Future initWallet() async {
     isLoading = true;
 
-    _timer = new Timer(const Duration(milliseconds: 500), () {
-      setState(() async {
-        WalletLogic.init().then((list) {
+    //_timer = new Timer(const Duration(milliseconds: 500), () async {
+      //setState(() {
+        //String list = await compute(initWalletCompute, "");
+
+        await WalletLogic.init();
+        
+        //WalletLogic.init().then((list) {
           WalletLogic.getMnemonic().then((list) {
             setState(() {
               words = list.split(" ");
               isLoading = false;
             });
           });
-        });
-      });
-    });
+        //});
+      //});
+    //});
   }
 
   @override

@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
                 cursorColor: const Color(0xFF05283e),
                 toggleableActiveColor: const Color(0xFF05283e),
                 textTheme: TextTheme(
-      body1: TextStyle(fontSize: 74.0),
+      //body1: TextStyle(fontSize: 74.0),
     ),
                 inputDecorationTheme: InputDecorationTheme(
                   border: const OutlineInputBorder(

@@ -24,18 +24,24 @@ class _SignInPageState extends State<SignInVerificationPage> {
   GlobalKey<ScaffoldState> scaffoldState;
   bool isLoading = false;
   final verificationCodeController = TextEditingController(text: "");
-  bool isValid = true;
+  bool isValidVerificationCode = true;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
   }
 
-  void _signInWithPhoneNumber(String smsCode) async {
+  Future<bool> _signInWithPhoneNumber(String smsCode) async {
+    setState(() {
+      isLoading = true;
+    });
+
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: globals.verificationCode,
       smsCode: smsCode,
     );
+
      await FirebaseAuth.instance.signInWithCredential(credential)
         .then((FirebaseUser user) async {
           final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
@@ -47,10 +53,19 @@ class _SignInPageState extends State<SignInVerificationPage> {
             openPage(context, new SignUpPage());
           }
           
+          setState(() {
+            isLoading = false;
+          });
 
           print('signed in with phone number successful: user -> $user');
+        }).catchError((err) async {
+          isValidVerificationCode = false;
+          _formKey.currentState.validate();
+          setState(() {
+            isLoading = false;
+          });
         });
-
+      return true;
   }
   
   @override
@@ -93,6 +108,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
           Padding(
             padding: EdgeInsets.only(top: 10, left: 30, right: 30),
             child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -108,6 +124,9 @@ class _SignInPageState extends State<SignInVerificationPage> {
                       if (value.trim().isEmpty) {
                         return 'Verification code is required';
                       }
+                      if (!isValidVerificationCode) {
+                        return 'Wrong verification code';
+                      }
                     },
                   ),
                   const SizedBox(height: 16.0),
@@ -115,8 +134,12 @@ class _SignInPageState extends State<SignInVerificationPage> {
                     child: PrimaryButton(
                       label: "NEXT",
                       onPressed: () async {
-                        _signInWithPhoneNumber(verificationCodeController.text);
+                        isValidVerificationCode = true;
+                        if (_formKey.currentState.validate()) {
+                          _signInWithPhoneNumber(verificationCodeController.text);
+                        }
                       },
+                      preload: isLoading,
                     ),
                   )
                 ],

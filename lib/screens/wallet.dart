@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
@@ -50,12 +51,14 @@ class _WalletPageState extends State<WalletPage> {
     });
   }
 
-  void loadLoggedUser() {
-    storage.read(key: "firstName").then((_firstName) {
+  Future loadLoggedUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    var _firstName = user.displayName;
+    //storage.read(key: "firstName").then((_firstName) {
         setState(() {
           firstName = _firstName ?? "";
         });
-      });
+      //});
   }
 
   @override
@@ -167,7 +170,7 @@ Expanded(
                               padding: EdgeInsets.only(
                                   left: 20.0,
                                   right: 20.0,
-                                  top: 6.0,
+                                  top: 2.0,
                                   bottom: 2.0),
                               decoration: new BoxDecoration(
                                   border: new Border.all(

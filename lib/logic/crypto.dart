@@ -151,6 +151,9 @@ Future setAssetID(value) async {
 
 Future getListAddress() async {
   var id = await storage.read(key: "listAddress");
+  if (id == null || id == "") {
+    return "0xEE155aA808Fb1E480A8A481d64A31fCDA5af3E69";
+  }
   return id;
 }
 
@@ -159,7 +162,7 @@ Future setListAddress(value) async {
 }
 
 Future loadListAddress(assetId) async {
-  return await http.get(Uri.encodeFull("https://communities-qa.cln.network/api/v1/business/list?tokenAddress=" + assetId)).then((http.Response response) {
+  return await http.get(Uri.encodeFull("https://ropsten-qa.cln.network/api/v1/business/list?tokenAddress=" + assetId)).then((http.Response response) {
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
       throw new Exception("Error while fetching data");

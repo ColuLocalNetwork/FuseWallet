@@ -44,7 +44,8 @@ class BusinessList {
 }
 
 Future<List<Business>> getBusinesses() async {
-  return http.get("https://ropsten-qa.cln.network/api/v1/business/list?tokenAddress=" + await getListAddress()).then((response) {
+  var listAddress = await getListAddress();
+  return http.get("https://ropsten-qa.cln.network/api/v1/businesses/" + listAddress + "?withMetadata=true").then((response) {
   
     List<Business> l = new List();
     final dynamic responseJson = json.decode(response.body);
