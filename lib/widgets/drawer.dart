@@ -9,6 +9,7 @@ import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/screens/switch_community.dart';
+import 'package:fusewallet/screens/web.dart';
 import 'dart:convert';
 //import 'package:local_auth/local_auth.dart';
 
@@ -142,6 +143,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               openPageReplace(context, SplashScreen());
             },
           ),
+          ListTile(
+            title: Text('Web text'),
+            onTap: () {
+              openPage(context, WebPage());
+            },
+          )
         ],
       ),
     );
