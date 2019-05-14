@@ -100,8 +100,8 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                     child: PrimaryButton(
                       label: "SCAN QR CODE",
                       onPressed: () async {
-                        assetIdController.text = await BarcodeScanner.scan();
-                        saveAssetID(assetIdController.text);
+                        var assetId = await BarcodeScanner.scan();
+                        saveAssetID(assetId);
                       },
                       width: 300,
                     ),
@@ -158,8 +158,7 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                                             child: PrimaryButton(
                                               label: "SAVE",
                                               onPressed: () {
-                                                saveAssetID(
-                                                    assetIdController.text);
+                                                saveAssetID(assetIdController.text);
                                               },
                                               width: 250,
                                             ),
