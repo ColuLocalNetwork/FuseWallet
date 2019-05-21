@@ -10,6 +10,32 @@ import 'package:fusewallet/logic/common.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+final String injectScript =  ("""
+  var script1 = document.createElement('script');
+  script1.type='module';
+  script1.src = 'https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js';
+  console.log('script1 created');
+  script1.onload = function() {
+    console.log('script1 loaded'); 
+    var script2 = document.createElement('script');
+    script2.type='module';
+    script2.src = 'https://cdn.jsdelivr.net/gh/ColuLocalNetwork/hdwallet-provider@ab902221eb31c78d08aa1a7021aae1b539d71d7b/dist/hdwalletprovider.client.js';
+    console.log('script2 created');
+    script2.onload = function() {
+      console.log('script2 loaded');
+      const mnemonic = 'cinnamon tape method ceiling hurry organ air umbrella inject scene foil that';
+      let provider = new HDWalletProvider(mnemonic, 'https://rpc.fuse.io');
+      window.ethereum = provider;
+      window.web3 = new window.Web3(provider);
+      window.web3.eth.defaultAccount = provider.addresses[0];
+      window.chrome = {webstore: {}};
+      console.log('provider.addresses ' + provider.addresses);
+    };
+    document.body.appendChild(script2);
+  };
+  document.body.appendChild(script1);
+""");
+
 class WebPage extends StatefulWidget {
   WebPage({Key key, this.title}) : super(key: key);
 
@@ -40,11 +66,11 @@ class _WebPageState extends State<WebPage> {
         builder: (BuildContext context,
             AsyncSnapshot<WebViewController> controller) {
           if (controller.hasData) {
+
             return FloatingActionButton(
               onPressed: () async {
-                controller.data.evaluateJavascript("var script= document.createElement('script'); script.src = 'https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js'; document.head.appendChild(script);");
-                controller.data.evaluateJavascript("var web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.fuse.io'));");
-               
+//                TO LATE HERE:
+                controller.data.evaluateJavascript(injectScript);
               },
               child: const Icon(Icons.refresh),
             );
@@ -67,7 +93,10 @@ class _WebPageState extends State<WebPage> {
         body: WebView(
           initialUrl: 'https://communities-qa.cln.network',
           javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
+          onWebViewCreated: (WebViewController webViewController) async {
+//            NOT WORKING HERE:
+//            await webViewController.evaluateJavascript(injectScript);
+
             _webViewController.complete(webViewController);
           },
         ),
