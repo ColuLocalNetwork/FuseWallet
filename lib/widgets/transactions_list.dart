@@ -66,7 +66,7 @@ class _TransactionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var type = _transaction.to == globals.publicKey ? "Received" : "Sent";
-    var color = type == "Received" ? 0xFF71C84D : 0xFFFC6E4C;
+    var color = type == "Received" ? 0xFF71C84D : 0xFFfc6e4c;
     var img = type == "Received" ? "send.png" : "recieve.png";
     return Container(
         decoration: new BoxDecoration(

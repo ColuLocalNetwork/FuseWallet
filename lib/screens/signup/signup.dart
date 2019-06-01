@@ -30,28 +30,18 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        key: scaffoldState,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-          backgroundColor: Theme.of(context).canvasColor,
-        ),
-        backgroundColor: const Color(0xFFF8F8F8),
-        body: ListView(children: <Widget>[
+    return 
+    CustomScaffold(
+      title: "Sign up",
+      children: <Widget>[
+        
           Container(
             //color: Theme.of(context).primaryColor,
             padding: EdgeInsets.all(20.0),
             child: Column(
               children: <Widget>[
-                Text("Sign up",
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)),
                 Padding(
-                  padding: EdgeInsets.only(top: 12),
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
                   child: Text("Enter your information, this will only be shared with your consent",
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
@@ -149,6 +139,6 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           )
-        ]));
+      ]);
   }
 }

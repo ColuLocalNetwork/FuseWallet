@@ -44,28 +44,18 @@ class _Backup2PageState extends State<Backup2Page> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        key: scaffoldState,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-          backgroundColor: Theme.of(context).canvasColor,
-        ),
-        backgroundColor: const Color(0xFFF8F8F8),
-        body: ListView(children: <Widget>[
+    return 
+    CustomScaffold(
+      title: "Back up",
+      children: <Widget>[
+        
           Container(
             //color: Theme.of(context).primaryColor,
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
             child: Column(
               children: <Widget>[
-                Text("Back up",
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)),
                 Padding(
-                  padding: EdgeInsets.only(top: 12),
+                  padding: EdgeInsets.only(top: 0),
                   child: Text(
                       "Please write down words " + selectedWordsNum.join(", "),
                       style: TextStyle(
@@ -140,21 +130,8 @@ class _Backup2PageState extends State<Backup2Page> {
               }
             },
           )),
-        ]));
+        const SizedBox(height: 30.0),
+      ]);
   }
 
-  Widget wordWidget(word) {
-    return Expanded(
-      child: Center(
-        child: Padding(
-          child: Text(word,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700)),
-          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 0),
-        ),
-      ),
-    );
-  }
 }

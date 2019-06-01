@@ -85,10 +85,10 @@ class _WalletPageState extends State<WalletPage> {
         appBar: AppBar(
           title: InkWell(
             child: Image.asset(
-              'images/fuselogo2.png',
-              width: 34.0,
+              'images/fuselogo4.png',
+              width: 95.0,
               gaplessPlayback: true,
-              color: Theme.of(context).accentColor,
+              //color: Theme.of(context).accentColor,
             ),
             onTap:
                 () {}, //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5"); },
@@ -138,7 +138,7 @@ Expanded(
                           new TextSpan(
                               text: 'Good evening',
                               style:
-                                  TextStyle(fontSize: 42, color: Colors.white)),
+                                  TextStyle(fontSize: 42, color: Colors.white, fontWeight: FontWeight.w300)),
                           new TextSpan(
                               text: ' ' + firstName,
                               style: TextStyle(
@@ -174,7 +174,7 @@ Expanded(
                                   bottom: 2.0),
                               decoration: new BoxDecoration(
                                   border: new Border.all(
-                                      color: Colors.white, width: 3.0),
+                                      color: const Color(0xFFb4bdc4), width: 3.0),
                                   borderRadius: new BorderRadius.only(
                                     topLeft: new Radius.circular(0.0),
                                     topRight: new Radius.circular(30.0),
@@ -220,17 +220,17 @@ Expanded(
                         ),
                         new Container(
                           child: new FloatingActionButton(
-                              backgroundColor: Theme.of(context).accentColor,
+                              backgroundColor: const Color(0xFF031c2c),
                               elevation: 0,
                               child:
-                                  Image.asset('images/scan.png', width: 25.0),
+                                  Image.asset('images/scan.png', width: 25.0, color: Colors.white,),
                               onPressed: () async {
                                 openCameraScan(false);
                                 //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
                                 //getEntity();
                               }),
-                          width: 46.0,
-                          height: 46.0,
+                          width: 50.0,
+                          height: 50.0,
                         )
                       ],
                     ),

@@ -8,8 +8,50 @@ import 'package:fusewallet/screens/buy.dart';
 import 'package:fusewallet/screens/receive.dart';
 import 'package:fusewallet/screens/send.dart';
 
+class CustomScaffold extends StatelessWidget {
+  CustomScaffold({this.title, this.children, this.key});
+  final String title;
+  final List<Widget> children;
+  final Key key;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: key,
+      backgroundColor: Theme.of(context).canvasColor,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+//              title: Text("hello"),
+            expandedHeight: 100,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(title,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900)),
+              centerTitle: true,
+              collapseMode: CollapseMode.parallax,
+              //background: Container(
+              //color: Theme.of(context).canvasColor,
+              //),
+            ),
+            iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+            backgroundColor: Theme.of(context).canvasColor,
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(children),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class PrimaryButton extends StatelessWidget {
-  PrimaryButton({this.onPressed, this.label, this.width, this.height, this.preload});
+  PrimaryButton(
+      {this.onPressed, this.label, this.width, this.height, this.preload});
   final GestureTapCallback onPressed;
   final String label;
   final double width;
@@ -40,19 +82,23 @@ class PrimaryButton extends StatelessWidget {
         child: InkWell(
             onTap: onPressed,
             child: Center(
-              child: (preload == null || preload == false) ? Text(
-                label,
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
-              ) : Container(
-                                        child: CircularProgressIndicator(
-                                            strokeWidth: 3,valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                                        width: 21.0,
-                                        height: 21.0,
-                                        margin: EdgeInsets.only(
-                                            left: 28, right: 28),),
+              child: (preload == null || preload == false)
+                  ? Text(
+                      label,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    )
+                  : Container(
+                      child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).primaryColor)),
+                      width: 21.0,
+                      height: 21.0,
+                      margin: EdgeInsets.only(left: 28, right: 28),
+                    ),
             )),
       ),
     );
@@ -158,8 +204,9 @@ Widget bottomBarItem(String img, String text, ontap) {
 }
 
 class CopyToClipboard extends StatelessWidget {
-  CopyToClipboard({this.scaffoldState});
+  CopyToClipboard({this.scaffoldState, this.context});
   final GlobalKey<ScaffoldState> scaffoldState;
+  final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +219,7 @@ class CopyToClipboard extends StatelessWidget {
       onTap: () async {
         Clipboard.setData(
             new ClipboardData(text: await WalletLogic.getMnemonic()));
-        scaffoldState.currentState.showSnackBar(new SnackBar(
+        Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(
             "Copied to Clipboard",
             textAlign: TextAlign.center,

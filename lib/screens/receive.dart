@@ -31,31 +31,60 @@ class _ReceivePageState extends State<ReceivePage> {
   Widget build(BuildContext _context) {
     final scaffoldState = new GlobalKey<ScaffoldState>();
 
-    return new Scaffold(
-        key: scaffoldState,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-        ),
-        body: Column(
+    return 
+    Scaffold(
+      backgroundColor: Theme.of(context).canvasColor,
+      body: CustomScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        slivers: <Widget>[
+          SliverAppBar(
+//              title: Text("hello"),
+            expandedHeight: 100,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text("Receive",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900)),
+              centerTitle: true,
+              collapseMode: CollapseMode.parallax,
+              //background: Container(
+              //color: Theme.of(context).canvasColor,
+              //),
+            ),
+            iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+            backgroundColor: Theme.of(context).canvasColor,
+          ),
+          SliverFillRemaining(child:
+            Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              color: Theme.of(context).primaryColor,
-              padding: EdgeInsets.all(20.0),
-              child: Text("Receive",
-                  style: TextStyle(
-                      color: const Color(0xFFFFFFFF),
-                      fontSize: 38,
-                      fontWeight: FontWeight.bold)),
+            //color: Theme.of(context).primaryColor,
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 0),
+                  child: Text(
+                      "Scan the QR code to receive money",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal)),
+                )
+              ],
             ),
+          ),
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Center(
                   child: Container(
-                    padding: EdgeInsets.only(top: 50),
+                    padding: EdgeInsets.only(top: 0),
                     width: 220,
                     child: globals.publicKey != ""
                         ? new QrImage(
@@ -92,6 +121,10 @@ class _ReceivePageState extends State<ReceivePage> {
               ],
             )),
           ],
-        ));
+        )
+          ),
+        ],
+      ),
+    );
   }
 }
