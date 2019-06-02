@@ -70,28 +70,18 @@ class _SignInPageState extends State<SignInVerificationPage> {
   
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        key: scaffoldState,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-          backgroundColor: Theme.of(context).canvasColor,
-        ),
-        backgroundColor: const Color(0xFFF8F8F8),
-        body: ListView(children: <Widget>[
+    return 
+    CustomScaffold(
+      title: "Sign in",
+      children: <Widget>[
+        
           Container(
             //color: Theme.of(context).primaryColor,
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
             child: Column(
               children: <Widget>[
-                Text("Sign in",
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)),
                 Padding(
-                  padding: EdgeInsets.only(top: 12),
+                  padding: EdgeInsets.only(top: 0),
                   child: Text("Please enter the code your recieved:",
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
@@ -106,7 +96,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 10, left: 30, right: 30),
+            padding: EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 30),
             child: Form(
               key: _formKey,
               child: Column(
@@ -146,6 +136,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
               ),
             ),
           )
-        ]));
+        
+      ]);
   }
 }

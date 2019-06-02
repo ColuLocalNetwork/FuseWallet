@@ -28,28 +28,18 @@ class _RecoveryPageState extends State<RecoveryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        key: scaffoldState,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-          backgroundColor: Theme.of(context).canvasColor,
-        ),
-        backgroundColor: const Color(0xFFF8F8F8),
-        body: ListView(children: <Widget>[
+    return 
+    CustomScaffold(
+      title:"Recover your wallet",
+    children: <Widget>[
+      
           Container(
             //color: Theme.of(context).primaryColor,
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
             child: Column(
               children: <Widget>[
-                Text("Sign in with a recovery phrase",
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)),
                 Padding(
-                  padding: EdgeInsets.only(top: 12),
+                  padding: EdgeInsets.only(top: 0),
                   child: Text(
                       "This is a 12 word phrase you were given when you created your previous wallet",
                       textAlign: TextAlign.center,
@@ -96,21 +86,9 @@ class _RecoveryPageState extends State<RecoveryPage> {
               }
             },
           )),
-        ]));
+        
+    ]);
+
   }
 
-  Widget wordWidget(word) {
-    return Expanded(
-      child: Center(
-        child: Padding(
-          child: Text(word,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700)),
-          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 0),
-        ),
-      ),
-    );
-  }
 }

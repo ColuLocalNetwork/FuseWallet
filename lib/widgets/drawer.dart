@@ -8,7 +8,9 @@ import 'package:fusewallet/globals.dart' as globals;
 //import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/screens/switch_community.dart';
+import 'package:fusewallet/screens/web.dart';
 import 'dart:convert';
 //import 'package:local_auth/local_auth.dart';
 
@@ -27,6 +29,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
  
 
   final assetIdController = TextEditingController(text: "");
+  String userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseAuth.instance.currentUser().then((user) {
+      setState(() {
+       userName = user.displayName + " " + user.photoUrl;
+      });
+      });
+  }
 
   @override
   Widget build(BuildContext _context) {
@@ -35,10 +49,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text(
-              'Drawer Header',
-              style: TextStyle(color: const Color(0xFFFFFFFF)),
-            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 15),
+                  child: Image.asset('images/avatar.png', width: 70),
+                ),
+                
+                Text(
+              userName,
+              style: TextStyle(color: const Color(0xFFFFFFFF), fontSize: 18),
+            )
+              ],
+            ) ,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
             ),
@@ -102,11 +126,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           */
           ListTile(
-            title: Text('Switch community'),
+            title: Text('Switch community', style: TextStyle(fontSize: 18),),
             onTap: () {
               openPage(context, SwitchCommunityPage());
             },
           ),
+          Divider(),
+          ListTile(
+            title: Text('Back up wallet', style: TextStyle(fontSize: 18),),
+            onTap: () {
+              openPage(context, Backup1Page());
+            },
+          ),
+          Divider(),
           /*
           ListTile(
             title: Text('Start NFC'),
@@ -135,13 +167,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           */
           
           ListTile(
-            title: Text('Log out'),
+            title: Text('Log out', style: TextStyle(fontSize: 18),),
             onTap: () async {
               await storage.deleteAll();
               await FirebaseAuth.instance.signOut();
               openPageReplace(context, SplashScreen());
             },
           ),
+          Divider(),
+          /*
+          ListTile(
+            title: Text('Web text', style: TextStyle(fontSize: 18),),
+            onTap: () {
+              openPage(context, WebPage());
+            },
+          ),
+          Divider(),
+          */
         ],
       ),
     );

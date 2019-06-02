@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/logic/crypto.dart';
@@ -20,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.ease;
   final _kArrowColor = Colors.black.withOpacity(0.8);
+
   var _pages = <Widget>[
     Center(child: Image.asset('images/fuselogo3.png', width: 160)),
     Center(child: Image.asset('images/fuselogo3.png', width: 160)),
@@ -155,6 +158,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                     onPressed: () {
                                       openPage(context, new RecoveryPage());
                                     }))
+                                    
                           ],
                         ),
                       )
