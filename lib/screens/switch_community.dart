@@ -28,7 +28,7 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
   }
 
   void saveAssetID(v) {
-    var v = assetIdController.text;
+    //var v = assetIdController.text;
     setAssetID(v);
     var listAddress = loadListAddress(v).then((address) {
       setListAddress(address);

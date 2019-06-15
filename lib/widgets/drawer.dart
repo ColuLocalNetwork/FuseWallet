@@ -175,7 +175,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           Divider(),
-          /*
+          
           ListTile(
             title: Text('Web text', style: TextStyle(fontSize: 18),),
             onTap: () {
@@ -183,7 +183,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           Divider(),
-          */
+          
         ],
       ),
     );
