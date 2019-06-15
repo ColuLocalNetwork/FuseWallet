@@ -57,19 +57,19 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Row(children: <Widget>[
-                    Text("Switch community",
+                  Text("Switch community",
+                    textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 24,
                           fontWeight: FontWeight.bold))
-                  ],)
                   ,
                   Padding(
                     padding: EdgeInsets.only(top: 12),
                     child: Text(
-                        "You can switch to a new community by entering your Asset ID (available from the Fuse Studio) or scanning a QR code:",
+                        "You can switch to a new community by entering your Asset ID (available from the Fuse Studio) or scanning a QR code",
                         //textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontSize: 18,

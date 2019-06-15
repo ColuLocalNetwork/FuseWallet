@@ -127,8 +127,9 @@ Expanded(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 60.0),
+                  Expanded(child: Align(alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 0.0),
                     child: new RichText(
                       text: new TextSpan(
                         // Note: Styles for TextSpans must be explicitly defined.
@@ -136,7 +137,7 @@ Expanded(
                         style: Theme.of(context).textTheme.title,
                         children: <TextSpan>[
                           new TextSpan(
-                              text: 'Good evening',
+                              text: 'Welcome',
                               style:
                                   TextStyle(fontSize: 42, color: Colors.white, fontWeight: FontWeight.w300)),
                           new TextSpan(
@@ -148,9 +149,11 @@ Expanded(
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 15.0),
+                  ),))
+                  ,
+                  Align(alignment: Alignment.bottomLeft,
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 0.0),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       verticalDirection: VerticalDirection.up,
@@ -234,7 +237,7 @@ Expanded(
                         )
                       ],
                     ),
-                  ),
+                  ),),
                 ],
               ),
             ),

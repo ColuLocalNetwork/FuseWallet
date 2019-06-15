@@ -59,7 +59,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 
                 Text(
               userName,
-              style: TextStyle(color: const Color(0xFFFFFFFF), fontSize: 18),
+              style: TextStyle(color: const Color(0xFFFFFFFF), fontSize: 16),
             )
               ],
             ) ,
@@ -126,14 +126,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           */
           ListTile(
-            title: Text('Switch community', style: TextStyle(fontSize: 18),),
+            title: Text('Switch community', style: TextStyle(fontSize: 16),),
             onTap: () {
               openPage(context, SwitchCommunityPage());
             },
           ),
           Divider(),
           ListTile(
-            title: Text('Back up wallet', style: TextStyle(fontSize: 18),),
+            title: Text('Back up wallet', style: TextStyle(fontSize: 16),),
             onTap: () {
               openPage(context, Backup1Page());
             },
@@ -167,7 +167,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           */
           
           ListTile(
-            title: Text('Log out', style: TextStyle(fontSize: 18),),
+            title: Text('Log out', style: TextStyle(fontSize: 16),),
             onTap: () async {
               await storage.deleteAll();
               await FirebaseAuth.instance.signOut();
@@ -177,7 +177,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           Divider(),
           
           ListTile(
-            title: Text('Web text', style: TextStyle(fontSize: 18),),
+            title: Text('Web', style: TextStyle(fontSize: 16),),
             onTap: () {
               openPage(context, WebPage());
             },
