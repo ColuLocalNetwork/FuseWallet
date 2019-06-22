@@ -84,7 +84,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
                   padding: EdgeInsets.only(top: 0),
                   child: Text("Please enter the code your recieved:",
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).textTheme.body1.color,
                           fontSize: 18,
                           fontWeight: FontWeight.normal)),
                 ),

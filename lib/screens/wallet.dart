@@ -85,7 +85,7 @@ class _WalletPageState extends State<WalletPage> {
         appBar: AppBar(
           title: InkWell(
             child: Image.asset(
-              'images/fuselogo4.png',
+              'images/' + globals.walletLogo,
               width: 95.0,
               gaplessPlayback: true,
               //color: Theme.of(context).accentColor,

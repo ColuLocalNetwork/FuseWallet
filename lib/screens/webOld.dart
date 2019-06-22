@@ -9,8 +9,7 @@ import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-//import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 String injectScript = "";
 
@@ -28,16 +27,15 @@ class _WebPageState extends State<WebPage> {
   bool isLoading = false;
   final assetIdController = TextEditingController(text: "");
   bool isValid = true;
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
-
-
-
+  static Completer<WebViewController> _webViewController =
+      Completer<WebViewController>();
+      
   Future getInjectString() async {
     String mnemonic = await WalletLogic.getMnemonic();
     String userName = "test";
     FirebaseAuth.instance.currentUser().then((user) {
       setState(() {
-        userName = user.displayName + " " + user.photoUrl;
+       userName = user.displayName + " " + user.photoUrl;
       });
     });
 
@@ -54,9 +52,7 @@ class _WebPageState extends State<WebPage> {
     console.log('script2 created');
     script2.onload = function() {
       console.log('script2 loaded');
-      const mnemonic = '""" +
-        mnemonic +
-        """';
+      const mnemonic = '""" + mnemonic + """';
       let provider = new HDWalletProvider(mnemonic, 'https://rpc.fuse.io');
       provider.networkVersion = '121';
       window.ethereum = provider;
@@ -77,9 +73,7 @@ class _WebPageState extends State<WebPage> {
             box.public.get('name').then(nickname => {
               console.log('before: ' + nickname);
               console.log('replacing the random num');
-              box.public.set('name', '""" +
-        userName +
-        """').then(() => {
+              box.public.set('name', '""" + userName + """').then(() => {
                 box.public.get('name').then(nickname => {
                   console.log('after: ' + nickname);
                 });
@@ -99,41 +93,63 @@ document.head.appendChild(script1);
   @override
   Future initState() {
     super.initState();
+    
+    
 
-    flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      getInjectString().then((str) {
-        flutterWebviewPlugin.evalJavascript(str);
-      });
-    });
+    
   }
 
-  Widget favoriteButton() {
-    return FloatingActionButton(
+    Widget favoriteButton() {
+    return FutureBuilder<WebViewController>(
+        future: _webViewController.future,
+        builder: (BuildContext context,
+            AsyncSnapshot<WebViewController> controller) {
+          if (controller.hasData) {
+
+            return FloatingActionButton(
               onPressed: () async {
 //                TO LATE HERE:
-                 flutterWebviewPlugin.evalJavascript(injectScript);
+                controller.data.evaluateJavascript(injectScript);
               },
               child: const Icon(Icons.refresh),
             );
-   
+          }
+          return Container();
+        });
+    }
+
+    void _handleLoad(String value) {
+    getInjectString().then((str) {
+      _controller.evaluateJavascript(str);
+      //injectScript = str;
+    });
   }
+
+  WebViewController _controller;
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      key: scaffoldState,
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        backgroundColor: Theme.of(context).canvasColor,
-      ),
-      backgroundColor: const Color(0xFFF8F8F8),
-      body: new WebviewScaffold(
-        url: "https://communities-qa.cln.network",
-        withJavascript: true,
-      ),
-      floatingActionButton: favoriteButton(),
-    );
+        key: scaffoldState,
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0.0,
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+          backgroundColor: Theme.of(context).canvasColor,
+        ),
+        backgroundColor: const Color(0xFFF8F8F8),
+        body: WebView(
+          initialUrl: 'https://communities-qa.cln.network',
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (WebViewController webViewController) {
+            _controller = webViewController;
+          },
+          onPageFinished: _handleLoad,
+          //onWebViewCreated: (WebViewController webViewController) async {
+          //  _webViewController.complete(webViewController);
+          //},
+        ),
+        //floatingActionButton: favoriteButton(),
+        );
   }
 }

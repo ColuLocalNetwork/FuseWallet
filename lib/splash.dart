@@ -86,8 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       //stops: [0.1, 0.5, 0.7, 0.9],
                       colors: [
                         // Colors are easy thanks to Flutter's Colors class.
-                        const Color(0xFF34d080),
-                        const Color(0xFFfae83e),
+                        Theme.of(context).primaryColorLight,
+                        Theme.of(context).primaryColorDark,
                       ],
                     ),
                   ),
