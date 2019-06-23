@@ -14,7 +14,7 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:hex/hex.dart';
 
-const DEFAULT_COMMUNITY = '0x00e6ce94dA62c53F4798ad67e551df6FCF97EAA8';
+const DEFAULT_COMMUNITY = '0xF846053684960eBF35aEa6Dc4F9317ebb2F7bF84';
 
 const API_ROOT = 'https://ropsten-qa.cln.network/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fuse.io/api?';
@@ -186,6 +186,13 @@ Future getCommunity(communityAddress) async {
     Map<String, dynamic> obj = json.decode(response.body);
 
     return obj["data"];
+  });
+}
+
+Future intializeCommunity(communityAddress) async {
+  setCommunityAddress(communityAddress);
+  getCommunity(communityAddress).then((community) {
+    setTokenAddress(community['homeTokenAddress']);
   });
 }
 

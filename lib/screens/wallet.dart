@@ -24,6 +24,11 @@ class _WalletPageState extends State<WalletPage> {
   List<Transaction> transactionsList = [];
   String firstName = "";
 
+  void loadCommunity() async {
+    var communityAddress = await getCommunityAddress();
+    await intializeCommunity(communityAddress);
+  }
+
   void loadBalance() {
     setState(() {
       isLoading = true;
@@ -71,6 +76,7 @@ class _WalletPageState extends State<WalletPage> {
 
     //WalletLogic.init().then((_privateKey) {
       loadLoggedUser();
+      loadCommunity();
       loadBalance();
       loadTransactions();
       initSocket((payload) {
