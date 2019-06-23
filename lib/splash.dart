@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/common.dart';
@@ -9,6 +10,8 @@ import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:flutter_beacon/flutter_beacon.dart';
+import 'package:beacon_broadcast/beacon_broadcast.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.ease;
   final _kArrowColor = Colors.black.withOpacity(0.8);
+  bool isOpen = false;
 
   var _pages = <Widget>[
     Center(child: Image.asset('images/fuselogo3.png', width: 160)),
@@ -36,18 +40,79 @@ class _SplashScreenState extends State<SplashScreen> {
     //bool didAuthenticate =
     //await localAuth.authenticateWithBiometrics(
     //    localizedReason: 'Please authenticate to show account balance');
-    
-    WalletLogic.isLogged().then((isLogged) {
-          if (isLogged) {
-      openPageReplace(context, WalletPage());
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-    }
-        });
 
-    
+    WalletLogic.isLogged().then((isLogged) {
+      if (isLogged) {
+        openPageReplace(context, WalletPage());
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
+
+    getPublickKey().then((_publicKey) {
+      BeaconBroadcast beaconBroadcast = BeaconBroadcast();
+      beaconBroadcast
+          .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
+          .setMajorId(1)
+          .setMinorId(100)
+          .start();
+    });
+
+    await flutterBeacon.initializeScanning;
+    final regions = <Region>[];
+
+    if (Platform.isIOS) {
+      regions.add(Region(
+          identifier: 'Apple Airlocate',
+          proximityUUID: 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0'));
+    } else {
+      // android platform, it can ranging out of beacon that filter all of Proximity UUID
+      regions.add(Region(identifier: 'com.beacon'));
+    }
+
+    flutterBeacon.ranging(regions).listen((RangingResult result) {
+      if (!isOpen &&
+          result.beacons.length > 0 &&
+          result.beacons.first.proximityUUID ==
+              "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0") {
+        isOpen = true;
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text("Send money to eli?"),
+                  content: Column(children: <Widget>[
+                    TextField(
+                        //controller: assetIdController,
+                        ),
+                    Row(
+                      children: <Widget>[
+                        FlatButton(
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          color: Theme.of(context).accentColor,
+                          padding: EdgeInsets.all(12),
+                          child: Text(
+                            "Send",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            //isOpen = false;
+                          },
+                        )
+                      ],
+                    )
+                  ]),
+                ));
+      }
+      print(result);
+      // result contains a region and list of beacons found
+      // list can be empty if no matching beacons were found in range
+    });
   }
 
   @override
@@ -92,80 +157,85 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   //alignment: FractionalOffset(0.5, 0.5),
-                  child: !isLoading ? Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: new Stack(
+                  child: !isLoading
+                      ? Column(
                           children: <Widget>[
-                            new PageView.builder(
-                              physics: new AlwaysScrollableScrollPhysics(),
-                              controller: _controller,
-                              itemCount: _pages.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return _pages[index % _pages.length];
-                              },
-                            ),
-                            new Positioned(
-                              bottom: 0.0,
-                              left: 0.0,
-                              right: 0.0,
-                              child: new Container(
-                                //color: Colors.grey[800].withOpacity(0.5),
-                                padding: const EdgeInsets.all(20.0),
-                                child: new Center(
-                                  child: new DotsIndicator(
+                            Expanded(
+                              child: new Stack(
+                                children: <Widget>[
+                                  new PageView.builder(
+                                    physics:
+                                        new AlwaysScrollableScrollPhysics(),
                                     controller: _controller,
                                     itemCount: _pages.length,
-                                    onPageSelected: (int page) {
-                                      gotoPage(page);
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return _pages[index % _pages.length];
                                     },
                                   ),
-                                ),
+                                  new Positioned(
+                                    bottom: 0.0,
+                                    left: 0.0,
+                                    right: 0.0,
+                                    child: new Container(
+                                      //color: Colors.grey[800].withOpacity(0.5),
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: new Center(
+                                        child: new DotsIndicator(
+                                          controller: _controller,
+                                          itemCount: _pages.length,
+                                          onPageSelected: (int page) {
+                                            gotoPage(page);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 180,
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 20),
-                              child: FlatButton(
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(30.0)),
-                                color: Theme.of(context).primaryColor,
-                                padding: EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 70, right: 70),
-                                child: Text(
-                                  "Create a new wallet",
-                                  style: TextStyle(
-                                      color: const Color(0xFFfae83e),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                onPressed: () {
-                                  openPage(context, new SignInPage());
-                                },
+                            SizedBox(
+                              height: 180,
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: FlatButton(
+                                      shape: new RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(30.0)),
+                                      color: Theme.of(context).primaryColor,
+                                      padding: EdgeInsets.only(
+                                          top: 20,
+                                          bottom: 20,
+                                          left: 70,
+                                          right: 70),
+                                      child: Text(
+                                        "Create a new wallet",
+                                        style: TextStyle(
+                                            color: const Color(0xFFfae83e),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      onPressed: () {
+                                        openPage(context, new SignInPage());
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(top: 30),
+                                      child: TransparentButton(
+                                          label: "Restore existing wallet",
+                                          onPressed: () {
+                                            openPage(
+                                                context, new RecoveryPage());
+                                          }))
+                                ],
                               ),
-                            ),
-                            Padding(
-                                padding: EdgeInsets.only(top: 30),
-                                child: TransparentButton(
-                                    label: "Restore existing wallet",
-                                    onPressed: () {
-                                      openPage(context, new RecoveryPage());
-                                    }))
-                                    
+                            )
                           ],
-                        ),
-                      )
-                      
-                    ],
-                  ): Preloader()
-                  ),
+                        )
+                      : Preloader()),
             ),
           ],
         )));

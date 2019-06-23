@@ -8,7 +8,7 @@ import 'package:fusewallet/screens/receive.dart';
 import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/screens/buy.dart';
 import 'package:fusewallet/splash.dart';
-import 'package:fusewallet/themes/roost.dart';
+import 'package:fusewallet/themes/fuse.dart';
 import 'globals.dart' as globals;
 import 'dart:io';
 
