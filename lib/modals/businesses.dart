@@ -15,11 +15,11 @@ class Business {
 
   factory Business.fromJson(Map<String, dynamic> json) {
     return Business(
-      account: json['name'], //json['account'],
-      address: json['name'], //json['address'],
-      description: json['name'], //json['description'],
-      id: json['name'], //json['id'],
-      image: json['name'], //json['image'],
+      account: json['account'], //json['account'],
+      address: json['metadata']["address"], //json['address'],
+      description: json['metadata']['description'], //json['description'],
+      id: json['metadata']['_id'], //json['id'],
+      image: json['metadata']['image'], //json['image'],
       name: json['name']
     );
   }
