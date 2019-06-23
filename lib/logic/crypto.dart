@@ -189,6 +189,13 @@ Future getCommunity(communityAddress) async {
   });
 }
 
+Future intializeCommunity(communityAddress) async {
+  setCommunityAddress(communityAddress);
+  getCommunity(communityAddress).then((community) {
+    setTokenAddress(community['homeTokenAddress']);
+  });
+}
+
 Future setCommunity(community) async {
   await storage.write(key: "tokenAddress", value: community.homeTokenAddress);
 }
