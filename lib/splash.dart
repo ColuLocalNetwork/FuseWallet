@@ -109,7 +109,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ]),
                 ));
       }
-      print(result);
+      //print(result);
       // result contains a region and list of beacons found
       // list can be empty if no matching beacons were found in range
     });
