@@ -10,8 +10,8 @@ import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter_beacon/flutter_beacon.dart';
-import 'package:beacon_broadcast/beacon_broadcast.dart';
+//import 'package:flutter_beacon/flutter_beacon.dart';
+//import 'package:beacon_broadcast/beacon_broadcast.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -51,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
 
+/*
     getPublickKey().then((_publicKey) {
       BeaconBroadcast beaconBroadcast = BeaconBroadcast();
       beaconBroadcast
@@ -113,6 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // result contains a region and list of beacons found
       // list can be empty if no matching beacons were found in range
     });
+    */
   }
 
   @override
