@@ -27,11 +27,10 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
     super.initState();
   }
 
-  void saveAssetID(v) {
-    //var v = assetIdController.text;
-    setAssetID(v);
-    var listAddress = loadListAddress(v).then((address) {
-      setListAddress(address);
+  void saveCommunityAddress(communityAddress) {
+    setCommunityAddress(communityAddress);
+    getCommunity(communityAddress).then((community) {
+      setTokenAddress(community['homeTokenAddress']);
     });
     Navigator.of(context).pop(true);
     Navigator.of(context).pop(true);
@@ -101,7 +100,7 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                       label: "SCAN QR CODE",
                       onPressed: () async {
                         var assetId = await BarcodeScanner.scan();
-                        saveAssetID(assetId);
+                        saveCommunityAddress(assetId);
                       },
                       width: 300,
                     ),
@@ -135,12 +134,12 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                   const SizedBox(height: 22.0),
                   Center(
                     child: PrimaryButton(
-                      label: "ENTER ASSET ID",
+                      label: "ENTER COMMUNITY ADDRESS",
                       onPressed: () async {
                         showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                                  title: Text("Asset ID",
+                                  title: Text("Community Address",
                                       style: TextStyle(
                                           color: Theme.of(context).primaryColor,
                                           fontSize: 24,
@@ -158,7 +157,7 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                                             child: PrimaryButton(
                                               label: "SAVE",
                                               onPressed: () {
-                                                saveAssetID(assetIdController.text);
+                                                saveCommunityAddress(assetIdController.text);
                                               },
                                               width: 250,
                                             ),

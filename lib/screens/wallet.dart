@@ -30,11 +30,15 @@ class _WalletPageState extends State<WalletPage> {
     });
 
     getPublickKey().then((_publicKey) {
-      globals.publicKey = _publicKey;
-      getBalance(_publicKey).then((response) {
-        setState(() {
-          isLoading = false;
-          globals.balance = response.toString();
+      getTokenAddress().then((tokenAddress) {
+        globals.publicKey = _publicKey;
+        print('my address: ' + _publicKey);
+        print(tokenAddress);
+        getBalance(_publicKey, tokenAddress).then((response) {
+          setState(() {
+            isLoading = false;
+            globals.balance = response.toString();
+          });
         });
       });
     });
