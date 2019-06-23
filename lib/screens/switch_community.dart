@@ -28,10 +28,7 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
   }
 
   void saveCommunityAddress(communityAddress) {
-    setCommunityAddress(communityAddress);
-    getCommunity(communityAddress).then((community) {
-      setTokenAddress(community['homeTokenAddress']);
-    });
+    intializeCommunity(communityAddress);
     Navigator.of(context).pop(true);
     Navigator.of(context).pop(true);
   }
