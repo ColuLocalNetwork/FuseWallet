@@ -19,7 +19,7 @@ class Business {
       address: json['metadata']["address"], //json['address'],
       description: json['metadata']['description'], //json['description'],
       id: json['metadata']['_id'], //json['id'],
-      image: json['metadata']['image'], //json['image'],
+      image: json['image'], //json['image'],
       name: json['name']
     );
   }
