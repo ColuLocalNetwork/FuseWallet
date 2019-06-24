@@ -16,11 +16,11 @@ class Business {
   factory Business.fromJson(Map<String, dynamic> json) {
     return Business(
       account: json['account'], //json['account'],
-      address: json['metadata']["address"], //json['address'],
-      description: json['metadata']['description'], //json['description'],
-      id: json['metadata']['_id'], //json['id'],
-      image: json['image'], //json['image'],
-      name: json['name']
+      address: json['metadata'] != null ? json['metadata']['address'] : "", //json['address'],
+      description: json['metadata'] != null ? json['metadata']['description'] : "", //json['description'],
+      id: json['_id'], //json['id'],
+      image: json['image'] ?? 'https://cdn3.iconfinder.com/data/icons/abstract-1/512/no_image-512.png', //json['image'],
+      name: json['name'] ?? ""
     );
   }
 }
@@ -45,13 +45,12 @@ class BusinessList {
 
 Future<List<Business>> getBusinesses() async {
   var communityAddress = await getCommunityAddress();
-  // var listAddress = await getListAddress();
-  return http.get("https://ropsten-qa.cln.network/api/v1/entities/" + communityAddress + "?type=business&withMetadata=true").then((response) {
-  
-    List<Business> l = new List();
+  print('Fetching businesses for commnuity: $communityAddress');
+  return http.get(API_ROOT + "entities/" + communityAddress + "?type=business&withMetadata=true").then((response) {
+    List<Business> businessList = new List();
     final dynamic responseJson = json.decode(response.body);
-    print(responseJson);
-    responseJson["data"].forEach((f) => l.add(new Business.fromJson(f)));
-    return l;
-});
+    responseJson["data"].forEach((f) => businessList.add(new Business.fromJson(f)));
+    print('Done Fetching businesses for commnuity: $communityAddress. length: ${businessList.length}');
+    return businessList;
+  });
 }

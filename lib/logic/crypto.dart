@@ -29,11 +29,13 @@ String _Asset = "0x415c11223bca1324f470cf72eac3046ea1e755a3";
 final storage = new FlutterSecureStorage();
 
 Future getBalance(accountAddress, tokenAddress) async {
+  print('Fetching balance of token $tokenAddress for account $accountAddress');
   var uri = Uri.encodeFull(EXPLORER_ROOT + 'module=account&action=tokenbalance&contractaddress=' + tokenAddress + '&address=' + accountAddress);
   var response = await http.get(uri);
   Map<String, dynamic> obj = json.decode(response.body);
   
   var balance = (BigInt.parse(obj['result']) / BigInt.from(1000000000000000000)).toStringAsFixed(1);
+  print('Fetching balance of token $tokenAddress for account $accountAddress done. balance: $balance');
   return balance;
 }
 
@@ -154,6 +156,7 @@ Future getCommunityAddress() async {
 }
 
 Future getCommunity(communityAddress) async {
+  print('Fetching community data for $communityAddress');
   return await http.get(Uri.encodeFull(API_ROOT + "communities/" + communityAddress)).then((http.Response response) {
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -161,6 +164,7 @@ Future getCommunity(communityAddress) async {
     }
     Map<String, dynamic> obj = json.decode(response.body);
 
+    print('Done fetching community data for $communityAddress');
     return obj["data"];
   });
 }

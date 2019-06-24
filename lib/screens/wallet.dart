@@ -38,7 +38,6 @@ class _WalletPageState extends State<WalletPage> {
       getTokenAddress().then((tokenAddress) {
         globals.publicKey = _publicKey;
         print('my address: ' + _publicKey);
-        print(tokenAddress);
         getBalance(_publicKey, tokenAddress).then((response) {
           setState(() {
             isLoading = false;
@@ -62,7 +61,7 @@ class _WalletPageState extends State<WalletPage> {
 
   Future loadLoggedUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    var _firstName = user.displayName;
+    var _firstName = user != null ? user.displayName : "";
     //storage.read(key: "firstName").then((_firstName) {
         setState(() {
           firstName = _firstName ?? "";
@@ -79,10 +78,10 @@ class _WalletPageState extends State<WalletPage> {
       loadCommunity();
       loadBalance();
       loadTransactions();
-      initSocket((payload) {
-        loadBalance();
-        loadTransactions();
-      });
+      // initSocket((payload) {
+      //   loadBalance();
+      //   loadTransactions();
+      // });
     //});
   }
 

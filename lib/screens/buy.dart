@@ -29,11 +29,13 @@ class _BuyPageState extends State<BuyPage> {
      isLoading = true; 
     });
     getBusinesses().then((list) {
-      setState(() {
-        businessesList.clear();
-        businessesList.addAll(list);
-        isLoading = false; 
-      });
+      if (this.mounted) {
+        setState(() {
+          businessesList.clear();
+          businessesList.addAll(list);
+          isLoading = false; 
+        });
+      }
     });
   }
 
