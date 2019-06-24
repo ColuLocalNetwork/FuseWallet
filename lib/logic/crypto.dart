@@ -153,30 +153,6 @@ Future getCommunityAddress() async {
   return id;
 }
 
-Future getListAddress() async {
-  var id = await storage.read(key: "listAddress");
-  if (id == null || id == "") {
-    return "0xEE155aA808Fb1E480A8A481d64A31fCDA5af3E69";
-  }
-  return id;
-}
-
-Future setListAddress(value) async {
-  await storage.write(key: "listAddress", value: value);
-}
-
-Future loadListAddress(assetId) async {
-  return await http.get(Uri.encodeFull(API_ROOT + "https://ropsten-qa.cln.network/api/v1/business/list?tokenAddress=" + assetId)).then((http.Response response) {
-    final int statusCode = response.statusCode;
-    if (statusCode < 200 || statusCode > 400 || json == null) {
-      throw new Exception("Error while fetching data");
-    }
-    Map<String, dynamic> obj = json.decode(response.body);
-
-    return obj["data"]["listAddress"].toString();
-  });
-}
-
 Future getCommunity(communityAddress) async {
   return await http.get(Uri.encodeFull(API_ROOT + "communities/" + communityAddress)).then((http.Response response) {
     final int statusCode = response.statusCode;
