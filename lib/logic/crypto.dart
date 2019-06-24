@@ -205,7 +205,11 @@ Future setTokenAddress(tokenAddress) async {
 }
 
 Future getTokenAddress() async {
-  return await storage.read(key: "tokenAddress");
+  var token = await storage.read(key: "tokenAddress");
+  if (token == null || token == "") {
+    token = DEFAULT_COMMUNITY;
+  }
+  return token;
 }
 
 Future<dynamic> getEntityCount() async {

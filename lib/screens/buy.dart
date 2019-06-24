@@ -102,7 +102,7 @@ class BusinessesListViewState extends State<BusinessesListView> {
                         return ListTile(
                           leading:
                           Container(width: 50,height: 50, decoration: BoxDecoration(
-                            color: Colors.black12
+                            //color: Colors.black12
                           ),child: ClipOval(
                               child: Image.network(
                             businessesList[index].image,
