@@ -46,6 +46,8 @@ class WalletLogic {
   }
 
   static Future<void> setMnemonic(mnemonic) async {
+    String privatekey = await compute(getPrivateKeyFromMnemonic, mnemonic);
+    setPrivateKey(privatekey);
     await storage.write(key: "mnemonic", value: mnemonic);
   }
 

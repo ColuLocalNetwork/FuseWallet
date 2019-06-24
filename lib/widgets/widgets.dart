@@ -28,7 +28,7 @@ class CustomScaffold extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(title,
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).textTheme.body1.color,
                       fontSize: 20,
                       fontWeight: FontWeight.w900)),
               centerTitle: true,
@@ -37,7 +37,7 @@ class CustomScaffold extends StatelessWidget {
               //color: Theme.of(context).canvasColor,
               //),
             ),
-            iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+            iconTheme: IconThemeData(color: Theme.of(context).textTheme.body1.color),
             backgroundColor: Theme.of(context).canvasColor,
           ),
           SliverList(
@@ -72,8 +72,8 @@ class PrimaryButton extends StatelessWidget {
             //stops: [0.1, 0.5, 0.7, 0.9],
             colors: [
               // Colors are easy thanks to Flutter's Colors class.
-              const Color(0xFF34d080),
-              const Color(0xFFfae83e),
+              Theme.of(context).primaryColorLight,
+              Theme.of(context).primaryColorDark,
             ],
           ),
           borderRadius: new BorderRadius.all(new Radius.circular(30.0))),
@@ -86,7 +86,7 @@ class PrimaryButton extends StatelessWidget {
                   ? Text(
                       label,
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).textTheme.button.color,
                           fontSize: 16,
                           fontWeight: FontWeight.w700),
                     )

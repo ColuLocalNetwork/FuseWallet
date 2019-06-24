@@ -24,17 +24,25 @@ class _WalletPageState extends State<WalletPage> {
   List<Transaction> transactionsList = [];
   String firstName = "";
 
+  void loadCommunity() async {
+    var communityAddress = await getCommunityAddress();
+    await intializeCommunity(communityAddress);
+  }
+
   void loadBalance() {
     setState(() {
       isLoading = true;
     });
 
     getPublickKey().then((_publicKey) {
-      globals.publicKey = _publicKey;
-      getBalance(_publicKey).then((response) {
-        setState(() {
-          isLoading = false;
-          globals.balance = response.toString();
+      getTokenAddress().then((tokenAddress) {
+        globals.publicKey = _publicKey;
+        print('my address: ' + _publicKey);
+        getBalance(_publicKey, tokenAddress).then((response) {
+          setState(() {
+            isLoading = false;
+            globals.balance = response.toString();
+          });
         });
       });
     });
@@ -53,7 +61,7 @@ class _WalletPageState extends State<WalletPage> {
 
   Future loadLoggedUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    var _firstName = user.displayName;
+    var _firstName = user != null ? user.displayName : "";
     //storage.read(key: "firstName").then((_firstName) {
         setState(() {
           firstName = _firstName ?? "";
@@ -67,12 +75,13 @@ class _WalletPageState extends State<WalletPage> {
 
     //WalletLogic.init().then((_privateKey) {
       loadLoggedUser();
+      loadCommunity();
       loadBalance();
       loadTransactions();
-      initSocket((payload) {
-        loadBalance();
-        loadTransactions();
-      });
+      // initSocket((payload) {
+      //   loadBalance();
+      //   loadTransactions();
+      // });
     //});
   }
 
@@ -85,7 +94,7 @@ class _WalletPageState extends State<WalletPage> {
         appBar: AppBar(
           title: InkWell(
             child: Image.asset(
-              'images/fuselogo4.png',
+              'images/' + globals.walletLogo,
               width: 95.0,
               gaplessPlayback: true,
               //color: Theme.of(context).accentColor,

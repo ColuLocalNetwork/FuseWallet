@@ -7,3 +7,4 @@ String publicKey = "";
 String sendAddress = "";
 String verificationCode = "";
 final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+String walletLogo = "fuselogo4.png"; //"roost.png"

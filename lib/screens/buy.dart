@@ -29,11 +29,13 @@ class _BuyPageState extends State<BuyPage> {
      isLoading = true; 
     });
     getBusinesses().then((list) {
-      setState(() {
-        businessesList.clear();
-        businessesList.addAll(list);
-        isLoading = false; 
-      });
+      if (this.mounted) {
+        setState(() {
+          businessesList.clear();
+          businessesList.addAll(list);
+          isLoading = false; 
+        });
+      }
     });
   }
 
@@ -102,7 +104,7 @@ class BusinessesListViewState extends State<BusinessesListView> {
                         return ListTile(
                           leading:
                           Container(width: 50,height: 50, decoration: BoxDecoration(
-                            color: Colors.black12
+                            //color: Colors.black12
                           ),child: ClipOval(
                               child: Image.network(
                             businessesList[index].image,

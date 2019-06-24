@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:fusewallet/logic/crypto.dart';
 import 'package:http/http.dart' as http;
 
 class Transaction {
@@ -48,7 +49,7 @@ class TransactionList {
 
 Future<TransactionList> getTransactions(address) async {
   final response =
-      await http.get('https://explorer.fuse.io/api?module=account&action=tokentx&address=' + address);
+      await http.get(EXPLORER_ROOT + 'module=account&action=tokentx&address=' + address);
 
   if (response.statusCode == 200) {
     return TransactionList.fromJson(json.decode(response.body));
