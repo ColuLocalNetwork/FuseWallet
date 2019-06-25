@@ -90,7 +90,7 @@ class _TransactionListItem extends StatelessWidget {
           ),
           trailing: Container(
             child: Text(
-              _transaction.amount.toString() + " " + "₪",
+              _transaction.amount.toString() + " " + "\$",
               style: TextStyle(
                   color: Color(color),
                   fontSize: 18.0,

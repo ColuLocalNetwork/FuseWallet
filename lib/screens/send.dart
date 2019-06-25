@@ -175,9 +175,9 @@ class _SendPageState extends State<SendPage> {
                   ),
                         Padding(
                           child: Text(
-                            "₪",
+                            "\$",
                             style: TextStyle(
-                                fontSize: 32,
+                                fontSize: 26,
                                 fontWeight: FontWeight.normal,
                                 color: Theme.of(context).primaryColor),
                           ),

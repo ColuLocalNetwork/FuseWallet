@@ -47,9 +47,9 @@ class TransactionList {
   }
 }
 
-Future<TransactionList> getTransactions(address) async {
+Future<TransactionList> getTransactions(accountAddress, tokenAddress) async {
   final response =
-      await http.get(EXPLORER_ROOT + 'module=account&action=tokentx&address=' + address);
+      await http.get('${EXPLORER_ROOT}module=account&action=tokentx&address=$accountAddress&contractaddress=$tokenAddress');
 
   if (response.statusCode == 200) {
     return TransactionList.fromJson(json.decode(response.body));

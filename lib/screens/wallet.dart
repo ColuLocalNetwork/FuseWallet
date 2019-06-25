@@ -50,10 +50,12 @@ class _WalletPageState extends State<WalletPage> {
 
   void loadTransactions() {
     getPublickKey().then((_publicKey) {
-      getTransactions(_publicKey).then((list) {
-        setState(() {
-          transactionsList.clear();
-          transactionsList.addAll(list.transactions);
+      getTokenAddress().then((tokenAddress) {
+        getTransactions(_publicKey, tokenAddress).then((list) {
+          setState(() {
+            transactionsList.clear();
+            transactionsList.addAll(list.transactions);
+          });
         });
       });
     });
@@ -218,9 +220,9 @@ Expanded(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold)),
                                           new TextSpan(
-                                              text: "₪",
+                                              text: " \$",
                                               style: new TextStyle(
-                                                  fontSize: 32,
+                                                  fontSize: 26,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.normal,
                                                   height: 0.0)),

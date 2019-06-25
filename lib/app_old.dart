@@ -134,7 +134,7 @@ class _MyDialogContentState extends State<transferPrompt> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Enter Amount (₪)'),
+      title: Text('Enter Amount (\$)'),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
