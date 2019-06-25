@@ -39,13 +39,11 @@ Future getBalance(accountAddress, tokenAddress) async {
   return balance;
 }
 
-Future sendNIS(address, amount, privateKey) async {
+Future sendNIS(toAccountAddress, amount) async {
   var httpClient = new Client();
   var ethClient = new Web3Client(_URL, httpClient);
 
-  if (privateKey == null) {
-    privateKey = await getPrivateKey();
-  }
+  var privateKey = await getPrivateKey();
 
   var credentials = Credentials.fromPrivateKeyHex(privateKey);
   var contractABI = ContractABI.parseFromJSON(_ABI_EXTRACT, "cln");
@@ -54,12 +52,12 @@ Future sendNIS(address, amount, privateKey) async {
 
 //, EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1)
   var getKittyFn = contract.findFunctionsByName("transfer").first;
-  address = cleanAddress(address);
-  var n = BigInt.parse(numbers.strip0x(address), radix: 16);
+  toAccountAddress = cleanAddress(toAccountAddress);
+  var n = BigInt.parse(numbers.strip0x(toAccountAddress), radix: 16);
   var kittenResponse = await new Transaction(
           keys: credentials,
           maximumGas: 100000,
-          gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 3))
+          gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1))
       .prepareForPaymentCall(
           contract,
           getKittyFn,
