@@ -40,6 +40,7 @@ class WalletLogic {
 
       //Call funder
       var publicKey = await getPublickKey();
+      print('Calling funder with address: $publicKey');
       callFunder(publicKey);
     }
     return privatekey;

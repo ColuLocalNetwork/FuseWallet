@@ -28,7 +28,7 @@ class _WebPageState extends State<WebPage> {
   bool isLoading = false;
   final assetIdController = TextEditingController(text: "");
   bool isValid = true;
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+  // final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
 
 
@@ -100,23 +100,23 @@ document.head.appendChild(script1);
   Future initState() {
     super.initState();
 
-    flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      getInjectString().then((str) {
-        flutterWebviewPlugin.evalJavascript(str);
-      });
-    });
+    // flutterWebviewPlugin.onUrlChanged.listen((String url) {
+      // getInjectString().then((str) {
+      //   flutterWebviewPlugin.evalJavascript(str);
+      // });
+    // });
   }
 
-  Widget favoriteButton() {
-    return FloatingActionButton(
-              onPressed: () async {
-//                TO LATE HERE:
-                 flutterWebviewPlugin.evalJavascript(injectScript);
-              },
-              child: const Icon(Icons.refresh),
-            );
+//   Widget favoriteButton() {
+//     return FloatingActionButton(
+//               onPressed: () async {
+// //                TO LATE HERE:
+//                  flutterWebviewPlugin.evalJavascript(injectScript);
+//               },
+//               child: const Icon(Icons.refresh),
+//             );
    
-  }
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -130,10 +130,10 @@ document.head.appendChild(script1);
       ),
       backgroundColor: const Color(0xFFF8F8F8),
       body: new WebviewScaffold(
-        url: "https://communities-qa.cln.network",
+        url: "https://communities-qa.cln.network/",
         withJavascript: true,
       ),
-      floatingActionButton: favoriteButton(),
+      // floatingActionButton: favoriteButton(),
     );
   }
 }
