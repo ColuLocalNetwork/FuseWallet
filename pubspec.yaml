@@ -21,7 +21,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   web3dart: ^0.4.5
   barcode_scan: ^1.0.0
-  shared_preferences: ^0.4.3
+  shared_preferences: ^0.5.1+1
   qr_flutter:
     git:
       url: git://github.com/lukef/qr.flutter.git
@@ -41,6 +41,10 @@ dependencies:
   flutter_webview_plugin: ^0.3.5
   #flutter_beacon: ^0.2.2
   #beacon_broadcast: ^0.2.1
+  flutter_redux: ^0.5.3
+  redux_thunk: ^0.2.1
+  redux_persist: "^0.8.0"
+  redux_persist_flutter: ^0.8.1
     
 dev_dependencies:
   flutter_test:

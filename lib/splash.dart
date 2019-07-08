@@ -1,15 +1,12 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/logic/crypto.dart';
 import 'package:fusewallet/screens/signup/recovery.dart';
 import 'package:fusewallet/screens/signup/signin.dart';
-import 'package:fusewallet/logic/wallet_logic.dart';
-import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:local_auth/local_auth.dart';
+import 'package:redux/redux.dart';
+import 'redux/actions/signin_actions.dart';
+import 'redux/state/app_state.dart';
 //import 'package:flutter_beacon/flutter_beacon.dart';
 //import 'package:beacon_broadcast/beacon_broadcast.dart';
 
@@ -41,6 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
     //await localAuth.authenticateWithBiometrics(
     //    localizedReason: 'Please authenticate to show account balance');
 
+/*
     WalletLogic.isLogged().then((isLogged) {
       if (isLogged) {
         openPageReplace(context, WalletPage());
@@ -50,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }
     });
-
+*/
 /*
     getPublickKey().then((_publicKey) {
       BeaconBroadcast beaconBroadcast = BeaconBroadcast();
@@ -137,110 +135,115 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
         drawer: drawer,
-        body: Container(
-            child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 20,
-              child: Container(
-                  decoration: BoxDecoration(
-                    // Box decoration takes a gradient
-                    gradient: LinearGradient(
-                      // Where the linear gradient begins and ends
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      // Add one stop for each color. Stops should increase from 0 to 1
-                      //stops: [0.1, 0.5, 0.7, 0.9],
-                      colors: [
-                        // Colors are easy thanks to Flutter's Colors class.
-                        Theme.of(context).primaryColorLight,
-                        Theme.of(context).primaryColorDark,
-                      ],
+        body: new StoreBuilder(onInit: (store) {
+          store.dispatch(loadUserState(context));
+        }, builder: (BuildContext context, Store<AppState> store) {
+          return Container(
+              child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 20,
+                child: Container(
+                    decoration: BoxDecoration(
+                      // Box decoration takes a gradient
+                      gradient: LinearGradient(
+                        // Where the linear gradient begins and ends
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        // Add one stop for each color. Stops should increase from 0 to 1
+                        //stops: [0.1, 0.5, 0.7, 0.9],
+                        colors: [
+                          // Colors are easy thanks to Flutter's Colors class.
+                          Theme.of(context).primaryColorLight,
+                          Theme.of(context).primaryColorDark,
+                        ],
+                      ),
                     ),
-                  ),
-                  //alignment: FractionalOffset(0.5, 0.5),
-                  child: !isLoading
-                      ? Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: new Stack(
-                                children: <Widget>[
-                                  new PageView.builder(
-                                    physics:
-                                        new AlwaysScrollableScrollPhysics(),
-                                    controller: _controller,
-                                    itemCount: _pages.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return _pages[index % _pages.length];
-                                    },
-                                  ),
-                                  new Positioned(
-                                    bottom: 0.0,
-                                    left: 0.0,
-                                    right: 0.0,
-                                    child: new Container(
-                                      //color: Colors.grey[800].withOpacity(0.5),
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: new Center(
-                                        child: new DotsIndicator(
-                                          controller: _controller,
-                                          itemCount: _pages.length,
-                                          onPageSelected: (int page) {
-                                            gotoPage(page);
-                                          },
+                    //alignment: FractionalOffset(0.5, 0.5),
+                    child: !(store.state.userState.isUserLogged ?? true)
+                        ? Column(
+                            children: <Widget>[
+                              Expanded(
+                                child: new Stack(
+                                  children: <Widget>[
+                                    new PageView.builder(
+                                      physics:
+                                          new AlwaysScrollableScrollPhysics(),
+                                      controller: _controller,
+                                      itemCount: _pages.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return _pages[index % _pages.length];
+                                      },
+                                    ),
+                                    new Positioned(
+                                      bottom: 0.0,
+                                      left: 0.0,
+                                      right: 0.0,
+                                      child: new Container(
+                                        //color: Colors.grey[800].withOpacity(0.5),
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: new Center(
+                                          child: new DotsIndicator(
+                                            controller: _controller,
+                                            itemCount: _pages.length,
+                                            onPageSelected: (int page) {
+                                              gotoPage(page);
+                                            },
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 180,
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 20),
-                                    child: FlatButton(
-                                      shape: new RoundedRectangleBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(30.0)),
-                                      color: Theme.of(context).primaryColor,
-                                      padding: EdgeInsets.only(
-                                          top: 20,
-                                          bottom: 20,
-                                          left: 70,
-                                          right: 70),
-                                      child: Text(
-                                        "Create a new wallet",
-                                        style: TextStyle(
-                                            color: const Color(0xFFfae83e),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
+                              SizedBox(
+                                height: 180,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 20),
+                                      child: FlatButton(
+                                        shape: new RoundedRectangleBorder(
+                                            borderRadius:
+                                                new BorderRadius.circular(
+                                                    30.0)),
+                                        color: Theme.of(context).primaryColor,
+                                        padding: EdgeInsets.only(
+                                            top: 20,
+                                            bottom: 20,
+                                            left: 70,
+                                            right: 70),
+                                        child: Text(
+                                          "Create a new wallet",
+                                          style: TextStyle(
+                                              color: const Color(0xFFfae83e),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        onPressed: () {
+                                          openPage(context, new SignInPage());
+                                        },
                                       ),
-                                      onPressed: () {
-                                        openPage(context, new SignInPage());
-                                      },
                                     ),
-                                  ),
-                                  Padding(
-                                      padding: EdgeInsets.only(top: 30),
-                                      child: TransparentButton(
-                                          label: "Restore existing wallet",
-                                          onPressed: () {
-                                            openPage(
-                                                context, new RecoveryPage());
-                                          }))
-                                ],
-                              ),
-                            )
-                          ],
-                        )
-                      : Preloader()),
-            ),
-          ],
-        )));
+                                    Padding(
+                                        padding: EdgeInsets.only(top: 30),
+                                        child: TransparentButton(
+                                            label: "Restore existing wallet",
+                                            onPressed: () {
+                                              openPage(
+                                                  context, new RecoveryPage());
+                                            }))
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        : Preloader()),
+              ),
+            ],
+          ));
+        }));
   }
 }
 

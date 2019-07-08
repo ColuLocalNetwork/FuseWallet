@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/logic/wallet_logic.dart';
+import 'package:fusewallet/modals/views/signin_viewmodel.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
 import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
@@ -15,9 +17,6 @@ class Backup2Page extends StatefulWidget {
 }
 
 class _Backup2PageState extends State<Backup2Page> {
-  GlobalKey<ScaffoldState> scaffoldState;
-  bool isLoading = false;
-  List<String> words = new List<String>();
   List<int> selectedWordsNum = new List<int>();
   final _formKey = GlobalKey<FormState>();
 
@@ -34,12 +33,6 @@ class _Backup2PageState extends State<Backup2Page> {
     super.initState();
 
     selectedWordsNum = getRandom3Numbers();
-
-    WalletLogic.getMnemonic().then((list) {
-      setState(() {
-        words = list.split(" ");
-      });
-    });
   }
 
   @override
@@ -50,7 +43,6 @@ class _Backup2PageState extends State<Backup2Page> {
       children: <Widget>[
         
           Container(
-            //color: Theme.of(context).primaryColor,
             padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
             child: Column(
               children: <Widget>[
@@ -66,7 +58,12 @@ class _Backup2PageState extends State<Backup2Page> {
               ],
             ),
           ),
-          Padding(
+          new StoreConnector<AppState, SignInViewModel>(
+              converter: (store) {
+                return SignInViewModel.fromStore(store);
+              },
+              builder: (_, viewModel) {
+                return Padding(
             padding: EdgeInsets.only(top: 10, left: 30, right: 30),
             child: Column(
               children: <Widget>[
@@ -83,7 +80,7 @@ class _Backup2PageState extends State<Backup2Page> {
                                   'Word ' + selectedWordsNum[0].toString(),
                             ),
                             validator: (String value) {
-                              if (words[selectedWordsNum[0]-1] != value) {
+                              if (viewModel.user.mnemonic[selectedWordsNum[0]-1] != value) {
                                 return 'The word does not match';
                               }
                             },
@@ -96,7 +93,7 @@ class _Backup2PageState extends State<Backup2Page> {
                                   'Word ' + selectedWordsNum[1].toString(),
                             ),
                             validator: (String value) {
-                              if (words[selectedWordsNum[1]-1] != value) {
+                              if (viewModel.user.mnemonic[selectedWordsNum[1]-1] != value) {
                                 return 'The word does not match';
                               }
                             },
@@ -109,7 +106,7 @@ class _Backup2PageState extends State<Backup2Page> {
                                   'Word ' + selectedWordsNum[2].toString(),
                             ),
                             validator: (String value) {
-                              if (words[selectedWordsNum[2]-1] != value) {
+                              if (viewModel.user.mnemonic[selectedWordsNum[2]-1] != value) {
                                 return 'The word does not match';
                               }
                             },
@@ -119,7 +116,10 @@ class _Backup2PageState extends State<Backup2Page> {
                 )
               ],
             ),
-          ),
+          );
+              }
+          )
+          ,
           const SizedBox(height: 16.0),
           Center(
               child: PrimaryButton(

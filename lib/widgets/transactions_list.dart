@@ -34,7 +34,7 @@ class TransactionsWidgetState extends State<TransactionsWidget> {
 
   @override
   Widget build(BuildContext _context) {
-    return transactions.length > 0
+    return transactions != null && transactions.length > 0
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[

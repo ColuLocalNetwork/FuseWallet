@@ -1,15 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fusewallet/logic/crypto.dart';
-import 'package:fusewallet/logic/wallet_logic.dart';
-import 'package:fusewallet/screens/signup/backup1.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:fusewallet/modals/views/signin_viewmodel.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/signup/signup.dart';
-import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:fusewallet/logic/common.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:fusewallet/globals.dart' as globals;
 
 class SignInVerificationPage extends StatefulWidget {
   SignInVerificationPage({Key key, this.title}) : super(key: key);
@@ -22,7 +16,6 @@ class SignInVerificationPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInVerificationPage> {
   GlobalKey<ScaffoldState> scaffoldState;
-  bool isLoading = false;
   final verificationCodeController = TextEditingController(text: "");
   bool isValidVerificationCode = true;
   final _formKey = GlobalKey<FormState>();
@@ -32,42 +25,6 @@ class _SignInPageState extends State<SignInVerificationPage> {
     super.initState();
   }
 
-  Future<bool> _signInWithPhoneNumber(String smsCode) async {
-    setState(() {
-      isLoading = true;
-    });
-
-    final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: globals.verificationCode,
-      smsCode: smsCode,
-    );
-
-     await FirebaseAuth.instance.signInWithCredential(credential)
-        .then((FirebaseUser user) async {
-          final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
-          assert(user.uid == currentUser.uid);
-
-          if (currentUser.displayName != null) {
-            openPage(context, new Backup1Page());
-          } else {
-            openPage(context, new SignUpPage());
-          }
-          
-          setState(() {
-            isLoading = false;
-          });
-
-          print('signed in with phone number successful: user -> $user');
-        }).catchError((err) async {
-          isValidVerificationCode = false;
-          _formKey.currentState.validate();
-          setState(() {
-            isLoading = false;
-          });
-        });
-      return true;
-  }
-  
   @override
   Widget build(BuildContext context) {
     return 
@@ -95,7 +52,12 @@ class _SignInPageState extends State<SignInVerificationPage> {
               ],
             ),
           ),
-          Padding(
+          new StoreConnector<AppState, SignInViewModel>(
+            converter: (store) {
+              return SignInViewModel.fromStore(store);
+            },
+            builder: (_, viewModel) {
+              return Padding(
             padding: EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 30),
             child: Form(
               key: _formKey,
@@ -104,6 +66,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
                 children: <Widget>[
                   TextFormField(
                     controller: verificationCodeController,
+                    autofocus: true,
                     style: const TextStyle(
                               fontSize: 18
                             ),
@@ -126,16 +89,18 @@ class _SignInPageState extends State<SignInVerificationPage> {
                       onPressed: () async {
                         isValidVerificationCode = true;
                         if (_formKey.currentState.validate()) {
-                          _signInWithPhoneNumber(verificationCodeController.text);
+                          viewModel.signInWithPhoneNumber(context, verificationCodeController.text);
                         }
                       },
-                      preload: isLoading,
+                      preload: viewModel.isLoading,
                     ),
                   )
                 ],
               ),
             ),
-          )
+          );
+            })
+          
         
       ]);
   }
