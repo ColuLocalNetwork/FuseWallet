@@ -34,7 +34,7 @@ ThunkAction loadUserState(BuildContext context) {
     WalletLogic.isLogged().then((isLogged) {
       store.dispatch(new LoadUserAction(_isLogged));
       if (_isLogged) {
-        openPageReplace(context, WalletPage());
+        openPageReplace(context, WalletPage(user: store.state.userState.user));
       }
     });
 

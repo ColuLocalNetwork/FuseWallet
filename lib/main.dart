@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
     appReducer, /* Function defined in the reducers file */
     initialState: AppState.initial(),
     middleware: createStoreMiddleware(),
-  );
+  // );
   */
 
   @override

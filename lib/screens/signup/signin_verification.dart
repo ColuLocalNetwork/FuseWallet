@@ -52,7 +52,7 @@ class _SignInPageState extends State<SignInVerificationPage> {
               ],
             ),
           ),
-          new StoreConnector<AppState, SignInViewModel>(
+          new StoreConnector<AppState, SignInViewModel>(  
             converter: (store) {
               return SignInViewModel.fromStore(store);
             },
