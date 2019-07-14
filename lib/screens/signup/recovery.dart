@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
-import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/wallet_wrapper.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 
 class RecoveryPage extends StatefulWidget {
@@ -82,7 +82,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 await WalletLogic.setMnemonic(wordsController.text);
-                openPageReplace(context, WalletPage());
+                openPageReplace(context, WalletPageWapper());
               }
             },
           )),

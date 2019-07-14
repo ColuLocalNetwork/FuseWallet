@@ -8,7 +8,7 @@ import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
 import 'package:fusewallet/screens/signup/backup2.dart';
 import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/wallet_wrapper.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 
 class Backup1Page extends StatefulWidget {
@@ -138,7 +138,7 @@ class _Backup1PageState extends State<Backup1Page> {
                           TransparentButton(
                               label: "Skip",
                               onPressed: () {
-                                openPageReplace(context, WalletPage());
+                                openPageReplace(context, WalletPageWapper());
                               }),
                           const SizedBox(height: 30.0),
                         ],

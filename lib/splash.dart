@@ -118,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    logon();
+    // logon();
   }
 
   void gotoPage(page) {

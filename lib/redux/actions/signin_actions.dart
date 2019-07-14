@@ -7,6 +7,7 @@ import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/screens/signup/signin_verification.dart';
 import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/wallet_wrapper.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -34,7 +35,7 @@ ThunkAction loadUserState(BuildContext context) {
     WalletLogic.isLogged().then((isLogged) {
       store.dispatch(new LoadUserAction(_isLogged));
       if (_isLogged) {
-        openPageReplace(context, WalletPage(user: store.state.userState.user));
+        openPageReplace(context, WalletPageWapper());
       }
     });
 
@@ -202,4 +203,8 @@ class UpdateUserAction {
 
 class LoginFailedAction {
   LoginFailedAction();
+}
+
+class UpdateHas3boxAccount {
+  UpdateHas3boxAccount();
 }

@@ -4,7 +4,7 @@ import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/modals/views/signin_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/wallet_wrapper.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 
 class Backup2Page extends StatefulWidget {
@@ -126,7 +126,7 @@ class _Backup2PageState extends State<Backup2Page> {
             label: "NEXT",
             onPressed: () async {
               if (_formKey.currentState.validate()) {
-                openPageReplace(context, WalletPage());
+                openPageReplace(context, WalletPageWapper());
               }
             },
           )),

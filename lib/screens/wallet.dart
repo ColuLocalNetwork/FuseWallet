@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/modals/user.dart';
+import 'package:fusewallet/modals/views/wallet_wrappermodel.dart';
+import 'package:fusewallet/redux/actions/signin_actions.dart';
 import 'package:fusewallet/redux/state/user_state.dart';
 import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
@@ -17,20 +21,28 @@ import 'package:fusewallet/widgets/widgets.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class WalletPage extends StatefulWidget {
-  WalletPage({Key key, this.title, this.user}) : super(key: key) {
-    debugPrint(user.firstName);
-  }
+  WalletPage({Key key, this.title, this.walletWrapperViewModel})
+      : super(key: key);
 
-  final User user;
   final String title;
+  final WalletWrapperViewModel walletWrapperViewModel;
 
   @override
   _WalletPageState createState() => _WalletPageState();
 }
 
 class _WalletPageState extends State<WalletPage> {
-  bool isLoading = true;
   final flutterWebviewPlugin = FlutterWebviewPlugin();
+  bool isLoading = true;
+  String _firstName;
+  String _lastName;
+  String _account;
+  String _pk;
+  bool _has3boxAccount;
+
+  StreamSubscription _onDestroy;
+  StreamSubscription _onUrlChange;
+  StreamSubscription<WebViewStateChanged> _onStateChanged;
   //List<Transaction> transactionsList = [];
 
 /*
@@ -72,43 +84,72 @@ class _WalletPageState extends State<WalletPage> {
   }
 */
 
-  String getInjectString() {
-    String firstName = widget.user.firstName;
-    String lastName = widget.user.lastName;
-    String account = widget.user.publicKey;
-    String pk = widget.user.privateKey;
-
-    return ("""
-      window.user = {
-        firstName: '$firstName',
-        lastName: '$lastName',
-        account: '$account'
-      }
-      window.pk = '0x$pk'
-    """);
-  }
-
-  @override
-  void dispose() {
-    flutterWebviewPlugin.dispose();
-
-    super.dispose();
-  }
-
-  Future launchWebview() {
-    flutterWebviewPlugin.launch(
-        'https://communities-qa.cln.network/view/sign',
+  void launchWebview() async {
+    await flutterWebviewPlugin.launch(
+        'https://communities-qa.cln.network/view/sign/isMobileApp',
         hidden: true,
         withJavascript: true);
-    String jsCode = getInjectString();
-    flutterWebviewPlugin.evalJavascript(jsCode);
+  }
+
+  String getInjectString() {
+    return ("""
+      window.user = {
+        firstName: '$_firstName',
+        lastName: '$_lastName',
+        account: '$_account'
+      }
+      window.pk = '0x$_pk'
+    """);
   }
 
   @override
   void initState() {
     super.initState();
     flutterWebviewPlugin.close();
-    launchWebview();
+    _firstName = widget.walletWrapperViewModel.user?.firstName;
+    _lastName = widget.walletWrapperViewModel.user?.lastName;
+    _account = widget.walletWrapperViewModel.user?.publicKey;
+    _pk = widget.walletWrapperViewModel.user?.privateKey;
+    _has3boxAccount = widget.walletWrapperViewModel.has3boxAccount;
+
+    if (_has3boxAccount == false) {
+      launchWebview();
+      // Add a listener to on destroy WebView, so you can make came actions.
+      _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
+        if (mounted) {
+          // Actions like show a info toast.
+          print('Destroy');
+        }
+      });
+
+      _onUrlChange = flutterWebviewPlugin.onUrlChanged.listen((String url) {
+        if (mounted) {
+          if (url == 'https://communities-qa.cln.network/') {
+            flutterWebviewPlugin.close();
+            widget.walletWrapperViewModel.updateHas3boxAccount();
+          }
+        }
+      });
+
+      _onStateChanged = flutterWebviewPlugin.onStateChanged
+          .listen((WebViewStateChanged state) {
+        if (state.type == WebViewState.finishLoad &&
+            state.url.contains('/sign')) {
+          String jsCode = getInjectString();
+          flutterWebviewPlugin.evalJavascript(jsCode);
+        }
+
+        if (state.type == WebViewState.startLoad &&
+            state.url == 'https://communities-qa.cln.network/') {
+          widget.walletWrapperViewModel.updateHas3boxAccount();
+          flutterWebviewPlugin.close();
+          _onStateChanged.cancel();
+          _onUrlChange.cancel();
+          _onDestroy.cancel();
+        }
+      });
+    }
+
 /*
     loadCommunity();
     loadBalance();
@@ -120,6 +161,17 @@ class _WalletPageState extends State<WalletPage> {
     //   loadTransactions();
     // });
     //});
+  }
+
+  @override
+  void dispose() {
+    _onDestroy.cancel();
+    _onUrlChange.cancel();
+    _onStateChanged.cancel();
+
+    flutterWebviewPlugin.dispose();
+
+    super.dispose();
   }
 
   @override
