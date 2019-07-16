@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 //}
 
 class TransactionsWidget extends StatefulWidget {
-  List<Transaction> transactions;
+  final List<Transaction> transactions;
 
   TransactionsWidget(this.transactions);
 

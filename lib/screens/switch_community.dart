@@ -1,11 +1,14 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/crypto.dart';
+import 'package:fusewallet/modals/views/switch_community_modal.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/signup/signup.dart';
+// import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:fusewallet/logic/common.dart';
-import 'package:country_code_picker/country_code_picker.dart';
+// import 'package:fusewallet/logic/common.dart';
+// import 'package:country_code_picker/country_code_picker.dart';
 
 class SwitchCommunityPage extends StatefulWidget {
   SwitchCommunityPage({Key key, this.title}) : super(key: key);
@@ -54,12 +57,11 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text("Switch community",
-                    textAlign: TextAlign.center,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 24,
-                          fontWeight: FontWeight.bold))
-                  ,
+                          fontWeight: FontWeight.bold)),
                   Padding(
                     padding: EdgeInsets.only(top: 12),
                     child: Text(
@@ -92,16 +94,34 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                         )
                       : SizedBox(height: 18.0),
                   const SizedBox(height: 16.0),
-                  Center(
-                    child: PrimaryButton(
-                      label: "SCAN QR CODE",
-                      onPressed: () async {
-                        var assetId = await BarcodeScanner.scan();
-                        saveCommunityAddress(assetId);
-                      },
-                      width: 300,
-                    ),
-                  ),
+                  new StoreConnector<AppState, SwitchCommunityViewModel>(
+                      converter: (store) {
+                    return SwitchCommunityViewModel.fromStore(store);
+                  }, builder: (context, SwitchCommunityViewModel _viewModal) {
+                    return Center(
+                      child: PrimaryButton(
+                        label: "SCAN QR CODE",
+                        onPressed: () async {
+                          var assetId = await BarcodeScanner.scan();
+                          _viewModal.updateCommunityAddress(assetId);
+                          Navigator.of(context).pop(true);
+                          Navigator.of(context).pop(true);
+                          // saveCommunityAddress(assetId);
+                        },
+                        width: 300,
+                      ),
+                    );
+                  }),
+                  // Center(
+                  //   child: PrimaryButton(
+                  //     label: "SCAN QR CODE",
+                  //     onPressed: () async {
+                  //       var assetId = await BarcodeScanner.scan();
+                  //       saveCommunityAddress(assetId);
+                  //     },
+                  //     width: 300,
+                  //   ),
+                  // ),
                   const SizedBox(height: 22.0),
                   Stack(
                     children: <Widget>[
@@ -148,18 +168,45 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                                         controller: assetIdController,
                                       ),
                                       const SizedBox(height: 22.0),
-                                      Row(
-                                        children: <Widget>[
-                                          Center(
-                                            child: PrimaryButton(
-                                              label: "SAVE",
-                                              onPressed: () {
-                                                saveCommunityAddress(assetIdController.text);
-                                              },
-                                              width: 250,
-                                            ),
-                                          )
-                                        ],
+                                      // Row(
+                                      //   children: <Widget>[
+                                      //     Center(
+                                      //       child: PrimaryButton(
+                                      //         label: "SAVE",
+                                      //         onPressed: () {
+                                      //           saveCommunityAddress(
+                                      //               assetIdController.text);
+                                      //         },
+                                      //         width: 250,
+                                      //       ),
+                                      //     )
+                                      //   ],
+                                      // ),
+                                      new StoreConnector<AppState,
+                                          SwitchCommunityViewModel>(
+                                        converter: (store) {
+                                          return SwitchCommunityViewModel
+                                              .fromStore(store);
+                                        },
+                                        builder: (context,
+                                            SwitchCommunityViewModel
+                                                _viewModal) {
+                                          return Row(
+                                            children: <Widget>[
+                                              Center(
+                                                child: PrimaryButton(
+                                                  label: "SAVE",
+                                                  onPressed: () {
+                                                    _viewModal.updateCommunityAddress(assetIdController.text);
+                                                        Navigator.of(context).pop(true);
+                                                        Navigator.of(context).pop(true);
+                                                  },
+                                                  width: 250,
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        },
                                       )
                                     ]),
                                   ),

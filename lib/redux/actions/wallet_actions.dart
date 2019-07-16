@@ -1,3 +1,4 @@
+import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:redux/redux.dart';
@@ -8,6 +9,22 @@ ThunkAction initWalletCall() {
     loadCommunity(store);
     store.dispatch(new WalletLoadedAction());
   };
+}
+
+ThunkAction fetchBusinesses() {
+  print('fetchBusinesses');
+  return (Store store) async {
+    loadBusinesses(store);
+  };
+}
+
+Future loadBusinesses(Store store) async {
+  print('loadBusinesses');
+  final String communityAddress = store.state.walletState.communityAddress;
+  store.dispatch(new StartFeatching());
+  var businesseses = await getBusinesses(communityAddress);
+  store.dispatch(new DoneFeatching());
+  store.dispatch(new BusinessLoadedAction(businesseses));
 }
 
 Future loadCommunity(Store store) async {
@@ -84,4 +101,30 @@ class BalanceLoadedAction {
   final String balance;
 
   BalanceLoadedAction(this.balance);
+}
+
+class UpdateCommunityAddress {
+  final String communityAddress;
+
+  UpdateCommunityAddress(this.communityAddress);
+}
+
+class CommunityChanged {
+  final bool hasChanged;
+
+  CommunityChanged(this.hasChanged);
+}
+
+class BusinessLoadedAction {
+  final List<Business> businesseses;
+
+  BusinessLoadedAction(this.businesseses);
+}
+
+class StartFeatching {
+  StartFeatching();
+}
+
+class DoneFeatching {
+  DoneFeatching();
 }

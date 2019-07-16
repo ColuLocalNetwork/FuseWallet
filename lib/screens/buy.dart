@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:core';
 import 'package:fusewallet/logic/common.dart';
+import 'package:fusewallet/modals/views/buy_view_modal.dart';
+import 'package:fusewallet/redux/actions/wallet_actions.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:fusewallet/screens/shop.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/modals/businesses.dart';
@@ -16,39 +20,47 @@ class BuyPage extends StatefulWidget {
   _BuyPageState createState() => _BuyPageState();
 }
 
-List<Business> businessesList = [];
+// List<Business> businessesList = [];
 
 class _BuyPageState extends State<BuyPage> {
   GlobalKey<ScaffoldState> scaffoldState;
-  bool isLoading = false;
+  // bool isLoading = false;
   final addressController = TextEditingController(text: "");
   final amountController = TextEditingController(text: "");
 
-  void loadBusinesses() {
-    setState(() {
-     isLoading = true; 
-    });
-    getBusinesses().then((list) {
-      if (this.mounted) {
-        setState(() {
-          businessesList.clear();
-          businessesList.addAll(list);
-          isLoading = false; 
-        });
-      }
-    });
-  }
+  // void loadBusinesses() {
+  //   setState(() {
+  //    isLoading = true; 
+  //   });
+  //   getBusinesses().then((list) {
+  //     if (this.mounted) {
+  //       setState(() {
+  //         businessesList.clear();
+  //         businessesList.addAll(list);
+  //         isLoading = false; 
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
 
-    loadBusinesses();
+    // loadBusinesses();
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return new StoreConnector<AppState, BuyViewModel>(
+      onInit: (store) {
+        store.dispatch(fetchBusinesses());
+      },
+      converter: (store) {
+        return BuyViewModel.fromStore(store);
+      },
+      builder: (context, BuyViewModel _viewModal) {
+            return new Scaffold(
         key: scaffoldState,
         appBar: AppBar(
           centerTitle: true,
@@ -64,17 +76,23 @@ class _BuyPageState extends State<BuyPage> {
                     fontSize: 38,
                     fontWeight: FontWeight.bold)),
           ),
-          !isLoading ? new BusinessesListView() : Padding(
+          !_viewModal.isLoading ? new BusinessesListView(list: _viewModal.businessesList,) : Padding(
                   child: Preloader(),
                   padding: EdgeInsets.only(top: 70),
                 )
         ]));
+      },
+    );
   }
 }
 
 class BusinessesListView extends StatefulWidget {
+
+  final List<Business> list;
+  BusinessesListView({this.list});
+
   @override
-  createState() => new BusinessesListViewState();
+  BusinessesListViewState createState() => BusinessesListViewState();
 }
 
 class BusinessesListViewState extends State<BusinessesListView> {
@@ -99,7 +117,7 @@ class BusinessesListViewState extends State<BusinessesListView> {
                           new Divider(),
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
-                      itemCount: businessesList.length,
+                      itemCount: widget.list.length,
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading:
@@ -107,22 +125,22 @@ class BusinessesListViewState extends State<BusinessesListView> {
                             //color: Colors.black12
                           ),child: ClipOval(
                               child: Image.network(
-                            businessesList[index].image,
+                            widget.list[index].image,
                             fit: BoxFit.cover,
                             width: 50.0,
                             height: 50.0,
                           )),)
                            ,
-                          title: Text(businessesList[index].name,style: TextStyle(
+                          title: Text(widget.list[index].name,style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w900),),
-                          subtitle: Text(businessesList[index].address),
+                          subtitle: Text(widget.list[index].address),
                           onTap: () {
                             openPage(
                                 globals.scaffoldKey.currentContext,
                                 new ShopPage(
-                                  business: businessesList[index],
+                                  business: widget.list[index],
                                 ));
                           },
                           trailing: FlatButton(
@@ -138,7 +156,7 @@ class BusinessesListViewState extends State<BusinessesListView> {
                                   fontWeight: FontWeight.bold),
                             ),
                             onPressed: () {
-                              openPage(globals.scaffoldKey.currentContext, new SendPage(address: businessesList[index].account));
+                              openPage(globals.scaffoldKey.currentContext, new SendPage(address: widget.list[index].account));
                             },
                           ),
                         );

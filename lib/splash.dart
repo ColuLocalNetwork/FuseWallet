@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   bool isLoading = true;
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.ease;
-  final _kArrowColor = Colors.black.withOpacity(0.8);
+  // final _kArrowColor = Colors.black.withOpacity(0.8);
   bool isOpen = false;
 
   var _pages = <Widget>[
@@ -270,10 +270,10 @@ class DotsIndicator extends AnimatedWidget {
   final Color color;
 
   // The base size of the dots
-  static const double _kDotSize = 8.0;
+  // static const double _kDotSize = 8.0;
 
   // The increase in the size of the selected dot
-  static const double _kMaxZoom = 2.0;
+  // static const double _kMaxZoom = 2.0;
 
   // The distance between the center of each dot
   static const double _kDotSpacing = 25.0;

@@ -84,6 +84,14 @@ class _WalletPageState extends State<WalletPage> {
   }
 */
 
+  void launchJoinWebview() async {
+    var communityAddress = widget.walletWrapperViewModel.communityAddress;
+    await flutterWebviewPlugin.launch(
+        'https://communities-qa.cln.network/view/join/$communityAddress',
+        hidden: true,
+        withJavascript: true);
+  }
+
   void launchWebview() async {
     await flutterWebviewPlugin.launch(
         'https://communities-qa.cln.network/view/sign/isMobileApp',
@@ -103,6 +111,47 @@ class _WalletPageState extends State<WalletPage> {
   }
 
   @override
+  void didUpdateWidget(WalletPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.walletWrapperViewModel.communityChanged) {
+      launchJoinWebview();
+
+      _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
+        if (mounted) {
+          // Actions like show a info toast.
+        }
+      });
+
+      _onUrlChange = flutterWebviewPlugin.onUrlChanged.listen((String url) {
+        if (mounted) {
+          if (url == 'https://communities-qa.cln.network/') {
+            widget.walletWrapperViewModel.toggleCommunityChange(false);
+            flutterWebviewPlugin.close();
+          }
+        }
+      });
+
+      _onStateChanged = flutterWebviewPlugin.onStateChanged
+          .listen((WebViewStateChanged state) {
+        if (mounted) {
+          if (state.type == WebViewState.finishLoad &&
+              state.url.contains('/join')) {
+            String jsCode = getInjectString();
+            flutterWebviewPlugin.evalJavascript(jsCode);
+          }
+
+          if (state.type == WebViewState.startLoad &&
+              state.url == 'https://communities-qa.cln.network/') {
+            widget.walletWrapperViewModel.toggleCommunityChange(false);
+            flutterWebviewPlugin.close();
+          }
+        }
+      });
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     flutterWebviewPlugin.close();
@@ -114,38 +163,34 @@ class _WalletPageState extends State<WalletPage> {
 
     if (_has3boxAccount == false) {
       launchWebview();
-      // Add a listener to on destroy WebView, so you can make came actions.
-      _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-        if (mounted) {
-          // Actions like show a info toast.
-          print('Destroy');
-        }
-      });
+      // _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
+      //   if (mounted) {
+      //     // Actions like show a info toast.
+      //   }
+      // });
 
       _onUrlChange = flutterWebviewPlugin.onUrlChanged.listen((String url) {
         if (mounted) {
           if (url == 'https://communities-qa.cln.network/') {
-            flutterWebviewPlugin.close();
             widget.walletWrapperViewModel.updateHas3boxAccount();
+            flutterWebviewPlugin.close();
           }
         }
       });
 
       _onStateChanged = flutterWebviewPlugin.onStateChanged
           .listen((WebViewStateChanged state) {
-        if (state.type == WebViewState.finishLoad &&
-            state.url.contains('/sign')) {
-          String jsCode = getInjectString();
-          flutterWebviewPlugin.evalJavascript(jsCode);
-        }
+        if (mounted) {
+          if (state.type == WebViewState.finishLoad &&
+              state.url.contains('/sign')) {
+            String jsCode = getInjectString();
+            flutterWebviewPlugin.evalJavascript(jsCode);
+          }
 
-        if (state.type == WebViewState.startLoad &&
-            state.url == 'https://communities-qa.cln.network/') {
-          widget.walletWrapperViewModel.updateHas3boxAccount();
-          flutterWebviewPlugin.close();
-          _onStateChanged.cancel();
-          _onUrlChange.cancel();
-          _onDestroy.cancel();
+          if (state.url == 'https://communities-qa.cln.network/') {
+            widget.walletWrapperViewModel.updateHas3boxAccount();
+            flutterWebviewPlugin.close();
+          }
         }
       });
     }

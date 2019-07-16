@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:hex/hex.dart';
