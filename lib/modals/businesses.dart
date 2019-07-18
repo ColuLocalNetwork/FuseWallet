@@ -44,7 +44,6 @@ class BusinessList {
 }
 
 Future<List<Business>> getBusinesses(String communityAddress) async {
-  // var communityAddress = await getCommunityAddress();
   print('Fetching businesses for commnuity: $communityAddress');
   final response = await http.get(API_ROOT + "entities/" + communityAddress + "?type=business&withMetadata=true");
 
@@ -57,12 +56,4 @@ Future<List<Business>> getBusinesses(String communityAddress) async {
   } else {
     throw Exception('Failed to load business');
   }
-
-  // return http.get(API_ROOT + "entities/" + communityAddress + "?type=business&withMetadata=true").then((response) {
-  //   List<Business> businessList = new List();
-  //   final dynamic responseJson = json.decode(response.body);
-  //   responseJson["data"].forEach((f) => businessList.add(new Business.fromJson(f)));
-  //   print('Done Fetching businesses for commnuity: $communityAddress. length: ${businessList.length}');
-  //   return businessList;
-  // });
 }

@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:fusewallet/logic/crypto.dart';
 
@@ -27,7 +28,7 @@ class WalletLogic {
 
   static Future init() async {
     String privatekey = await getPrivateKey();
-    String mnemonic = await getMnemonic();
+    // String mnemonic = await getMnemonic();
     if (!await hasPrivateKey()) {
       String mnemonic = generateMnemonic();
       await setMnemonic(mnemonic);

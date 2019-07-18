@@ -1,14 +1,8 @@
 import 'dart:async';
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fusewallet/logic/crypto.dart';
 import 'package:fusewallet/logic/wallet_logic.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/signup/signup.dart';
-import 'package:fusewallet/widgets/widgets.dart';
-import 'package:fusewallet/logic/common.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 String injectScript = "";
@@ -91,7 +85,7 @@ document.head.appendChild(script1);
   }
 
   @override
-  Future initState() {
+  void initState() {
     super.initState();
     
     

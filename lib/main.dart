@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:core';
-import 'package:fusewallet/logic/common.dart';
-import 'package:flutter/services.dart';
 import 'package:fusewallet/logic/navigation.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
-//import 'package:fusewallet/app.dart';
-import 'package:fusewallet/screens/wallet.dart';
-import 'package:fusewallet/screens/receive.dart';
-import 'package:fusewallet/screens/send.dart';
-import 'package:fusewallet/screens/buy.dart';
 import 'package:fusewallet/splash.dart';
 import 'package:fusewallet/themes/fuse.dart';
 import 'package:redux/redux.dart';
-import 'globals.dart' as globals;
-import 'dart:io';
 import 'redux/reducers/app_reducer.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux_persist/redux_persist.dart';
@@ -40,8 +31,6 @@ void main() async {
     store: store,
   ));
 }
-
-//void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final Store<AppState> store;

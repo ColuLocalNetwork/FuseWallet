@@ -1,13 +1,7 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/modals/views/wallet_wrappermodel.dart';
-import 'package:fusewallet/redux/actions/signin_actions.dart';
-import 'package:fusewallet/redux/state/user_state.dart';
-import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
@@ -16,7 +10,6 @@ import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
-import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
@@ -43,46 +36,7 @@ class _WalletPageState extends State<WalletPage> {
   StreamSubscription _onDestroy;
   StreamSubscription _onUrlChange;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
-  //List<Transaction> transactionsList = [];
 
-/*
-  void loadCommunity() async {
-    var communityAddress = await getCommunityAddress();
-    await intializeCommunity(communityAddress);
-  }
-
-  void loadBalance() {
-    setState(() {
-      isLoading = true;
-    });
-
-    getPublickKey().then((_publicKey) {
-      getTokenAddress().then((tokenAddress) {
-        globals.publicKey = _publicKey;
-        print('my address: ' + _publicKey);
-        getBalance(_publicKey, tokenAddress).then((response) {
-          setState(() {
-            isLoading = false;
-            globals.balance = response.toString();
-          });
-        });
-      });
-    });
-  }
-
-  void loadTransactions() {
-    getPublickKey().then((_publicKey) {
-      getTokenAddress().then((tokenAddress) {
-        getTransactions(_publicKey, tokenAddress).then((list) {
-          setState(() {
-            transactionsList.clear();
-            transactionsList.addAll(list.transactions);
-          });
-        });
-      });
-    });
-  }
-*/
 
   void launchJoinWebview() async {
     var communityAddress = widget.walletWrapperViewModel.communityAddress;
@@ -117,11 +71,6 @@ class _WalletPageState extends State<WalletPage> {
     if (widget.walletWrapperViewModel.communityChanged) {
       launchJoinWebview();
 
-      _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-        if (mounted) {
-          // Actions like show a info toast.
-        }
-      });
 
       _onUrlChange = flutterWebviewPlugin.onUrlChanged.listen((String url) {
         if (mounted) {
@@ -163,11 +112,6 @@ class _WalletPageState extends State<WalletPage> {
 
     if (_has3boxAccount == false) {
       launchWebview();
-      // _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-      //   if (mounted) {
-      //     // Actions like show a info toast.
-      //   }
-      // });
 
       _onUrlChange = flutterWebviewPlugin.onUrlChanged.listen((String url) {
         if (mounted) {
@@ -195,17 +139,6 @@ class _WalletPageState extends State<WalletPage> {
       });
     }
 
-/*
-    loadCommunity();
-    loadBalance();
-    loadTransactions();
-    */
-
-    // initSocket((payload) {
-    //   loadBalance();
-    //   loadTransactions();
-    // });
-    //});
   }
 
   @override
@@ -221,7 +154,6 @@ class _WalletPageState extends State<WalletPage> {
 
   @override
   Widget build(BuildContext _context) {
-    GlobalKey<ScaffoldState> scaffoldState;
     return new Scaffold(
         key: globals.scaffoldKey,
         appBar: AppBar(
@@ -233,7 +165,7 @@ class _WalletPageState extends State<WalletPage> {
               //color: Theme.of(context).accentColor,
             ),
             onTap:
-                () {}, //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5"); },
+                () {}, //sendToken("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5"); },
           ),
           centerTitle: true,
           actions: <Widget>[
@@ -399,7 +331,7 @@ class _WalletPageState extends State<WalletPage> {
                                         ),
                                         onPressed: () async {
                                           openCameraScan(false);
-                                          //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
+                                          //sendToken("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
                                           //getEntity();
                                         }),
                                     width: 50.0,

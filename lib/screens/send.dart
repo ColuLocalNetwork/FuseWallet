@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/crypto.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
 
@@ -68,7 +68,7 @@ class _SendPageState extends State<SendPage> {
         isLoading = true;
       });
       try {
-        sendNIS(cleanAddress(addressController.text), int.parse(amountController.text))
+        sendToken(cleanAddress(addressController.text), int.parse(amountController.text))
             .then((ret) {
           Navigator.of(context).pop();
 

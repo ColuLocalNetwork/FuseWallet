@@ -10,7 +10,7 @@ final walletReducer = combineReducers<WalletState>([
   TypedReducer<WalletState, UpdateCommunityAddress>(_updateCommunityAddress),
   TypedReducer<WalletState, CommunityChanged>(_communityChanged),
   TypedReducer<WalletState, BusinessLoadedAction>(_businessLoaded),
-  TypedReducer<WalletState, StartFeatching>(_startLoadingBusiness),
+  TypedReducer<WalletState, StartFetching>(_startLoadingBusiness),
   TypedReducer<WalletState, DoneFeatching>(_doneLoadingBusiness),
 ]);
 
@@ -34,7 +34,7 @@ WalletState _updateCommunityAddress(WalletState state, UpdateCommunityAddress ac
   return state.copyWith(communityAddress: action.communityAddress, communityChanged: true);
 }
 
-WalletState _startLoadingBusiness(WalletState state, StartFeatching action) {
+WalletState _startLoadingBusiness(WalletState state, StartFetching action) {
   return state.copyWith(isFetchingBusinesses: true);
 }
 

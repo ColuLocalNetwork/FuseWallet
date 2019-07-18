@@ -19,12 +19,6 @@ class UserState {
       @required this.has3boxAccount});
 
   factory UserState.initial() {
-    //WalletLogic.isLogged().then((isLogged) {
-    //  if (isLogged) {
-    //    openPageReplace(context, WalletPage());
-    //  }
-    //});
-
     return new UserState(
         isLoading: false,
         loginError: false,

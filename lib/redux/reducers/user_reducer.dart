@@ -1,5 +1,4 @@
 
-import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/redux/actions/signin_actions.dart';
 import 'package:fusewallet/redux/state/user_state.dart';
 import 'package:redux/redux.dart';

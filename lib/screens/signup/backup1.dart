@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -24,7 +23,7 @@ class _Backup1PageState extends State<Backup1Page> {
   static GlobalKey<ScaffoldState> scaffoldState;
 
   @override
-  Future initState() {
+  void initState() {
     super.initState();
 
   }

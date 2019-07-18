@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'dart:math';
-import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -39,7 +38,7 @@ Future getBalance(accountAddress, tokenAddress) async {
   return balance;
 }
 
-Future sendNIS(toAccountAddress, amount) async {
+Future sendToken(toAccountAddress, amount) async {
   var httpClient = new Client();
   var ethClient = new Web3Client(_URL, httpClient);
 
@@ -51,7 +50,7 @@ Future sendNIS(toAccountAddress, amount) async {
       contractABI, new EthereumAddress(await getTokenAddress()), ethClient, credentials);
 
 //, EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1)
-  var getKittyFn = contract.findFunctionsByName("transfer").first;
+  var transferFn = contract.findFunctionsByName("transfer").first;
   toAccountAddress = cleanAddress(toAccountAddress);
   var n = BigInt.parse(numbers.strip0x(toAccountAddress), radix: 16);
   var kittenResponse = await new Transaction(
@@ -60,7 +59,7 @@ Future sendNIS(toAccountAddress, amount) async {
           gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1))
       .prepareForPaymentCall(
           contract,
-          getKittyFn,
+          transferFn,
           [n, BigInt.from(amount) * BigInt.from(1000000000000000000)],
           EtherAmount.zero())
       .send(ethClient, chainId: 121);

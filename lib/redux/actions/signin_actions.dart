@@ -6,7 +6,6 @@ import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/screens/signup/signin_verification.dart';
 import 'package:fusewallet/screens/signup/signup.dart';
-import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/screens/wallet_wrapper.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:redux/redux.dart';

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
@@ -21,7 +23,7 @@ ThunkAction fetchBusinesses() {
 Future loadBusinesses(Store store) async {
   print('loadBusinesses');
   final String communityAddress = store.state.walletState.communityAddress;
-  store.dispatch(new StartFeatching());
+  store.dispatch(new StartFetching());
   var businesseses = await getBusinesses(communityAddress);
   store.dispatch(new DoneFeatching());
   store.dispatch(new BusinessLoadedAction(businesseses));
@@ -47,34 +49,13 @@ Future loadBalance(Store store) async {
 
 
 
-Future loadTransactions(Store store) {
+Future loadTransactions(Store store) async {
   var publicKey = store.state.userState.user.publicKey;
   var tokenAddress = store.state.walletState.tokenAddress;
   getTransactions(publicKey, tokenAddress).then((list) {
     store.dispatch(new TransactionsLoadedAction(list));
   });
 }
-
-/*
-void loadBalance() {
-  setState(() {
-    isLoading = true;
-  });
-
-  getPublickKey().then((_publicKey) {
-    getTokenAddress().then((tokenAddress) {
-      globals.publicKey = _publicKey;
-      print('my address: ' + _publicKey);
-      getBalance(_publicKey, tokenAddress).then((response) {
-        setState(() {
-          isLoading = false;
-          globals.balance = response.toString();
-        });
-      });
-    });
-  });
-}
-*/
 
 class WalletLoadedAction {
   WalletLoadedAction();
@@ -121,8 +102,8 @@ class BusinessLoadedAction {
   BusinessLoadedAction(this.businesseses);
 }
 
-class StartFeatching {
-  StartFeatching();
+class StartFetching {
+  StartFetching();
 }
 
 class DoneFeatching {

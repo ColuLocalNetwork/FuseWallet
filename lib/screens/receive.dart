@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/logic/nfc_logic.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'dart:core';
 import 'package:qr_flutter/qr_flutter.dart';

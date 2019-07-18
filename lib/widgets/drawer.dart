@@ -178,7 +178,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             title: Text('Web', style: TextStyle(fontSize: 16),),
             onTap: () {
-              openPage(context, WebPage());
+              openPage(context, WebPageWrapper());
             },
           ),
           Divider(),

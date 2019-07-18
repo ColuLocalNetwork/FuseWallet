@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/logic/crypto.dart';
-//import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
-import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/screens/receive.dart';
 import 'package:fusewallet/screens/send.dart';
@@ -59,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
               gaplessPlayback: true,
             ),
             onTap:
-                () {}, //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5"); },
+                () {}, //sendToken("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5"); },
           ),
           centerTitle: true,
           actions: <Widget>[
@@ -113,8 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class transferPrompt extends StatefulWidget {
-  transferPrompt({Key key, this.outerContext}) : super(key: key);
+class TransferPrompt extends StatefulWidget {
+  TransferPrompt({Key key, this.outerContext}) : super(key: key);
 
   final dynamic outerContext;
 
@@ -122,7 +117,7 @@ class transferPrompt extends StatefulWidget {
   _MyDialogContentState createState() => new _MyDialogContentState();
 }
 
-class _MyDialogContentState extends State<transferPrompt> {
+class _MyDialogContentState extends State<TransferPrompt> {
   bool isLoading = false;
   final myController = TextEditingController(text: "10");
 
@@ -156,7 +151,7 @@ class _MyDialogContentState extends State<transferPrompt> {
             });
 /*
             //sendAddress = "0x104602283d94236bcea2af119d2f37d21540068c";
-            sendNIS(sendAddress, int.parse(myController.text), null).then((ret) {
+            sendToken(sendAddress, int.parse(myController.text), null).then((ret) {
               Navigator.of(context).pop();
 
               Scaffold.of(widget.outerContext).showSnackBar(new SnackBar(
