@@ -12,7 +12,7 @@ ThunkAction initWalletCall() {
 
 Future loadCommunity(Store store) async {
   var communityAddress = store.state.walletState.communityAddress;
-  if (communityAddress == null) {
+  if ((communityAddress ?? "") == "") {
     communityAddress = DEFAULT_COMMUNITY;
   }
   var tokenAddress = await getTokenAddress(communityAddress);
@@ -37,27 +37,6 @@ Future loadTransactions(Store store) {
     store.dispatch(new TransactionsLoadedAction(list));
   });
 }
-
-/*
-void loadBalance() {
-  setState(() {
-    isLoading = true;
-  });
-
-  getPublickKey().then((_publicKey) {
-    getTokenAddress().then((tokenAddress) {
-      globals.publicKey = _publicKey;
-      print('my address: ' + _publicKey);
-      getBalance(_publicKey, tokenAddress).then((response) {
-        setState(() {
-          isLoading = false;
-          globals.balance = response.toString();
-        });
-      });
-    });
-  });
-}
-*/
 
 class WalletLoadedAction {
   WalletLoadedAction();

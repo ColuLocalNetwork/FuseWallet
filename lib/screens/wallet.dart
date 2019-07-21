@@ -12,6 +12,9 @@ import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/widgets/widgets.dart';
+import 'package:fusewallet/localizations/localizations.dart'
+    show MyLocalizations, MyLocalizationsDelegate;
+import 'package:fusewallet/generated/i18n.dart';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key key, this.title}) : super(key: key);
@@ -24,61 +27,11 @@ class WalletPage extends StatefulWidget {
 
 class _WalletPageState extends State<WalletPage> {
   bool isLoading = true;
-  //List<Transaction> transactionsList = [];
-
-/*
-  void loadCommunity() async {
-    var communityAddress = await getCommunityAddress();
-    await intializeCommunity(communityAddress);
-  }
-
-  void loadBalance() {
-    setState(() {
-      isLoading = true;
-    });
-
-    getPublickKey().then((_publicKey) {
-      getTokenAddress().then((tokenAddress) {
-        globals.publicKey = _publicKey;
-        print('my address: ' + _publicKey);
-        getBalance(_publicKey, tokenAddress).then((response) {
-          setState(() {
-            isLoading = false;
-            globals.balance = response.toString();
-          });
-        });
-      });
-    });
-  }
-
-  void loadTransactions() {
-    getPublickKey().then((_publicKey) {
-      getTokenAddress().then((tokenAddress) {
-        getTransactions(_publicKey, tokenAddress).then((list) {
-          setState(() {
-            transactionsList.clear();
-            transactionsList.addAll(list.transactions);
-          });
-        });
-      });
-    });
-  }
-*/
 
   @override
   void initState() {
     super.initState();
-/*
-    loadCommunity();
-    loadBalance();
-    loadTransactions();
-    */
 
-    // initSocket((payload) {
-    //   loadBalance();
-    //   loadTransactions();
-    // });
-    //});
   }
 
   @override
@@ -93,25 +46,29 @@ class _WalletPageState extends State<WalletPage> {
               'images/' + globals.walletLogo,
               width: 95.0,
               gaplessPlayback: true,
-              //color: Theme.of(context).accentColor,
             ),
             onTap:
-                () {}, //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5"); },
+                () {},
           ),
           centerTitle: true,
           actions: <Widget>[
-            Builder(
+            new StoreConnector<AppState, WalletViewModel>(
+              converter: (store) {
+            return WalletViewModel.fromStore(store);
+          },
+              builder: (_, viewModel) {
+                return Builder(
                 builder: (context) => IconButton(
                       icon: const Icon(Icons.refresh),
                       color: const Color(0xFFFFFFFF),
                       tooltip: 'refresh',
                       onPressed: () async {
-                        //loadBalance();
-                        //loadTransactions();
-
-                        //print(generateMnemonic());
+                        viewModel.initWallet();
                       },
-                    )),
+                    ));
+              },
+            )
+            ,
           ],
           elevation: 0.0,
         ),
@@ -152,7 +109,7 @@ class _WalletPageState extends State<WalletPage> {
                                 style: Theme.of(context).textTheme.title,
                                 children: <TextSpan>[
                                   new TextSpan(
-                                      text: 'Welcome',
+                                      text: I18n.of(context).welcome,
                                       style: TextStyle(
                                           fontSize: 42,
                                           color: Colors.white,
@@ -182,7 +139,7 @@ class _WalletPageState extends State<WalletPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     new Container(
-                                      child: Text("Balance",
+                                      child: Text(I18n.of(context).balance,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 14.0)),
@@ -223,8 +180,6 @@ class _WalletPageState extends State<WalletPage> {
                                           */
                                           new RichText(
                                               text: new TextSpan(
-                                                // Note: Styles for TextSpans must be explicitly defined.
-                                                // Child text spans will inherit styles from parent
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .title,
@@ -261,8 +216,6 @@ class _WalletPageState extends State<WalletPage> {
                                       ),
                                       onPressed: () async {
                                         openCameraScan(false);
-                                        //sendNIS("0x1b36c26c8f3b330787f6be03083eb8b9b2f1a6d5", 52);
-                                        //getEntity();
                                       }),
                                   width: 50.0,
                                   height: 50.0,
@@ -278,7 +231,7 @@ class _WalletPageState extends State<WalletPage> {
                 ],
               ),
             ),
-            bottomBar()
+            bottomBar(context)
           ],
         );
           })

@@ -49,7 +49,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -67,7 +68,7 @@ flutter:
   assets:
     - images/
     - data/
-
+    - assets/i18n/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

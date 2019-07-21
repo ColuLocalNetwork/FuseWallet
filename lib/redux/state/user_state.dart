@@ -25,7 +25,7 @@ class UserState {
     //  }
     //});
     
-    return new UserState(isLoading: false, loginError: false, user: null);
+    return new UserState(isLoading: false, loginError: false, user: null, isUserLogged: false, verificationCode: "");
   }
 
   UserState copyWith({bool isLoading, bool loginError, bool isUserLogged, User user, String verificationCode}) {

@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:intl/intl.dart';
+import 'package:fusewallet/generated/i18n.dart';
 
 //class TransactionsList extends StatefulWidget {
 //  TransactionsList({Key key, this.transactions}) : super(key: key);
@@ -115,14 +116,14 @@ class TransactionsEmpty extends StatelessWidget {
                   width: 120.0),
           ),
         ),
-        new Text("You have no transactions yet",
+        new Text(I18n.of(context).noTransactions,
             style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 14)),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset('images/recieve.png', width: 28.0, color: Theme.of(context).primaryColor),
-            new Text("Receive coins",
+            new Text(I18n.of(context).receiveCoins,
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 18,

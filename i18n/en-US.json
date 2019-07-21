@@ -1,0 +1,9 @@
+{
+    "welcome": "Welcome",
+    "balance": "Balance",
+    "noTransactions": "You have no transactions yet",
+    "receiveCoins": "Receive coins",
+    "receive": "Receive",
+    "buy": "Buy",
+    "send": "Send"
+}

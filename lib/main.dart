@@ -20,6 +20,8 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fusewallet/generated/i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
 
@@ -43,10 +45,19 @@ void main() async {
 
 //void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  final Store<AppState> store;
-
+class MyApp extends StatefulWidget {
   MyApp({Key key, this.store}) : super(key: key);
+  Store<AppState> store;
+
+  @override
+  _MyAppState createState() => _MyAppState(store);
+}
+
+class _MyAppState extends State<MyApp> {
+  Store<AppState> store;
+ _MyAppState(this. store);
+
+  final i18n = I18n.delegate;
 
   /*
   final Store<AppState> store = Store<AppState>(
@@ -55,9 +66,26 @@ class MyApp extends StatelessWidget {
     middleware: createStoreMiddleware(),
   );
   */
+  
+  void onLocaleChange(Locale locale) {
+    setState(() {
+      I18n.locale = locale;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //_newLocaleDelegate = AppTranslationsDelegate(newLocale: null);
+    I18n.onLocaleChanged = onLocaleChange;
+  }
 
   @override
   Widget build(BuildContext context) {
+    
+
+    //I18n.onLocaleChanged = onLocaleChange;
+
     return new Column(
       children: <Widget>[
         new Expanded(
@@ -67,8 +95,15 @@ class MyApp extends StatelessWidget {
               title: 'Fuse Wallet',
               navigatorKey: Keys.navKey,
               theme: getTheme(),
-              home: SplashScreen() //WalletPage(title: 'Fuse Wallet'),
-              
+              home: SplashScreen(), //WalletPage(title: 'Fuse Wallet'),
+              localizationsDelegates: [
+                i18n,
+                GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: i18n.supportedLocales,
+              localeResolutionCallback: i18n.resolution(fallback: new Locale("en", "US")),
+              locale:  new Locale("he"),
               ),
           ),
         ),

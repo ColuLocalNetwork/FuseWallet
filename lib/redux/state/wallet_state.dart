@@ -17,7 +17,7 @@ class WalletState {
   });
 
   factory WalletState.initial() {
-    return new WalletState(balance: "0", transactions: null);
+    return new WalletState(balance: "0", transactions: null, tokenAddress: "", communityAddress: "");
   }
 
   WalletState copyWith({String balance, TransactionList transactions, String communityAddress, String tokenAddress}) {
@@ -37,7 +37,7 @@ class WalletState {
   //int get hashCode => isLoading.hashCode ^ user.hashCode;
 
   static WalletState fromJson(dynamic json) =>
-      WalletState(balance: json["balance"], transactions: null);
+      WalletState(balance: json["balance"], transactions: null, tokenAddress: "", communityAddress: "");
 
   dynamic toJson() => {'balance': balance};
 }

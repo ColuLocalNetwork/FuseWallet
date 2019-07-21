@@ -15,6 +15,7 @@ import 'dart:convert';
 //import 'package:local_auth/local_auth.dart';
 
 import 'package:fusewallet/splash.dart';
+import 'language-selector.dart';
 
 class DrawerWidget extends StatefulWidget {
   DrawerWidget({Key key, this.title}) : super(key: key);
@@ -183,7 +184,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           Divider(),
-          
+          new LanguageSelector()
         ],
       ),
     );

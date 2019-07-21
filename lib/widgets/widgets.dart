@@ -7,6 +7,7 @@ import 'package:fusewallet/logic/wallet_logic.dart';
 import 'package:fusewallet/screens/buy.dart';
 import 'package:fusewallet/screens/receive.dart';
 import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/generated/i18n.dart';
 
 class CustomScaffold extends StatelessWidget {
   CustomScaffold({this.title, this.children, this.key});
@@ -153,7 +154,7 @@ class Preloader extends StatelessWidget {
   }
 }
 
-Widget bottomBar() {
+Widget bottomBar(context) {
   return new Container(
     padding: EdgeInsets.only(
         top: 0.0, bottom: isIPhoneX() ? 16 : 0, right: 0.0, left: 0.0),
@@ -164,13 +165,13 @@ Widget bottomBar() {
         //crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          bottomBarItem("send.png", "Send", () {
+          bottomBarItem("send.png", I18n.of(context).send, () {
             openPage(globals.scaffoldKey.currentContext, new SendPage());
           }),
-          bottomBarItem("buy.png", "Buy", () {
+          bottomBarItem("buy.png", I18n.of(context).buy, () {
             openPage(globals.scaffoldKey.currentContext, new BuyPage());
           }),
-          bottomBarItem("recieve.png", "Receive", () {
+          bottomBarItem("recieve.png", I18n.of(context).receive, () {
             openPage(globals.scaffoldKey.currentContext, new ReceivePage());
           })
         ],
