@@ -11,6 +11,7 @@ import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/screens/switch_community.dart';
 import 'package:fusewallet/screens/web.dart';
+import 'package:fusewallet/screens/web2.dart';
 import 'dart:convert';
 //import 'package:local_auth/local_auth.dart';
 
@@ -180,7 +181,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             title: Text('Web', style: TextStyle(fontSize: 16),),
             onTap: () {
-              openPage(context, WebPage());
+              openPage(context, WebViewExample());
             },
           ),
           Divider(),

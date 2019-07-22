@@ -47,6 +47,18 @@ class I18n implements WidgetsLocalizations {
   String get buy => "Buy";
   /// "Send"
   String get send => "Send";
+  /// "Scan an QR code to send money"
+  String get sendDescription => "Scan an QR code to send money";
+  /// "Address"
+  String get address => "Address";
+  /// "Amount"
+  String get amount => "Amount";
+  /// "Scan the QR code to receive money"
+  String get receiveDescription => "Scan the QR code to receive money";
+  /// "Copy to clipboard"
+  String get copyToClipboard => "Copy to clipboard";
+  /// "Transaction sent successfully"
+  String get transactionSent => "Transaction sent successfully";
 }
 
 class _I18n_en_US extends I18n {

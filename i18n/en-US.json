@@ -5,5 +5,11 @@
     "receiveCoins": "Receive coins",
     "receive": "Receive",
     "buy": "Buy",
-    "send": "Send"
+    "send": "Send",
+    "sendDescription": "Scan an QR code to send money",
+    "address": "Address",
+    "amount": "Amount",
+    "receiveDescription": "Scan the QR code to receive money",
+    "copyToClipboard": "Copy to clipboard",
+    "transactionSent": "Transaction sent successfully"
 }

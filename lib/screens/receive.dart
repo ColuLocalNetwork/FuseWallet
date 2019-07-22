@@ -4,6 +4,7 @@ import 'package:fusewallet/widgets/widgets.dart';
 import 'dart:core';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/generated/i18n.dart';
 
 class ReceivePage extends StatefulWidget {
   ReceivePage({Key key, this.title}) : super(key: key);
@@ -42,7 +43,7 @@ class _ReceivePageState extends State<ReceivePage> {
             expandedHeight: 100,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("Receive",
+              title: Text(I18n.of(context).receive,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 20,
@@ -68,7 +69,7 @@ class _ReceivePageState extends State<ReceivePage> {
                 Padding(
                   padding: EdgeInsets.only(top: 0),
                   child: Text(
-                      "Scan the QR code to receive money",
+                      I18n.of(context).receiveDescription,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,

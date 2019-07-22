@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
               ],
               supportedLocales: i18n.supportedLocales,
               localeResolutionCallback: i18n.resolution(fallback: new Locale("en", "US")),
-              locale:  new Locale("he"),
+              //locale:  new Locale("he"),
               ),
           ),
         ),

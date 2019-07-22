@@ -7,6 +7,7 @@ import 'package:fusewallet/widgets/widgets.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/generated/i18n.dart';
 
 Future scan() async {
   try {
@@ -94,7 +95,7 @@ class _SendPageState extends State<SendPage> {
 
     return 
     CustomScaffold(
-      title: "Send",
+      title: I18n.of(context).send,
       children: <Widget>[
         
             Container(
@@ -105,7 +106,7 @@ class _SendPageState extends State<SendPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 0),
                   child: Text(
-                      "Scan an QR code to send money",
+                      I18n.of(context).sendDescription,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
@@ -131,8 +132,8 @@ class _SendPageState extends State<SendPage> {
                     style: const TextStyle(
                               fontSize: 18
                             ),
-                    decoration: const InputDecoration(
-                      labelText: 'Address',
+                    decoration: InputDecoration(
+                      labelText: I18n.of(context).address,
                     ),
                     validator: (String value) {
                       if (value.trim().isEmpty) {
@@ -164,8 +165,8 @@ class _SendPageState extends State<SendPage> {
                     style: const TextStyle(
                               fontSize: 18
                             ),
-                    decoration: const InputDecoration(
-                      labelText: 'Amount',
+                    decoration: InputDecoration(
+                      labelText: I18n.of(context).amount,
                     ),
                     validator: (String value) {
                       if (value.trim().isEmpty) {
@@ -189,7 +190,7 @@ class _SendPageState extends State<SendPage> {
                   const SizedBox(height: 30.0),
                   Center(
                     child: PrimaryButton(
-                      label: "SEND",
+                      label: I18n.of(context).send,
                       onPressed: () async {
                         sendTransaction(context);
                       },
