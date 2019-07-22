@@ -21,7 +21,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   web3dart: ^0.4.5
   barcode_scan: ^1.0.0
-  shared_preferences: ^0.4.3
+  shared_preferences: ^0.5.1+1
   qr_flutter:
     git:
       url: git://github.com/lukef/qr.flutter.git
@@ -37,15 +37,20 @@ dependencies:
   country_code_picker: ^1.1.5
   firebase_auth: ^0.11.0
   local_auth: ^0.4.0+1
-  webview_flutter: ^0.3.6
+  webview_flutter: ^0.3.10+3
   flutter_webview_plugin: ^0.3.5
   #flutter_beacon: ^0.2.2
   #beacon_broadcast: ^0.2.1
+  flutter_redux: ^0.5.3
+  redux_thunk: ^0.2.1
+  redux_persist: "^0.8.0"
+  redux_persist_flutter: ^0.8.1
     
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -63,7 +68,7 @@ flutter:
   assets:
     - images/
     - data/
-
+    - assets/i18n/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

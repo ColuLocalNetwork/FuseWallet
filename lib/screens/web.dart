@@ -132,6 +132,7 @@ document.head.appendChild(script1);
       body: new WebviewScaffold(
         url: "https://communities-qa.cln.network",
         withJavascript: true,
+        hidden: true,
       ),
       floatingActionButton: favoriteButton(),
     );

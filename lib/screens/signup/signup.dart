@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/crypto.dart';
+import 'package:fusewallet/modals/views/signin_viewmodel.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
 import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/widgets/widgets.dart';
@@ -30,115 +33,101 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    CustomScaffold(
-      title: "Sign up",
-      children: <Widget>[
-        
-          Container(
-            //color: Theme.of(context).primaryColor,
-            padding: EdgeInsets.all(20.0),
+    return CustomScaffold(title: "Sign up", children: <Widget>[
+      Container(
+        //color: Theme.of(context).primaryColor,
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
+              child: Text(
+                  "Enter your information, this will only be shared with your consent",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal)),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Image.asset('images/signin.png', width: 300),
+            )
+          ],
+        ),
+      ),
+      new StoreConnector<AppState, SignInViewModel>(converter: (store) {
+        return SignInViewModel.fromStore(store);
+      }, builder: (_, viewModel) {
+        Padding(
+          padding: EdgeInsets.only(top: 10, left: 30, right: 30),
+          child: Form(
+            key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
-                  child: Text("Enter your information, this will only be shared with your consent",
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal)),
+                TextFormField(
+                  controller: firstNameController,
+                  autofocus: true,
+                  style: const TextStyle(fontSize: 18),
+                  decoration: const InputDecoration(
+                    labelText: 'First name',
+                  ),
+                  validator: (String value) {
+                    if (value.trim().isEmpty) {
+                      return 'First name is required';
+                    }
+                  },
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 30),
-                  child: Image.asset('images/signin.png', width: 300),
-                )
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: lastNameController,
+                  style: const TextStyle(fontSize: 18),
+                  decoration: const InputDecoration(
+                    labelText: 'Last name',
+                  ),
+                  validator: (String value) {
+                    if (value.trim().isEmpty) {
+                      return 'Last name is required';
+                    }
+                  },
+                ),
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: emailController,
+                  style: const TextStyle(fontSize: 18),
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                  ),
+                  validator: (String value) {
+                    if (value.trim().isEmpty) {
+                      return 'Email is required';
+                    }
+                    if (!isValidEmail(value.trim())) {
+                      return 'Please enter valid email';
+                    }
+                  },
+                ),
+                const SizedBox(height: 16.0),
+                Center(
+                  child: PrimaryButton(
+                    label: "NEXT",
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        viewModel.signUp(
+                            context,
+                            firstNameController.text.trim(),
+                            lastNameController.text.trim(),
+                            emailController.text.trim());
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 10, left: 30, right: 30),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextFormField(
-                    controller: firstNameController,
-                    autofocus: true,
-                    style: const TextStyle(
-                              fontSize: 18
-                            ),
-                    decoration: const InputDecoration(
-                      labelText: 'First name',
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'First name is required';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: lastNameController,
-                    style: const TextStyle(
-                              fontSize: 18
-                            ),
-                    decoration: const InputDecoration(
-                      labelText: 'Last name',
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'Last name is required';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: emailController,
-                    style: const TextStyle(
-                              fontSize: 18
-                            ),
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'Email is required';
-                      }
-                      if (!isValidEmail(value.trim())) {
-                        return 'Please enter valid email';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  Center(
-                    child: 
-                    PrimaryButton(
-                      label: "NEXT",
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
-                          UserUpdateInfo userInfo = new UserUpdateInfo();
-                          userInfo.displayName = firstNameController.text.trim();
-                          userInfo.photoUrl = lastNameController.text.trim();
-                          currentUser.updateProfile(userInfo);
-                          //currentUser.updateEmail(emailController.text.trim());
-
-                          await storage.write(key: "firstName", value: firstNameController.text.trim());
-                          await storage.write(key: "lastName", value: lastNameController.text.trim());
-                          await storage.write(key: "email", value: emailController.text.trim());
-                          openPage(context, new Backup1Page());
-                        }
-                      },
-                    )
-                    
-                    
-                    ,
-                  ),
-                ],
-              ),
-            ),
-          )
-      ]);
+        );
+      })
+    ]);
   }
 }

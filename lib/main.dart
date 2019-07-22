@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:core';
 import 'package:fusewallet/logic/common.dart';
 import 'package:flutter/services.dart';
+import 'package:fusewallet/logic/navigation.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 //import 'package:fusewallet/app.dart';
 import 'package:fusewallet/screens/wallet.dart';
 import 'package:fusewallet/screens/receive.dart';
@@ -9,74 +12,100 @@ import 'package:fusewallet/screens/send.dart';
 import 'package:fusewallet/screens/buy.dart';
 import 'package:fusewallet/splash.dart';
 import 'package:fusewallet/themes/fuse.dart';
+import 'package:redux/redux.dart';
 import 'globals.dart' as globals;
 import 'dart:io';
+import 'redux/reducers/app_reducer.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:redux_persist_flutter/redux_persist_flutter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fusewallet/generated/i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() => runApp(MyApp());
+void main() async {
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  final persistor = Persistor<AppState>(
+    storage: FlutterStorage(key: "app2"),
+    serializer: JsonSerializer<AppState>(AppState.fromJson),
+  );
 
-  Widget bottomBar() {
-    return new Container(
-      padding: EdgeInsets.only(
-          top: 0.0, bottom: isIPhoneX() ? 16 : 0, right: 0.0, left: 0.0),
-      color: const Color(0xFFFFFFFF),
-      child: new Directionality(
-        textDirection: TextDirection.rtl,
-        child: new Row(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            bottomBarItem("send.png", "Send", () {
-              scan();
-            }),
-            bottomBarItem("buy.png", "Buy", () {
-              openPage(globals.scaffoldKey.currentContext, new BuyPage());
-            }),
-            bottomBarItem("recieve.png", "Receive", () {
-              openPage(globals.scaffoldKey.currentContext, new ReceivePage());
-            })
-          ],
-        ),
-      ),
-    );
+  final initialState = await persistor.load();
+  
+  final store = Store<AppState>(
+      appReducer,
+      initialState: initialState ?? new AppState.initial(),
+      middleware: [thunkMiddleware, persistor.createMiddleware()]
+  );
+  
+  runApp(new MyApp(
+    store: store,
+  ));
+}
+
+//void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  MyApp({Key key, this.store}) : super(key: key);
+  Store<AppState> store;
+
+  @override
+  _MyAppState createState() => _MyAppState(store);
+}
+
+class _MyAppState extends State<MyApp> {
+  Store<AppState> store;
+ _MyAppState(this. store);
+
+  final i18n = I18n.delegate;
+
+  /*
+  final Store<AppState> store = Store<AppState>(
+    appReducer, /* Function defined in the reducers file */
+    initialState: AppState.initial(),
+    middleware: createStoreMiddleware(),
+  );
+  */
+  
+  void onLocaleChange(Locale locale) {
+    setState(() {
+      I18n.locale = locale;
+    });
   }
 
-  Widget bottomBarItem(String img, String text, ontap) {
-    return new Material(
-      color: Colors.transparent,
-      child: new InkWell(
-        borderRadius: BorderRadius.all(new Radius.circular(30.0)),
-        child: new Container(
-          width: 100,
-          padding: const EdgeInsets.only(
-              top: 5.0, bottom: 5.0, right: 0.0, left: 0.0),
-          child: new Column(
-            children: <Widget>[
-              Image.asset('images/' + img,
-                  width: 28.0, color: const Color(0xFF979797)),
-              new Text(text,
-                  style: new TextStyle(
-                      fontSize: 14.0, color: const Color(0xFF979797)))
-            ],
-          ),
-        ),
-        onTap: ontap,
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    //_newLocaleDelegate = AppTranslationsDelegate(newLocale: null);
+    I18n.onLocaleChanged = onLocaleChange;
   }
 
   @override
   Widget build(BuildContext context) {
+    
+
+    //I18n.onLocaleChanged = onLocaleChange;
+
     return new Column(
       children: <Widget>[
         new Expanded(
-          child: new MaterialApp(
+          child: new StoreProvider<AppState> (
+            store: store,
+            child: new MaterialApp(
               title: 'Fuse Wallet',
+              navigatorKey: Keys.navKey,
               theme: getTheme(),
-              home: SplashScreen() //WalletPage(title: 'Fuse Wallet'),
+              home: SplashScreen(), //WalletPage(title: 'Fuse Wallet'),
+              localizationsDelegates: [
+                i18n,
+                GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: i18n.supportedLocales,
+              localeResolutionCallback: i18n.resolution(fallback: new Locale("en", "US")),
+              //locale:  new Locale("he"),
               ),
+          ),
         ),
         //globals.showBottomBar ? bottomBar() : Divider()
       ],
