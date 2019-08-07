@@ -205,9 +205,10 @@ Widget bottomBarItem(String img, String text, ontap) {
 }
 
 class CopyToClipboard extends StatelessWidget {
-  CopyToClipboard({this.scaffoldState, this.context});
+  CopyToClipboard({this.scaffoldState, this.context, this.content});
   final GlobalKey<ScaffoldState> scaffoldState;
   final BuildContext context;
+  final String content;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +220,7 @@ class CopyToClipboard extends StatelessWidget {
               fontWeight: FontWeight.w500)),
       onTap: () async {
         Clipboard.setData(
-            new ClipboardData(text: await WalletLogic.getMnemonic()));
+            new ClipboardData(text: content));
         Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(
             "Copied to Clipboard",

@@ -51,7 +51,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
       key: new Key(_key.toString()),
       initiallyExpanded: false,
       title: new Row(
-        children: [new Text("language")],
+        children: [new Text("Language", style: TextStyle(fontSize: 16))],
       ),
       children: _languageItems(),
     );

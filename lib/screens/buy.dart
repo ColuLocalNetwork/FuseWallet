@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:core';
 import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/screens/shop.dart';
+import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
+import 'package:fusewallet/redux/actions/wallet_actions.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
+import 'package:fusewallet/screens/business.dart';
 import 'package:fusewallet/globals.dart' as globals;
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/screens/send.dart';
@@ -16,14 +20,13 @@ class BuyPage extends StatefulWidget {
   _BuyPageState createState() => _BuyPageState();
 }
 
-List<Business> businessesList = [];
+//List<Business> businessesList = [];
 
 class _BuyPageState extends State<BuyPage> {
   GlobalKey<ScaffoldState> scaffoldState;
-  bool isLoading = false;
-  final addressController = TextEditingController(text: "");
-  final amountController = TextEditingController(text: "");
+  //bool isLoading = false;
 
+/*
   void loadBusinesses() {
     setState(() {
      isLoading = true; 
@@ -38,12 +41,13 @@ class _BuyPageState extends State<BuyPage> {
       }
     });
   }
+*/
 
   @override
   void initState() {
     super.initState();
 
-    loadBusinesses();
+    //loadBusinesses();
   }
 
   @override
@@ -64,10 +68,23 @@ class _BuyPageState extends State<BuyPage> {
                     fontSize: 38,
                     fontWeight: FontWeight.bold)),
           ),
-          !isLoading ? new BusinessesListView() : Padding(
-                  child: Preloader(),
-                  padding: EdgeInsets.only(top: 70),
-                )
+          new StoreConnector<AppState, WalletViewModel>(
+            converter: (store) {
+              return WalletViewModel.fromStore(store);
+            },
+            onInitialBuild: (viewModel) {
+              viewModel.loadBusinesses();
+            },
+            builder: (_, viewModel) {
+              return Builder(
+                  builder: (context) => !viewModel.isLoading
+                      ? new BusinessesListView()
+                      : Padding(
+                          child: Preloader(),
+                          padding: EdgeInsets.only(top: 70),
+                        ));
+            },
+          )
         ]));
   }
 }
@@ -80,75 +97,102 @@ class BusinessesListView extends StatefulWidget {
 class BusinessesListViewState extends State<BusinessesListView> {
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      padding: const EdgeInsets.all(8.0),
-      child: new Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        textDirection: TextDirection.rtl,
-        children: <Widget>[
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              new Expanded(
-                child: new Padding(
-                    padding: new EdgeInsets.only(bottom: 5.0),
-                    child: ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) =>
-                          new Divider(),
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      itemCount: businessesList.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading:
-                          Container(width: 50,height: 50, decoration: BoxDecoration(
-                            //color: Colors.black12
-                          ),child: ClipOval(
-                              child: Image.network(
-                            businessesList[index].image,
-                            fit: BoxFit.cover,
-                            width: 50.0,
-                            height: 50.0,
-                          )),)
-                           ,
-                          title: Text(businessesList[index].name,style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900),),
-                          subtitle: Text(businessesList[index].address),
-                          onTap: () {
-                            openPage(
-                                globals.scaffoldKey.currentContext,
-                                new ShopPage(
-                                  business: businessesList[index],
-                                ));
-                          },
-                          trailing: FlatButton(
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(30.0)),
-                            color: Theme.of(context).accentColor,
-                            padding: EdgeInsets.all(0),
-                            child: Text(
-                              "Pay",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              openPage(globals.scaffoldKey.currentContext, new SendPage(address: businessesList[index].account));
-                            },
-                          ),
-                        );
-                      },
-                    )),
-              )
-            ],
-          )
-        ],
-      ),
+    return new StoreConnector<AppState, WalletViewModel>(
+      converter: (store) {
+        return WalletViewModel.fromStore(store);
+      },
+      builder: (_, viewModel) {
+        return Builder(
+            builder: (context) => new Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    textDirection: TextDirection.rtl,
+                    children: <Widget>[
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          new Expanded(
+                            child: new Padding(
+                                padding: new EdgeInsets.only(bottom: 5.0),
+                                child: ListView.separated(
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          new Divider(),
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  itemCount: viewModel.businesses?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      leading: Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            //color: Colors.black12
+                                            ),
+                                        child: ClipOval(
+                                            child: Image.network(
+                                          viewModel.businesses[index].image,
+                                          fit: BoxFit.cover,
+                                          width: 50.0,
+                                          height: 50.0,
+                                        )),
+                                      ),
+                                      title: Text(
+                                        viewModel.businesses[index].name,
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w900),
+                                      ),
+                                      subtitle: Text(
+                                          viewModel.businesses[index].address),
+                                      onTap: () {
+                                        openPage(
+                                            globals.scaffoldKey.currentContext,
+                                            new BusinessPage(
+                                              business:
+                                                  viewModel.businesses[index],
+                                            ));
+                                      },
+                                      trailing: FlatButton(
+                                        shape: new RoundedRectangleBorder(
+                                            borderRadius:
+                                                new BorderRadius.circular(
+                                                    30.0)),
+                                        color: Theme.of(context).accentColor,
+                                        padding: EdgeInsets.all(0),
+                                        child: Text(
+                                          "Pay",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          openPage(
+                                              globals
+                                                  .scaffoldKey.currentContext,
+                                              new SendPage(
+                                                  address: viewModel
+                                                      .businesses[index]
+                                                      .account));
+                                        },
+                                      ),
+                                    );
+                                  },
+                                )),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ));
+      },
     );
   }
 }
