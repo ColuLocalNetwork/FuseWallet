@@ -63,6 +63,9 @@ ThunkAction sendCodeToPhoneNumberCall(BuildContext context, String phone) {
           assert(user.uid == currentUser.uid);
 
           var _user = store.state.userState.user;
+          if (_user == null) {
+            _user = new User();
+          }
           _user.firstName = currentUser.displayName;
           _user.lastName = currentUser.photoUrl;
           _user.email = currentUser.email;
@@ -141,14 +144,8 @@ ThunkAction signInWithPhoneNumberCall(BuildContext context, String smsCode) {
         openPage(context, new SignUpPage());
       }
 
-      //setState(() {
-      //  isLoading = false;
-      //});
-
       print('signed in with phone number successful: user -> $user');
     }).catchError((err) async {
-      //isValidVerificationCode = false;
-      //_formKey.currentState.validate();
       store.dispatch(new LoginFailedAction());
     });
     return true;
@@ -163,9 +160,6 @@ ThunkAction signUpCall(BuildContext context, String firstName, String lastName, 
     userInfo.photoUrl = lastName;
     currentUser.updateProfile(userInfo);
 
-    //await storage.write(key: "firstName", value: firstNameController.text.trim());
-    //await storage.write(key: "lastName", value: lastNameController.text.trim());
-    //await storage.write(key: "email", value: emailController.text.trim());
     openPage(context, new Backup1Page());
     return true;
   };
@@ -176,6 +170,13 @@ ThunkAction generateWalletCall() {
     store.dispatch(new StartLoadingAction());
     var user = await generateWallet(store.state.userState.user);
     store.dispatch(new UpdateUserAction(user));
+  };
+}
+
+ThunkAction logoutCall() {
+  return (Store store) async {
+    store.dispatch(new LogoutAction());
+    return true;
   };
 }
 
@@ -202,4 +203,8 @@ class UpdateUserAction {
 
 class LoginFailedAction {
   LoginFailedAction();
+}
+
+class LogoutAction {
+  LogoutAction();
 }

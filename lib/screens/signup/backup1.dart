@@ -111,6 +111,7 @@ class _Backup1PageState extends State<Backup1Page> {
                                           CopyToClipboard(
                                             context: context,
                                             scaffoldState: scaffoldState,
+                                            content: viewModel.user.publicKey,
                                           ),
                                           const SizedBox(width: 4.0),
                                           Icon(
