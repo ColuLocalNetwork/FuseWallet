@@ -135,6 +135,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           Divider(),
           ListTile(
+            title: Text('Browse services', style: TextStyle(fontSize: 16),),
+            onTap: () {
+              openPage(context, WebViewExample());
+            },
+          ),
+          Divider(),
+          ListTile(
             title: Text('Back up wallet', style: TextStyle(fontSize: 16),),
             onTap: () {
               openPage(context, Backup1Page());
@@ -174,14 +181,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               await storage.deleteAll();
               await FirebaseAuth.instance.signOut();
               openPageReplace(context, SplashScreen());
-            },
-          ),
-          Divider(),
-          
-          ListTile(
-            title: Text('Web', style: TextStyle(fontSize: 16),),
-            onTap: () {
-              openPage(context, WebViewExample());
             },
           ),
           Divider(),

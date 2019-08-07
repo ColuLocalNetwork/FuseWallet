@@ -66,5 +66,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
+
+	  <!-- When in use -->
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Reason why app needs location</string>
+  <!-- Always -->
+  <!-- for iOS 11 + -->
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Reason why app needs location</string>
+  <!-- for iOS 9/10 -->
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>Reason why app needs location</string> 
 </dict>
 </plist>

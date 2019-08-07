@@ -39,8 +39,8 @@ dependencies:
   local_auth: ^0.4.0+1
   webview_flutter: ^0.3.10+3
   flutter_webview_plugin: ^0.3.5
-  #flutter_beacon: ^0.2.2
-  #beacon_broadcast: ^0.2.1
+  flutter_beacon: ^0.2.2
+  beacon_broadcast: ^0.2.1
   flutter_redux: ^0.5.3
   redux_thunk: ^0.2.1
   redux_persist: "^0.8.0"

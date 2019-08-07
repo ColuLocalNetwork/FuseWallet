@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
@@ -7,7 +9,7 @@ import 'package:fusewallet/widgets/widgets.dart';
 import 'package:redux/redux.dart';
 import 'redux/actions/signin_actions.dart';
 import 'redux/state/app_state.dart';
-//import 'package:flutter_beacon/flutter_beacon.dart';
+import 'package:flutter_beacon/flutter_beacon.dart';
 //import 'package:beacon_broadcast/beacon_broadcast.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -58,6 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
           .setMinorId(100)
           .start();
     });
+*/
 
     await flutterBeacon.initializeScanning;
     final regions = <Region>[];
@@ -112,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // result contains a region and list of beacons found
       // list can be empty if no matching beacons were found in range
     });
-    */
+    
   }
 
   @override
