@@ -188,7 +188,8 @@
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = E9LX62P47A;
+						DevelopmentTeam = QC9255BHMY;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -202,6 +203,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -391,8 +393,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = E9LX62P47A;
+				DEVELOPMENT_TEAM = QC9255BHMY;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.1.3;
 				FLUTTER_BUILD_NUMBER = 22s;
@@ -406,8 +411,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.creatix.fusewallet;
+				PRODUCT_BUNDLE_IDENTIFIER = io.fusenet.fusewallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Fuse Wallet";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile;
@@ -525,8 +531,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = E9LX62P47A;
+				DEVELOPMENT_TEAM = QC9255BHMY;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.1.3;
 				FLUTTER_BUILD_NUMBER = 22;
@@ -540,8 +548,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.creatix.fusewallet;
+				PRODUCT_BUNDLE_IDENTIFIER = io.fusenet.fusewallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Fuse Wallet";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -553,8 +562,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = E9LX62P47A;
+				DEVELOPMENT_TEAM = QC9255BHMY;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.1.3;
 				FLUTTER_BUILD_NUMBER = 22;
@@ -568,8 +579,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.creatix.fusewallet;
+				PRODUCT_BUNDLE_IDENTIFIER = io.fusenet.fusewallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Fuse Wallet";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
