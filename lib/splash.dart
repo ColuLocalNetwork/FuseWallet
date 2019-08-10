@@ -9,7 +9,7 @@ import 'package:fusewallet/widgets/widgets.dart';
 import 'package:redux/redux.dart';
 import 'redux/actions/signin_actions.dart';
 import 'redux/state/app_state.dart';
-import 'package:flutter_beacon/flutter_beacon.dart';
+//import 'package:flutter_beacon/flutter_beacon.dart';
 //import 'package:beacon_broadcast/beacon_broadcast.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
           .start();
     });
 */
-
+/*
     await flutterBeacon.initializeScanning;
     final regions = <Region>[];
 
@@ -73,7 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
       // android platform, it can ranging out of beacon that filter all of Proximity UUID
       regions.add(Region(identifier: 'com.beacon'));
     }
-
+*/
+/*
     flutterBeacon.ranging(regions).listen((RangingResult result) {
       if (!isOpen &&
           result.beacons.length > 0 &&
@@ -115,6 +116,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // result contains a region and list of beacons found
       // list can be empty if no matching beacons were found in range
     });
+    */
     
   }
 

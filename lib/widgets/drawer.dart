@@ -181,20 +181,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           */
-<<<<<<< HEAD
-          
-          ListTile(
-            title: Text('Log out', style: TextStyle(fontSize: 16),),
-            onTap: () async {
-              await storage.deleteAll();
-              await FirebaseAuth.instance.signOut();
-              openPageReplace(context, SplashScreen());
-            },
-          ),
-          Divider(),
-          new LanguageSelector()
-        ],
-=======
 
                       ListTile(
                         title: Text(
@@ -221,7 +207,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ],
                   ));
         },
->>>>>>> a8910bb561e7b97fec37fb3ab6bfe6506c555191
       ),
     );
   }
