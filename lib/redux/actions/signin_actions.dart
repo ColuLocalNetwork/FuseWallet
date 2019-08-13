@@ -164,9 +164,9 @@ ThunkAction signUpCall(BuildContext context, String firstName, String lastName, 
     if (_user == null) {
       _user = new User();
     }
-    _user.firstName = currentUser.displayName;
-    _user.lastName = currentUser.photoUrl;
-    _user.email = currentUser.email;
+    _user.firstName = firstName;
+    _user.lastName = lastName;
+    _user.email = email;
     _user.phone = currentUser.phoneNumber;
     store.dispatch(new UpdateUserAction(_user));
 

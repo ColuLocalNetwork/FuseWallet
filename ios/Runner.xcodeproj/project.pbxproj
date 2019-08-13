@@ -257,7 +257,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh",
-				"${PODS_ROOT}/../.symlinks/flutter/ios-release/Flutter.framework",
+				"${PODS_ROOT}/../.symlinks/flutter/ios/Flutter.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/MTBBarcodeScanner/MTBBarcodeScanner.framework",
@@ -425,7 +425,7 @@
 				DEVELOPMENT_TEAM = QC9255BHMY;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.1.7;
-				FLUTTER_BUILD_NUMBER = 28s;
+				FLUTTER_BUILD_NUMBER = 29s;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
@@ -562,7 +562,7 @@
 				DEVELOPMENT_TEAM = QC9255BHMY;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.1.7;
-				FLUTTER_BUILD_NUMBER = 28;
+				FLUTTER_BUILD_NUMBER = 29;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
@@ -593,7 +593,7 @@
 				DEVELOPMENT_TEAM = QC9255BHMY;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.1.7;
-				FLUTTER_BUILD_NUMBER = 28;
+				FLUTTER_BUILD_NUMBER = 29;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
