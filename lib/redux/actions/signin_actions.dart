@@ -160,6 +160,16 @@ ThunkAction signUpCall(BuildContext context, String firstName, String lastName, 
     userInfo.photoUrl = lastName;
     currentUser.updateProfile(userInfo);
 
+    var _user = store.state.userState.user;
+    if (_user == null) {
+      _user = new User();
+    }
+    _user.firstName = firstName;
+    _user.lastName = lastName;
+    _user.email = email;
+    _user.phone = currentUser.phoneNumber;
+    store.dispatch(new UpdateUserAction(_user));
+
     openPage(context, new Backup1Page());
     return true;
   };

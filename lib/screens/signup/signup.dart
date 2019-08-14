@@ -59,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
       new StoreConnector<AppState, SignInViewModel>(converter: (store) {
         return SignInViewModel.fromStore(store);
       }, builder: (_, viewModel) {
-        Padding(
+        return Padding(
           padding: EdgeInsets.only(top: 10, left: 30, right: 30),
           child: Form(
             key: _formKey,

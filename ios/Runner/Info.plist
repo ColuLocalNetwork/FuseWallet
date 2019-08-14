@@ -31,7 +31,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.714005083204-3nilikdptrulj6b0mo22kqcppusp70aa</string>
+				<string>com.googleusercontent.apps.698826184039-ebhmj0thjgq2aj74jhfi5g33rb7otjci</string>
 			</array>
 		</dict>
 	</array>
@@ -53,6 +53,10 @@
 	<string>Reason why app needs location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Reason why app needs location</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
